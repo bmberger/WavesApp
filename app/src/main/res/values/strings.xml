@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Waves-App</string>
+    <string name="fishCount">Fish Count: </string>
 </resources>
