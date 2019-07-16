@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/miHome"
+        android:icon="@drawable/ic_new_home"
+        android:title="Home"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/miCalendar"
+        android:icon="@drawable/ic_new_cal"
+        android:title="Calendar"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/miFishTank"
+        android:icon="@drawable/ic_temp_fish_new"
+        android:title="Fish Tank"
+        app:showAsAction="always" />
+</menu>
