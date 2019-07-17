@@ -30,7 +30,6 @@ public class FishTankFragment extends Fragment {
     private int maxWidth;
     private TextView tvFishCount;
     private ConstraintLayout layout;
-//    private ViewTreeObserver vto;
 
     @Nullable
     @Override
@@ -53,22 +52,10 @@ public class FishTankFragment extends Fragment {
         tvFishCount = (TextView) view.findViewById(R.id.tvFishCount);
         layout = (ConstraintLayout) view.findViewById(R.id.cLayout);
 
-//        vto = layout.getViewTreeObserver();
 
         // Set information for fishCount
         tvFishCount.setText(String.format("Fish Count: %d", displayCount));
 
-//        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-//            @Override
-//            public void onGlobalLayout() {
-//                layout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-//                maxHeight = layout.getMeasuredHeight();
-//                maxWidth = layout.getMeasuredWidth();
-//            }
-//        });
-//
-//        Log.d(TAG, "Height: " + maxHeight);
-//        Log.d(TAG, "Width: " + maxWidth);
 
         // Generate an image per count
         for (int i = 0; i < displayCount; i++) {
