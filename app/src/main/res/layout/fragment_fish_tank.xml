@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/ocean_bg">
+    android:background="@drawable/ocean_bg2">
 
     <TextView
         android:id="@+id/tvFishCount"
@@ -16,7 +16,7 @@
         android:layout_marginTop="8dp"
         android:text="@string/fishCount"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="#FFFFFF"
+        android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
