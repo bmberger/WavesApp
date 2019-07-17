@@ -46,8 +46,8 @@ public class FishTankFragment extends Fragment {
         displayCount = ((removedCount % 15) == 0) ? 15 : removedCount % 15;
 
         // Set layout width and height range
-        maxHeight = 1000;
-        maxWidth = 800;
+        maxHeight = 1300;
+        maxWidth = 700;
 
         // Get the objects by id
         tvFishCount = (TextView) view.findViewById(R.id.tvFishCount);
