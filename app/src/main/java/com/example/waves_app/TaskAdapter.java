@@ -70,7 +70,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             tvDueDate = (TextView) itemView.findViewById(R.id.tvDueDate);
             tvDueDateHolder = (TextView) itemView.findViewById(R.id.tvDateHolder);
 
-            // Attach a click listener to the entire row view
+            // Attach a long click listener to the entire row view
             itemView.setOnLongClickListener((View.OnLongClickListener)this);
         }
 
