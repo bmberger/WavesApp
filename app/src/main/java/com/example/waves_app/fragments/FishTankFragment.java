@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.waves_app.R;
 
@@ -23,7 +24,6 @@ import java.util.Random;
 
 public class FishTankFragment extends Fragment {
 
-    public static final String TAG = "FishTankFragment";
     private int removedCount;
     private int displayCount;
     private int maxHeight;
@@ -52,11 +52,9 @@ public class FishTankFragment extends Fragment {
         tvFishCount = (TextView) view.findViewById(R.id.tvFishCount);
         layout = (ConstraintLayout) view.findViewById(R.id.cLayout);
 
-
         // Set information for fishCount
         tvFishCount.setText(String.format("Fish Count: %d", displayCount));
-
-
+      
         // Generate an image per count
         for (int i = 0; i < displayCount; i++) {
             // Prepare imageView for fish display
@@ -69,6 +67,15 @@ public class FishTankFragment extends Fragment {
             fishImage.setY(new Random().nextInt(maxHeight) + 100);
             layout.addView(fishImage);
         }
+
+        tvFishCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager manager = getActivity().getSupportFragmentManager();
+                Fragment fragment = new TasksFragment();
+                manager.beginTransaction().replace(R.id.flContainer, fragment).commit();
+            }
+        });
     }
 
     public int getRandomFishId() {
