@@ -69,7 +69,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
         @Override
         public void onClick(View view) {
-            Toast.makeText(context, "as;ldkfjalsdf", Toast.LENGTH_LONG).show();
             FragmentManager manager = ((FragmentActivity)context).getSupportFragmentManager();
             Fragment fragment = new TasksFragment();
             manager.beginTransaction().replace(R.id.flContainer, fragment).commit();
@@ -86,7 +85,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                         if (etCategory.getText().toString().length() > 0) {
                             category.setCategoryName(etCategory.getText().toString());
                         } else {
-                            Toast.makeText(v.getContext(), "No task description has been entered!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(v.getContext(), "No category name has been entered!", Toast.LENGTH_LONG).show();
                         }
                     }
                 }
