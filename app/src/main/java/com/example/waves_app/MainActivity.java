@@ -35,15 +35,12 @@ public class MainActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.miHome:
                         fragment = new HomeFragment();
-                        Toast.makeText(MainActivity.this, "Switched to home!", Toast.LENGTH_LONG).show();
                         break;
                     case R.id. miCalendar:
                         fragment = new CalendarFragment();
-                        Toast.makeText(MainActivity.this, "Switched to cal!", Toast.LENGTH_LONG).show();
                         break;
                     case R.id.miFishTank:
                         fragment = new FishTankFragment();
-                        Toast.makeText(MainActivity.this, "Switched to fish!", Toast.LENGTH_LONG).show();
                         break;
                     default:
                         return true;
