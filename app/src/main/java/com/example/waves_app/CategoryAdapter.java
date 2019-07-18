@@ -42,7 +42,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         Category category = categories.get(position);
         holder.bind(category);
-        holder.etCategory.setText(category.getCategoryName());
     }
 
     // Returns total count of items in the list
@@ -75,6 +74,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         }
 
         public void bind(final Category category) {
+            etCategory.setText(category.getCategoryName());
+
             // Get data from editText and set name for new category
             etCategory.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
