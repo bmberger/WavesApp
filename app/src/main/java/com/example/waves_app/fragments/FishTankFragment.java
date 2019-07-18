@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.waves_app.R;
 
@@ -66,6 +67,15 @@ public class FishTankFragment extends Fragment {
             fishImage.setY(new Random().nextInt(maxHeight) + 100);
             layout.addView(fishImage);
         }
+
+        tvFishCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager manager = getActivity().getSupportFragmentManager();
+                Fragment fragment = new TasksFragment();
+                manager.beginTransaction().replace(R.id.flContainer, fragment).commit();
+            }
+        });
     }
 
     public int getRandomFishId() {
