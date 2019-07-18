@@ -65,7 +65,6 @@ public class TasksFragment extends Fragment {
         t.setDueDate("07/20/2019");
         t.setTaskDetail("Get this working pls");
         mTasksList.add(t);
-
         Task t2 = new Task();
         t2.setDueDate("07/21/2019");
         t2.setTaskDetail("Get this working");
