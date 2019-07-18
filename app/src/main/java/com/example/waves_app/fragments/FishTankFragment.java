@@ -54,7 +54,7 @@ public class FishTankFragment extends Fragment {
 
         // Set information for fishCount
         tvFishCount.setText(String.format("Fish Count: %d", displayCount));
-
+      
         // Generate an image per count
         for (int i = 0; i < displayCount; i++) {
             // Prepare imageView for fish display
