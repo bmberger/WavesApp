@@ -27,7 +27,7 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.google.android.material:material:1.0.0'
-
+    compile 'com.github.sundeepk:compact-calendar-view:3.0.0'
     implementation 'com.github.prolificinteractive:material-calendarview:1.6.0'
 
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
