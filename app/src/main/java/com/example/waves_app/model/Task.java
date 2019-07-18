@@ -2,8 +2,8 @@ package com.example.waves_app.model;
 
 public class Task {
 
-    public String taskDetail;
-    public String dueDate;
+    private String taskDetail;
+    private String dueDate;
 
     public Task() { }
 
