@@ -53,7 +53,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         return new ViewHolder(view);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
 
         private EditText etTask;
         private TextView tvDueDate;
@@ -67,6 +67,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             etTask = (EditText) itemView.findViewById(R.id.etTaskDescription);
             tvDueDate = (TextView) itemView.findViewById(R.id.tvDueDate);
             tvDueDateHolder = (TextView) itemView.findViewById(R.id.tvDateHolder);
+
+            // Attach a click listener to the entire row view
+            itemView.setOnLongClickListener((View.OnLongClickListener)this);
         }
 
         public void bind(final Task task) {
@@ -114,10 +117,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                     if (!hasFocus) {
                         // If anything was typed
                         if (etTask.getText().toString().length() > 0) {
-                            Log.d("test", etTask.getText().toString());
                             task.setTaskDetail(etTask.getText().toString());
                         } else {
-                            Toast.makeText(v.getContext(), "No task description has been entered!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(v.getContext(), "No task description has been entered!", Toast.LENGTH_LONG).show();
                         }
                     }
                 }
@@ -144,6 +146,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             }
 
             return date + "/" + year;
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            Toast.makeText(view.getContext(), "long click", Toast.LENGTH_LONG).show();
+            int position = getAdapterPosition();
+            mTasksList.remove(position);
+            notifyDataSetChanged();
+            return true;
         }
     }
 }
