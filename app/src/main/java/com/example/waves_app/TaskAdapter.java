@@ -2,6 +2,7 @@ package com.example.waves_app;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.waves_app.model.Task;
@@ -150,10 +152,29 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
         @Override
         public boolean onLongClick(View view) {
-            Toast.makeText(view.getContext(), "long click", Toast.LENGTH_LONG).show();
-            int position = getAdapterPosition();
-            mTasksList.remove(position);
-            notifyDataSetChanged();
+
+            // Create dialog popup to confirm deletion of task
+            final AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+            dialog.setMessage("Delete this task?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    int position = getAdapterPosition();
+                                    mTasksList.remove(position);
+                                    notifyDataSetChanged();
+                                }
+                            })
+                    .setNegativeButton("No",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+            final AlertDialog alert = dialog.create();
+            alert.show();
+
             return true;
         }
     }
