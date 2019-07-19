@@ -17,7 +17,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.waves_app.R;
 import com.example.waves_app.CategoryAdapter;
 import com.example.waves_app.model.Category;
+import com.example.waves_app.model.Task;
 
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +33,37 @@ public class CategoryFragment extends Fragment {
     private CategoryAdapter categoryAdapter;
     private RecyclerView rvCategories;
     private Button button;
+    private List<String> parsedData;
+
+    // returns the file in which the data is stored
+    // TODO: Make to-do dependent on the actual category
+    private File getDataFile() {
+        return new File(getContext().getFilesDir(), "allCategories.txt");
+    }
+
+    // read the items from the file system
+    public void readCategoryItems() {
+        categories = new ArrayList<>();
+        try {
+            // create the array using the content in the file
+            parsedData = new ArrayList<String>(FileUtils.readLines(getDataFile(), Charset.defaultCharset()));
+
+            for(String obj : parsedData) {
+                Category tempCat = new Category();
+                String name = obj;
+
+                tempCat.setCategoryName(name);
+                categories.add(tempCat);
+            }
+
+        } catch (IOException e) {
+            // print the error to the console
+            e.printStackTrace();
+            // just load an empty list
+            categories = new ArrayList<>();
+            parsedData = new ArrayList<>();
+        }
+    }
 
     @Nullable
     @Override
@@ -38,11 +75,10 @@ public class CategoryFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         rvCategories = view.findViewById(R.id.categoriesList);
 
-        // Create the data source, lists of categories
-        categories = new ArrayList<>();
+        readCategoryItems();
 
         // Create the categoryAdapter
-        categoryAdapter = new CategoryAdapter(getContext(), categories);
+        categoryAdapter = new CategoryAdapter(getContext(), categories, parsedData);
 
         // Set the layout manager on the recycler view
         rvCategories.setLayoutManager(new LinearLayoutManager(getContext()));

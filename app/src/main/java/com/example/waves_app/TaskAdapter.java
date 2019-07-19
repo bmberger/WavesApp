@@ -35,25 +35,27 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     private Context context;
     private List<Task> mTasksList;
-    private List<String> twoStrings;
+    private List<String> parsedData;
+    private String catTasks; // sets the category file name that contains all of the tasks
 
-    public TaskAdapter (Context context, List<Task> tasks, List<String> twoStrings) {
+    public TaskAdapter (Context context, List<Task> tasks, List<String> twoStrings, String catTasks) {
         this.context = context;
         this.mTasksList = tasks;
-        this.twoStrings = twoStrings;
+        this.parsedData = twoStrings;
+        this.catTasks = catTasks;
     }
 
     // returns the file in which the data is stored
     // TODO: Make to-do dependent on the actual category
     private File getDataFile() {
-        return new File(context.getFilesDir(), "category_name.txt");
+        return new File(context.getFilesDir(), catTasks);
     }
 
     // write the items to the filesystem
     private void writeTaskItems() {
         try {
             // save the item list as a line-delimited text file
-            FileUtils.writeLines(getDataFile(), twoStrings);
+            FileUtils.writeLines(getDataFile(), parsedData);
         } catch (IOException e) {
             // print the error to the console
             e.printStackTrace();
@@ -89,8 +91,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
-            //readTaskItems();
 
             // Perform findViewById lookups
             etTask = (EditText) itemView.findViewById(R.id.etTaskDescription);
@@ -140,7 +140,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
                     if (etTask.getText().toString().length() > 0) {
                         task.setTaskDetail(etTask.getText().toString());
-                        twoStrings.add(task.getTaskDetail() + "," + task.getDueDate());
+                        parsedData.add(task.getTaskDetail() + "," + task.getDueDate());
                         writeTaskItems(); // update the persistence
                     } else {
                         //Toast.makeText(this.getContext(), "No task description has been entered!", Toast.LENGTH_LONG).show();
@@ -201,7 +201,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                                 public void onClick(DialogInterface dialog, int id) {
                                     int position = getAdapterPosition();
                                     mTasksList.remove(position);
-                                    twoStrings.remove(position);
+                                    parsedData.remove(position);
                                     writeTaskItems();
                                     notifyDataSetChanged();
                                 }

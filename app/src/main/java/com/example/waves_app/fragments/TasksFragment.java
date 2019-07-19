@@ -33,24 +33,24 @@ public class TasksFragment extends Fragment {
     private Button btnAddTask;
     private RecyclerView rvTasks;
     private List<Task> mTasksList;
-    private List<String> twoStrings;
+    private List<String> parsedData;
     private TaskAdapter taskAdapter;
+    private String catTasks;
 
     // returns the file in which the data is stored
     // TODO: Make to-do dependent on the actual category
     private File getDataFile() {
-        return new File(getContext().getFilesDir(), "category_name.txt");
+        return new File(getContext().getFilesDir(), catTasks);
     }
 
     // read the items from the file system
-    private void readTaskItems() {
-//        twoStrings = new ArrayList<>();
+    public void readTaskItems() {
         mTasksList = new ArrayList<>();
         try {
             // create the array using the content in the file
-            twoStrings = new ArrayList<String>(FileUtils.readLines(getDataFile(), Charset.defaultCharset()));
+            parsedData = new ArrayList<String>(FileUtils.readLines(getDataFile(), Charset.defaultCharset()));
 
-            for(String obj : twoStrings) {
+            for(String obj : parsedData) {
                 Task tempTask = new Task();
 
                 int delimiter = obj.indexOf(",");
@@ -68,18 +68,7 @@ public class TasksFragment extends Fragment {
             e.printStackTrace();
             // just load an empty list
             mTasksList = new ArrayList<>();
-            twoStrings = new ArrayList<>();
-        }
-    }
-
-    // write the items to the filesystem
-    private void writeTaskItems() {
-        try {
-            // save the item list as a line-delimited text file
-            FileUtils.writeLines(getDataFile(), twoStrings);
-        } catch (IOException e) {
-            // print the error to the console
-            e.printStackTrace();
+            parsedData = new ArrayList<>();
         }
     }
 
@@ -93,8 +82,13 @@ public class TasksFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         btnAddTask = (Button) view.findViewById(R.id.btnAddTask);
         rvTasks = (RecyclerView) view.findViewById(R.id.rvTasks);
+
+        // getting the category file name that contains these tasks
+        Bundle information = getArguments();
+        catTasks = information.getString("catName") + ".txt";
+
         readTaskItems();
-        taskAdapter = new TaskAdapter(getContext(), mTasksList, twoStrings);
+        taskAdapter = new TaskAdapter(getContext(), mTasksList, parsedData, catTasks);
         rvTasks.setAdapter(taskAdapter);
         rvTasks.setLayoutManager(new LinearLayoutManager(getContext()));
 

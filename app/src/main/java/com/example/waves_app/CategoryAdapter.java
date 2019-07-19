@@ -1,6 +1,7 @@
 package com.example.waves_app;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,17 +17,40 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.waves_app.fragments.TasksFragment;
 import com.example.waves_app.model.Category;
 
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
 
     private List<Category> categories;
     private Context context;
+    private List<String> parsedData;
 
     // Data is passed into the constructor
-    public CategoryAdapter(Context context, List<Category> data) {
+    public CategoryAdapter(Context context, List<Category> data, List<String> parsedData) {
         this.categories = data;
         this.context = context;
+        this.parsedData = parsedData;
+    }
+
+    // returns the file in which the data is stored
+    // TODO: Make to-do dependent on the actual category
+    private File getDataFile() {
+        return new File(context.getFilesDir(), "allCategories.txt");
+    }
+
+    // write the items to the filesystem
+    private void writeCatItems() {
+        try {
+            // save the item list as a line-delimited text file
+            FileUtils.writeLines(getDataFile(), parsedData);
+        } catch (IOException e) {
+            // print the error to the console
+            e.printStackTrace();
+        }
     }
 
     // Inflates the row layout from xml when needed and returns the holder
@@ -68,8 +92,17 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
         @Override
         public void onClick(View view) {
+            String catName = etCategory.getText().toString();
+
             FragmentManager manager = ((FragmentActivity)context).getSupportFragmentManager();
             Fragment fragment = new TasksFragment();
+            Bundle information = new Bundle();
+            information.putString("catName", catName);
+            if (parsedData.indexOf(catName) == -1) {
+                parsedData.add(etCategory.getText().toString());
+                writeCatItems();
+            }
+            fragment.setArguments(information);
             manager.beginTransaction().replace(R.id.flContainer, fragment).commit();
         }
 

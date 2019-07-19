@@ -67,7 +67,7 @@ public class HomeFragment extends Fragment {
 
                 // Switches to a different category dependent on user choice
                 if (clickedOption.equals("My Categories")) {
-                    fragment = new TasksFragment();
+                    fragment = new CategoryFragment();
                 } else if (clickedOption.equals("FAQ")) {
                     fragment = new FAQFragment();
                 } else if (clickedOption.equals("Tutorial")) {
