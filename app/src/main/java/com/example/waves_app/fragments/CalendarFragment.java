@@ -53,11 +53,9 @@ public class CalendarFragment extends Fragment {
                         remindersOfDay += temp;
                     }
                     Toast.makeText(context, String.format(remindersOfDay), Toast.LENGTH_LONG).show();
-                }else {
+                } else {
                     Toast.makeText(context, "No Events Planned for that day", Toast.LENGTH_SHORT).show();
                 }
-
-
             }
 
             @Override

@@ -1,6 +1,7 @@
 package com.example.waves_app;
 
 import android.app.DatePickerDialog;
+import org.apache.commons.io.FileUtils;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -18,10 +19,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.waves_app.fragments.TasksFragment;
 import com.example.waves_app.model.Task;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -29,10 +35,29 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     private Context context;
     private List<Task> mTasksList;
+    private List<String> twoStrings;
 
-    public TaskAdapter (Context context, List<Task> tasks) {
+    public TaskAdapter (Context context, List<Task> tasks, List<String> twoStrings) {
         this.context = context;
         this.mTasksList = tasks;
+        this.twoStrings = twoStrings;
+    }
+
+    // returns the file in which the data is stored
+    // TODO: Make to-do dependent on the actual category
+    private File getDataFile() {
+        return new File(context.getFilesDir(), "category_name.txt");
+    }
+
+    // write the items to the filesystem
+    private void writeTaskItems() {
+        try {
+            // save the item list as a line-delimited text file
+            FileUtils.writeLines(getDataFile(), twoStrings);
+        } catch (IOException e) {
+            // print the error to the console
+            e.printStackTrace();
+        }
     }
 
     // With the data at the given position, bind it to the holder
@@ -64,6 +89,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+
+            //readTaskItems();
 
             // Perform findViewById lookups
             etTask = (EditText) itemView.findViewById(R.id.etTaskDescription);
@@ -110,6 +137,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                     String dueDate = reformatDate(month, day, year);
                     tvDueDate.setText(dueDate);
                     task.setDueDate(dueDate);
+
+                    if (etTask.getText().toString().length() > 0) {
+                        task.setTaskDetail(etTask.getText().toString());
+                        twoStrings.add(task.getTaskDetail() + "," + task.getDueDate());
+                        writeTaskItems(); // update the persistence
+                    } else {
+                        //Toast.makeText(this.getContext(), "No task description has been entered!", Toast.LENGTH_LONG).show();
+                    }
                 }
             };
 
@@ -120,11 +155,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                     // When focus is lost check that the text field has valid values.
                     if (!hasFocus) {
                         // If anything was typed
-                        if (etTask.getText().toString().length() > 0) {
-                            task.setTaskDetail(etTask.getText().toString());
-                        } else {
-                            Toast.makeText(v.getContext(), "No task description has been entered!", Toast.LENGTH_LONG).show();
-                        }
+//                        if (etTask.getText().toString().length() > 0) {
+//                            task.setTaskDetail(etTask.getText().toString());
+//                            twoStrings.add(task.getTaskDetail() + "," + task.getDueDate());
+//                            writeTaskItems(); // update the persistence
+//                        } else {
+//                            Toast.makeText(v.getContext(), "No task description has been entered!", Toast.LENGTH_LONG).show();
+//                        }
                     }
                 }
             });
@@ -164,6 +201,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                                 public void onClick(DialogInterface dialog, int id) {
                                     int position = getAdapterPosition();
                                     mTasksList.remove(position);
+                                    twoStrings.remove(position);
+                                    writeTaskItems();
                                     notifyDataSetChanged();
                                 }
                             })
