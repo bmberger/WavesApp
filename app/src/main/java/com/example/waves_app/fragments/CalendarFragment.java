@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,13 +16,18 @@ import com.example.waves_app.R;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.Event;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 public class CalendarFragment extends Fragment {
 
     CompactCalendarView compactCalendar;
+    private SimpleDateFormat dateFormatMonth = new SimpleDateFormat("MMMM yyyy", Locale.getDefault());
+    private TextView tvMonthYear;
 
     @Nullable
     @Override
@@ -33,7 +39,9 @@ public class CalendarFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        tvMonthYear = (TextView) getActivity().findViewById(R.id.tvMonthYear);
         compactCalendar = (CompactCalendarView) getActivity().findViewById(R.id.calendarView);
+        compactCalendar.setFirstDayOfWeek(Calendar.SUNDAY);
 
         compactCalendar.setListener(new CompactCalendarView.CompactCalendarViewListener() {
             @Override
@@ -52,12 +60,11 @@ public class CalendarFragment extends Fragment {
                         }
                         remindersOfDay += temp;
                     }
-                    Toast.makeText(context, String.format(remindersOfDay), Toast.LENGTH_LONG).show();
-                }else {
-                    Toast.makeText(context, "No Events Planned for that day", Toast.LENGTH_SHORT).show();
+
+                    if (remindersOfDay.length() != 0) {
+                        Toast.makeText(context, String.format(remindersOfDay), Toast.LENGTH_LONG).show();
+                    }
                 }
-
-
             }
 
             @Override
@@ -65,7 +72,7 @@ public class CalendarFragment extends Fragment {
                 // CODE ADDED FOR OUR APP
                 // https://gist.github.com/skooltch84/b7cb5361a09b687b4b9f434ddc33d2c6
                 // THIS IS FOR THE MONTH AND YEAR AT TOP OF CALENDAR
-                // somesortoftextview.setText(dateFormatMonth.format(firstDayOfNewMonth));
+                 tvMonthYear.setText(dateFormatMonth.format(firstDayOfNewMonth));
             }
         });
     }

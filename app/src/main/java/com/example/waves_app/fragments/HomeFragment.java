@@ -72,7 +72,7 @@ public class HomeFragment extends Fragment {
                     fragment = new SettingsFragment();
                 }
 
-                fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
+                fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack(null).commit();
                 Log.i("MainActivity", "Fragment switched to " + clickedOption);
             }
         });

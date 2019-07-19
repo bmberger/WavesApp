@@ -70,7 +70,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         public void onClick(View view) {
             FragmentManager manager = ((FragmentActivity)context).getSupportFragmentManager();
             Fragment fragment = new TasksFragment();
-            manager.beginTransaction().replace(R.id.flContainer, fragment).commit();
+            manager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack(null).commit();
         }
 
         public void bind(final Category category) {
