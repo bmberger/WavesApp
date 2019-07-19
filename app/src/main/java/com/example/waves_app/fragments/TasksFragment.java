@@ -45,8 +45,6 @@ public class TasksFragment extends Fragment {
         rvTasks.setAdapter(taskAdapter);
         rvTasks.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        rvTasks.addItemDecoration(new DividerItemDecoration(this.getActivity(), LinearLayout.VERTICAL));
-
         populateView();
 
         btnAddTask.setOnClickListener(new View.OnClickListener() {
