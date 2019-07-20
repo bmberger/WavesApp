@@ -38,6 +38,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     private List<String> parsedData;
     private String catTasks; // sets the category file name that contains all of the tasks
     int pos;
+    boolean addingAction = false;
 
     public TaskAdapter (Context context, List<Task> tasks, List<String> twoStrings, String catTasks) {
         this.context = context;
@@ -148,6 +149,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                         // the case if the user is setting date
                         task.setDueDate(dueDate);
                         task.setTaskDetail(etTask.getText().toString());
+                        addingAction = true; // this gives us the power to avoid problems with add vs editing
                         parsedData.add(task.getTaskDetail() + "," + task.getDueDate());
                         writeTaskItems(); // update the persistence
                     } else {
@@ -165,13 +167,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
                     // When focus is lost check that the text field has valid values.
                     if (!hasFocus) {
-                        if (etTask.getText().toString().length() > 0 && ogDetail != null) {
-                            // the case if the user needs to edit the date
+                        //task.setTaskDetail(newDetail);
+                        if (etTask.getText().toString().length() > 0 && !ogDetail.equals(newDetail) && !addingAction) {
+                            // the case if the user needs to edit the name
                             task.setTaskDetail(newDetail);
                             parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
                             writeTaskItems(); // update the persistence
-                        } else if (etTask.getText().toString().length() > 0) {
-                            // the case if the user is setting date
+                        } else if (etTask.getText().toString().length() > 0 && !addingAction) {
+                            // the case if the user is setting name
                             task.setTaskDetail(newDetail);
                             parsedData.add(task.getTaskDetail() + "," + task.getDueDate());
                             writeTaskItems(); // update the persistence
