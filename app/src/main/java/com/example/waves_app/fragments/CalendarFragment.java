@@ -37,7 +37,6 @@ public class CalendarFragment extends Fragment {
     private SimpleDateFormat dateFormatMonth = new SimpleDateFormat("MMMM yyyy", Locale.getDefault());
     private TextView tvMonthYear;
 
-//    private List<Category> categories = new ArrayList<>();
     private List<String> categoryData;
     private List<Task> taskEvents = new ArrayList<>();
 
