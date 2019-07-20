@@ -103,10 +103,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             Bundle information = new Bundle();
 
             information.putString("catName", catName);
-            if (parsedData.indexOf(catName) == -1) {
-                parsedData.add(catName);
-                writeCatItems();
-            }
             fragment.setArguments(information);
             manager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack(null).commit();
         }
