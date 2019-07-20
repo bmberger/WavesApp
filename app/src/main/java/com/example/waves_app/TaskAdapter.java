@@ -137,7 +137,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                     String dueDate = reformatDate(month, day, year);
                     tvDueDate.setText(dueDate);
 
-                    if (etTask.getText().toString().length() > 0 && task.getDueDate() != null && !task.getDueDate().equals(dueDate)) {
+                    if (etTask.getText().toString().length() > 0 && task.getDueDate() != null) {
                         // the case if the user needs to edit the date
                         pos = getAdapterPosition();
                         task.setDueDate(dueDate);
@@ -159,17 +159,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             etTask.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
+                    String ogDetail = task.getTaskDetail();
+                    String newDetail = etTask.getText().toString();
+
                     // When focus is lost check that the text field has valid values.
                     if (!hasFocus) {
-                        // If anything was typed
-                        if (etTask.getText().toString().length() > 0) {
-                            // the case if the user edits the reminder/task
-                            task.setTaskDetail(etTask.getText().toString());
-                            parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
-                            writeTaskItems(); // update the persistence
-                        } else {
-                            Toast.makeText(v.getContext(), "No task description has been entered!", Toast.LENGTH_LONG).show();
-                        }
+                        task.setTaskDetail(newDetail); // due date has all the writing code
                     } else {
                         // fixes the add on add issue that Android Studio doesn't account for
                         for (int i = 0; i < parsedData.size(); i++) {
@@ -235,6 +230,18 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             alert.show();
 
             return true;
+        }
+    }
+
+    public void getPos(EditText etTask) {
+        // fixes the add on add issue that Android Studio doesn't account for
+        for (int i = 0; i < parsedData.size(); i++) {
+            String temp = parsedData.get(i);
+            int delimiter = temp.indexOf(",");
+
+            if (etTask.getText().toString().equals(temp.substring(0, delimiter))) {
+                pos = i;
+            }
         }
     }
 }
