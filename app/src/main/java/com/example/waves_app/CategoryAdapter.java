@@ -105,7 +105,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                 writeCatItems();
             }
             fragment.setArguments(information);
-            manager.beginTransaction().replace(R.id.flContainer, fragment).commit();
+            manager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack(null).commit();
         }
 
         public void bind(final Category category) {

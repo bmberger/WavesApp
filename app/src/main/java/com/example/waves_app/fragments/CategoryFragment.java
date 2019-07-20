@@ -81,7 +81,6 @@ public class CategoryFragment extends Fragment {
 
         // Set the layout manager on the recycler view
         rvCategories.setLayoutManager(new LinearLayoutManager(getContext()));
-        rvCategories.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayout.VERTICAL));
 
         // Set the categoryAdapter on the recycler view
         rvCategories.setAdapter(categoryAdapter);

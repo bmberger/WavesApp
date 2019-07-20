@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -52,6 +53,23 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Set default selection
+        bottomNavigationView.setSelectedItemId(R.id.miHome);
+    }
+
+    @Override
+    public void onBackPressed() {
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        int seletedItemId = bottomNavigationView.getSelectedItemId();
+
+        if (R.id.miHome != seletedItemId) {
+            setHomeItem(MainActivity.this);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    public static void setHomeItem(Activity activity) {
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) activity.findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.miHome);
     }
 }
