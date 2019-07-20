@@ -1,6 +1,7 @@
 package com.example.waves_app;
 
 import android.app.DatePickerDialog;
+import org.apache.commons.io.FileUtils;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -18,10 +19,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.waves_app.fragments.TasksFragment;
 import com.example.waves_app.model.Task;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -29,10 +35,31 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     private Context context;
     private List<Task> mTasksList;
+    private List<String> parsedData;
+    private String catTasks; // sets the category file name that contains all of the tasks
+    int pos;
 
-    public TaskAdapter (Context context, List<Task> tasks) {
+    public TaskAdapter (Context context, List<Task> tasks, List<String> twoStrings, String catTasks) {
         this.context = context;
         this.mTasksList = tasks;
+        this.parsedData = twoStrings;
+        this.catTasks = catTasks;
+    }
+
+    // returns the file in which the data is stored
+    private File getDataFile() {
+        return new File(context.getFilesDir(), catTasks);
+    }
+
+    // write the items to the filesystem
+    private void writeTaskItems() {
+        try {
+            // save the item list as a line-delimited text file
+            FileUtils.writeLines(getDataFile(), parsedData);
+        } catch (IOException e) {
+            // print the error to the console
+            e.printStackTrace();
+        }
     }
 
     // With the data at the given position, bind it to the holder
@@ -109,7 +136,22 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                     month += 1;
                     String dueDate = reformatDate(month, day, year);
                     tvDueDate.setText(dueDate);
-                    task.setDueDate(dueDate);
+
+                    if (etTask.getText().toString().length() > 0 && task.getDueDate() != null && !task.getDueDate().equals(dueDate)) {
+                        // the case if the user needs to edit the date
+                        pos = getAdapterPosition();
+                        task.setDueDate(dueDate);
+                        parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
+                        writeTaskItems(); // update the persistence
+                    } else if (etTask.getText().toString().length() > 0) {
+                        // the case if the user is setting date
+                        task.setDueDate(dueDate);
+                        task.setTaskDetail(etTask.getText().toString());
+                        parsedData.add(task.getTaskDetail() + "," + task.getDueDate());
+                        writeTaskItems(); // update the persistence
+                    } else {
+                        //Toast.makeText(this.getContext(), "No task description has been entered!", Toast.LENGTH_LONG).show();
+                    }
                 }
             };
 
@@ -121,9 +163,22 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                     if (!hasFocus) {
                         // If anything was typed
                         if (etTask.getText().toString().length() > 0) {
+                            // the case if the user edits the reminder/task
                             task.setTaskDetail(etTask.getText().toString());
+                            parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
+                            writeTaskItems(); // update the persistence
                         } else {
                             Toast.makeText(v.getContext(), "No task description has been entered!", Toast.LENGTH_LONG).show();
+                        }
+                    } else {
+                        // fixes the add on add issue that Android Studio doesn't account for
+                        for (int i = 0; i < parsedData.size(); i++) {
+                            String temp = parsedData.get(i);
+                            int delimiter = temp.indexOf(",");
+
+                            if (etTask.getText().toString().equals(temp.substring(0, delimiter))) {
+                                pos = i;
+                            }
                         }
                     }
                 }
@@ -162,8 +217,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                     .setPositiveButton("Yes",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    int position = getAdapterPosition();
-                                    mTasksList.remove(position);
+                                    pos = getAdapterPosition();
+                                    mTasksList.remove(pos);
+                                    parsedData.remove(pos);
+                                    writeTaskItems();
                                     notifyDataSetChanged();
                                 }
                             })

@@ -6,7 +6,6 @@ public class Category {
 
     private String categoryName;
     private int categorySize;
-    private List<Task> tasks;
 
     public Category() { }
 

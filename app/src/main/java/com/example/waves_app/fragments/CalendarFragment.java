@@ -60,7 +60,6 @@ public class CalendarFragment extends Fragment {
                         }
                         remindersOfDay += temp;
                     }
-
                     if (remindersOfDay.length() != 0) {
                         Toast.makeText(context, String.format(remindersOfDay), Toast.LENGTH_LONG).show();
                     }

@@ -1,6 +1,7 @@
 package com.example.waves_app.fragments;
 
 import android.os.Bundle;
+import android.os.FileUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,9 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.waves_app.R;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 

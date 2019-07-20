@@ -1,6 +1,7 @@
 package com.example.waves_app.fragments;
 
 import android.os.Bundle;
+import org.apache.commons.io.FileUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,8 +18,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.waves_app.R;
 import com.example.waves_app.TaskAdapter;
+import com.example.waves_app.model.Category;
 import com.example.waves_app.model.Task;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +33,44 @@ public class TasksFragment extends Fragment {
     private Button btnAddTask;
     private RecyclerView rvTasks;
     private List<Task> mTasksList;
+    private List<String> parsedData;
     private TaskAdapter taskAdapter;
+    private String catTasks;
+
+    // returns the file in which the data is stored
+    // TODO: Make to-do dependent on the actual category
+    private File getDataFile() {
+        return new File(getContext().getFilesDir(), catTasks);
+    }
+
+    // read the items from the file system
+    public void readTaskItems() {
+        mTasksList = new ArrayList<>();
+        try {
+            // create the array using the content in the file
+            parsedData = new ArrayList<String>(FileUtils.readLines(getDataFile(), Charset.defaultCharset()));
+
+            for(String obj : parsedData) {
+                Task tempTask = new Task();
+
+                int delimiter = obj.indexOf(",");
+                String note = obj.substring(0, delimiter);
+                String date = obj.substring(delimiter + 1);
+
+                tempTask.setTaskDetail(note);
+                tempTask.setDueDate(date);
+
+                mTasksList.add(tempTask);
+            }
+
+        } catch (IOException e) {
+            // print the error to the console
+            e.printStackTrace();
+            // just load an empty list
+            mTasksList = new ArrayList<>();
+            parsedData = new ArrayList<>();
+        }
+    }
 
     @Nullable
     @Override
@@ -40,12 +82,17 @@ public class TasksFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         btnAddTask = (Button) view.findViewById(R.id.btnAddTask);
         rvTasks = (RecyclerView) view.findViewById(R.id.rvTasks);
-        mTasksList = new ArrayList<>();
-        taskAdapter = new TaskAdapter(getContext(), mTasksList);
+
+        // getting the category file name that contains these tasks
+        Bundle information = getArguments();
+        catTasks = information.getString("catName") + ".txt";
+
+        readTaskItems();
+        taskAdapter = new TaskAdapter(getContext(), mTasksList, parsedData, catTasks);
         rvTasks.setAdapter(taskAdapter);
         rvTasks.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        populateView();
+        rvTasks.addItemDecoration(new DividerItemDecoration(this.getActivity(), LinearLayout.VERTICAL));
 
         btnAddTask.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,16 +104,4 @@ public class TasksFragment extends Fragment {
         });
     }
 
-    public void populateView() {
-        // TODO - use user persistence to write the current tasks
-        Task t = new Task();
-        t.setDueDate("07/20/2019");
-        t.setTaskDetail("Get this working pls");
-        mTasksList.add(t);
-        Task t2 = new Task();
-        t2.setDueDate("07/21/2019");
-        t2.setTaskDetail("Get this working");
-        mTasksList.add(t2);
-        taskAdapter.notifyDataSetChanged();
-    }
 }
