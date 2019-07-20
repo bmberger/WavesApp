@@ -111,17 +111,16 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         public void bind(final Category category) {
             etCategory.setText(category.getCategoryName());
 
-            //ogName = category.getCategoryName();
-
             // Get data from editText and set name for new category
             etCategory.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
                     String ogName = category.getCategoryName();
+                    String newName = etCategory.getText().toString();
                     // When focus is lost check that the text field has valid values.
                     if (!hasFocus) {
                         // If anything was typed
-                        if (etCategory.getText().toString().length() > 0) {
+                        if (newName.length() > 0) {
 
                             File ogFile = new File(context.getFilesDir(), ogName + ".txt");
                             File renameFile = new File(context.getFilesDir(), etCategory.getText().toString() + ".txt");
@@ -131,10 +130,18 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                            // the case if the user edits the reminder/task
-                            category.setCategoryName(etCategory.getText().toString());
-                            parsedData.set(pos, category.getCategoryName());
-                            writeCatItems(); // update the persistence
+
+                            if (newName.length() > 0 && ogName != null) {
+                                // case if the user needs to edit the category
+                                category.setCategoryName(newName);
+                                parsedData.set(pos, newName);
+                                writeCatItems(); // update the persistence
+                            } else {
+                                // the case if the user is setting category
+                                category.setCategoryName(newName);
+                                parsedData.add(newName);
+                                writeCatItems(); // update the persistence
+                            }
                         } else {
                             Toast.makeText(v.getContext(), "No category name has been entered!", Toast.LENGTH_LONG).show();
                         }
