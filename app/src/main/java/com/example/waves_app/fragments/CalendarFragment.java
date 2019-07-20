@@ -140,7 +140,6 @@ public class CalendarFragment extends Fragment {
                     taskEvents.add(tEvent);
                 }
             } catch (IOException e) {
-                taskEvents = new ArrayList<>();
                 e.printStackTrace();
             }
         }
