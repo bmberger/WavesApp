@@ -168,6 +168,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     pos = getAdapterPosition();
+
+                                    File toDelete = new File(context.getFilesDir(), categories.get(pos) + ".txt");
+                                    toDelete.delete(); // removes the category file from allCategories.txt
+
                                     categories.remove(pos);
                                     parsedData.remove(pos);
                                     writeCatItems();
