@@ -137,6 +137,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                     String dueDate = reformatDate(month, day, year);
                     tvDueDate.setText(dueDate);
 
+                    // forces the user to have a task note before setting the due date
                     if (etTask.getText().toString().length() > 0 && task.getDueDate() != null) {
                         // the case if the user needs to edit the date
                         pos = getAdapterPosition();
@@ -164,7 +165,17 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
                     // When focus is lost check that the text field has valid values.
                     if (!hasFocus) {
-                        task.setTaskDetail(newDetail); // due date has all the writing code
+                        if (etTask.getText().toString().length() > 0 && ogDetail != null) {
+                            // the case if the user needs to edit the date
+                            task.setTaskDetail(newDetail);
+                            parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
+                            writeTaskItems(); // update the persistence
+                        } else if (etTask.getText().toString().length() > 0) {
+                            // the case if the user is setting date
+                            task.setTaskDetail(newDetail);
+                            parsedData.add(task.getTaskDetail() + "," + task.getDueDate());
+                            writeTaskItems(); // update the persistence
+                        }
                     } else {
                         // fixes the add on add issue that Android Studio doesn't account for
                         for (int i = 0; i < parsedData.size(); i++) {
