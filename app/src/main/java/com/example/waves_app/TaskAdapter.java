@@ -167,8 +167,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
                     // When focus is lost check that the text field has valid values.
                     if (!hasFocus) {
-                        //task.setTaskDetail(newDetail);
-                        if (etTask.getText().toString().length() > 0 && !ogDetail.equals(newDetail) && !addingAction) {
+                        if (ogDetail == null) {
+                            Toast.makeText(context, "Due due date needed! Re-enter task.", Toast.LENGTH_LONG).show();
+                        } else if (etTask.getText().toString().length() > 0 && !ogDetail.equals(newDetail) && !addingAction) {
                             // the case if the user needs to edit the name
                             task.setTaskDetail(newDetail);
                             parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
