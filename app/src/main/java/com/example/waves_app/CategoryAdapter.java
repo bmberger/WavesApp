@@ -100,8 +100,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             Bundle information = new Bundle();
 
             information.putString("catName", catName);
-            //information.putBoolean("edited", edited);
-            //information.putString("ogName", ogName);
             if (parsedData.indexOf(catName) == -1) {
                 parsedData.add(catName);
                 writeCatItems();
@@ -135,11 +133,19 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                             }
                             // the case if the user edits the reminder/task
                             category.setCategoryName(etCategory.getText().toString());
-                            pos = getAdapterPosition();
                             parsedData.set(pos, category.getCategoryName());
                             writeCatItems(); // update the persistence
                         } else {
                             Toast.makeText(v.getContext(), "No category name has been entered!", Toast.LENGTH_LONG).show();
+                        }
+                    } else {
+                        // fixes the add on add issue that Android Studio doesn't account for
+                        for (int i = 0; i < parsedData.size(); i++) {
+                            String temp = parsedData.get(i);
+
+                            if (etCategory.getText().toString().equals(temp)) {
+                                pos = i;
+                            }
                         }
                     }
                 }

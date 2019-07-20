@@ -37,7 +37,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     private List<Task> mTasksList;
     private List<String> parsedData;
     private String catTasks; // sets the category file name that contains all of the tasks
-    int pos = 0;
+    int pos;
 
     public TaskAdapter (Context context, List<Task> tasks, List<String> twoStrings, String catTasks) {
         this.context = context;
@@ -165,11 +165,20 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                         if (etTask.getText().toString().length() > 0) {
                             // the case if the user edits the reminder/task
                             task.setTaskDetail(etTask.getText().toString());
-                            pos = getAdapterPosition();
                             parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
                             writeTaskItems(); // update the persistence
                         } else {
                             Toast.makeText(v.getContext(), "No task description has been entered!", Toast.LENGTH_LONG).show();
+                        }
+                    } else {
+                        // fixes the add on add issue that Android Studio doesn't account for
+                        for (int i = 0; i < parsedData.size(); i++) {
+                            String temp = parsedData.get(i);
+                            int delimiter = temp.indexOf(",");
+
+                            if (etTask.getText().toString().equals(temp.substring(0, delimiter))) {
+                                pos = i;
+                            }
                         }
                     }
                 }
@@ -208,9 +217,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                     .setPositiveButton("Yes",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    int position = getAdapterPosition();
-                                    mTasksList.remove(position);
-                                    parsedData.remove(position);
+                                    pos = getAdapterPosition();
+                                    mTasksList.remove(pos);
+                                    parsedData.remove(pos);
                                     writeTaskItems();
                                     notifyDataSetChanged();
                                 }
