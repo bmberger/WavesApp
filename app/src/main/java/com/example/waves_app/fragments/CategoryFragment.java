@@ -36,7 +36,6 @@ public class CategoryFragment extends Fragment {
     private List<String> parsedData;
 
     // returns the file in which the data is stored
-    // TODO: Make to-do dependent on the actual category
     private File getDataFile() {
         return new File(getContext().getFilesDir(), "allCategories.txt");
     }

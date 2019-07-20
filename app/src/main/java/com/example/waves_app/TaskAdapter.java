@@ -37,6 +37,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     private List<Task> mTasksList;
     private List<String> parsedData;
     private String catTasks; // sets the category file name that contains all of the tasks
+    int pos = 0;
 
     public TaskAdapter (Context context, List<Task> tasks, List<String> twoStrings, String catTasks) {
         this.context = context;
@@ -46,7 +47,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     }
 
     // returns the file in which the data is stored
-    // TODO: Make to-do dependent on the actual category
     private File getDataFile() {
         return new File(context.getFilesDir(), catTasks);
     }
@@ -136,9 +136,16 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                     month += 1;
                     String dueDate = reformatDate(month, day, year);
                     tvDueDate.setText(dueDate);
-                    task.setDueDate(dueDate);
 
-                    if (etTask.getText().toString().length() > 0) {
+                    if (etTask.getText().toString().length() > 0 && task.getDueDate() != null && !task.getDueDate().equals(dueDate)) {
+                        // the case if the user needs to edit the date
+                        pos = getAdapterPosition();
+                        task.setDueDate(dueDate);
+                        parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
+                        writeTaskItems(); // update the persistence
+                    } else if (etTask.getText().toString().length() > 0) {
+                        // the case if the user is setting date
+                        task.setDueDate(dueDate);
                         task.setTaskDetail(etTask.getText().toString());
                         parsedData.add(task.getTaskDetail() + "," + task.getDueDate());
                         writeTaskItems(); // update the persistence
@@ -155,13 +162,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                     // When focus is lost check that the text field has valid values.
                     if (!hasFocus) {
                         // If anything was typed
-//                        if (etTask.getText().toString().length() > 0) {
-//                            task.setTaskDetail(etTask.getText().toString());
-//                            twoStrings.add(task.getTaskDetail() + "," + task.getDueDate());
-//                            writeTaskItems(); // update the persistence
-//                        } else {
-//                            Toast.makeText(v.getContext(), "No task description has been entered!", Toast.LENGTH_LONG).show();
-//                        }
+                        if (etTask.getText().toString().length() > 0) {
+                            // the case if the user edits the reminder/task
+                            task.setTaskDetail(etTask.getText().toString());
+                            pos = getAdapterPosition();
+                            parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
+                            writeTaskItems(); // update the persistence
+                        } else {
+                            Toast.makeText(v.getContext(), "No task description has been entered!", Toast.LENGTH_LONG).show();
+                        }
                     }
                 }
             });
