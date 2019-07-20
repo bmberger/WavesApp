@@ -2,9 +2,16 @@ package com.example.waves_app;
 
 import android.app.Application;
 
-import com.example.waves_app.model.Category;
 import com.parse.Parse;
-import com.parse.ParseObject;
+
+/* Put these lines back in manifest when using Parse
+ * android:name=".ParseApp"
+ *
+ * Make sure the switch the .MainActivity with .HomeActivity so that the
+ * log in page shows up first!!
+ *
+ * Uncomment the below code regarding registering Parse model too!
+ */
 
 public class ParseApp extends Application {
 
@@ -12,8 +19,8 @@ public class ParseApp extends Application {
     public void onCreate() {
         super.onCreate();
 
-         // registering Parse model
-         ParseObject.registerSubclass(Category.class);
+        // registering Parse model
+        // ParseObject.registerSubclass(Category.class);
 
         // set applicationId, and server based on the values in the Heroku settings
         // clientKey is not needed unless explicitly configured

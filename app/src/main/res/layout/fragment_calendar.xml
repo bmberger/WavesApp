@@ -14,9 +14,10 @@
         android:layout_height="430dp"
         android:layout_marginTop="16dp"
         app:compactCalendarCurrentDayBackgroundColor="@android:color/transparent"
+        app:compactCalendarBackgroundColor="@android:color/transparent"
         app:compactCalendarCurrentSelectedDayBackgroundColor="@color/blue_5_10_transparent"
         app:compactCalendarCurrentDayTextColor="@color/blue_5"
-        app:compactCalendarTextSize="20dp"
+        app:compactCalendarTextSize="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvMonthYear" />
