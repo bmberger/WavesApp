@@ -5,19 +5,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.waves_app.R;
 import com.example.waves_app.CategoryAdapter;
+import com.example.waves_app.R;
 import com.example.waves_app.model.Category;
-import com.example.waves_app.model.Task;
 
 import org.apache.commons.io.FileUtils;
 
@@ -51,8 +48,10 @@ public class CategoryFragment extends Fragment {
                 Category tempCat = new Category();
                 String name = obj;
 
-                tempCat.setCategoryName(name);
-                categories.add(tempCat);
+                //if (parsedData.contains(name)) {
+                    tempCat.setCategoryName(name);
+                    categories.add(tempCat);
+                //}
             }
 
         } catch (IOException e) {
