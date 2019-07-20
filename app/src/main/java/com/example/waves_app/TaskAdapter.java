@@ -17,8 +17,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.waves_app.fragments.CategoryFragment;
 import com.example.waves_app.fragments.TasksFragment;
 import com.example.waves_app.model.Task;
 
@@ -139,7 +143,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                     tvDueDate.setText(dueDate);
 
                     // forces the user to have a task note before setting the due date
-                    if (etTask.getText().toString().length() > 0 && task.getDueDate() != null) {
+                    if (task.getTaskDetail() == null) {
+                        Toast.makeText(context, "You must enter task then due date!", Toast.LENGTH_LONG).show();
+
+                        FragmentManager fragmentManager = ((FragmentActivity)context).getSupportFragmentManager();
+                        Fragment fragment = new CategoryFragment();
+                        fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
+                    } else if (etTask.getText().toString().length() > 0 && task.getDueDate() != null) {
                         // the case if the user needs to edit the date
                         pos = getAdapterPosition();
                         task.setDueDate(dueDate);
