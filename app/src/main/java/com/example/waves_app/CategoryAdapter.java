@@ -116,6 +116,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                 public void onFocusChange(View v, boolean hasFocus) {
                     String ogName = category.getCategoryName();
                     String newName = etCategory.getText().toString();
+
                     // When focus is lost check that the text field has valid values.
                     if (!hasFocus) {
                         // If anything was typed
@@ -130,7 +131,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                                 e.printStackTrace();
                             }
 
-                            if (newName.length() > 0 && ogName != null) {
+                            if (newName.length() > 0 && !ogName.equals(newName)) {
                                 // case if the user needs to edit the category
                                 category.setCategoryName(newName);
                                 parsedData.set(pos, newName);

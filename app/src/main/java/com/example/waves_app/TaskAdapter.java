@@ -143,13 +143,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                     tvDueDate.setText(dueDate);
 
                     // forces the user to have a task note before setting the due date
-                    if (task.getTaskDetail() == null) {
-                        Toast.makeText(context, "You must enter task then due date!", Toast.LENGTH_LONG).show();
-
-                        FragmentManager fragmentManager = ((FragmentActivity)context).getSupportFragmentManager();
-                        Fragment fragment = new CategoryFragment();
-                        fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
-                    } else if (etTask.getText().toString().length() > 0 && task.getDueDate() != null) {
+                    if (etTask.getText().toString().length() > 0 && task.getDueDate() != null) {
                         // the case if the user needs to edit the date
                         pos = getAdapterPosition();
                         task.setDueDate(dueDate);
@@ -178,6 +172,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                     // When focus is lost check that the text field has valid values.
                     if (!hasFocus) {
                         if (ogDetail == null) {
+                            // When you have no due date for a task
                             Toast.makeText(context, "Due due date needed! Re-enter task.", Toast.LENGTH_LONG).show();
                         } else if (etTask.getText().toString().length() > 0 && !ogDetail.equals(newDetail) && !addingAction) {
                             // the case if the user needs to edit the name
