@@ -136,7 +136,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                                 category.setCategoryName(newName);
                                 parsedData.set(pos, newName);
                                 writeCatItems(); // update the persistence
-                            } else {
+                            } else if (newName.length() > 0) {
                                 // the case if the user is setting category
                                 category.setCategoryName(newName);
                                 parsedData.add(newName);
