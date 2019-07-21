@@ -131,7 +131,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                                 e.printStackTrace();
                             }
 
-                            if (newName.length() > 0 && !ogName.equals(newName)) {
+                            if (newName.length() > 0 && ogName != null && !ogName.equals(newName)) {
                                 // case if the user needs to edit the category
                                 category.setCategoryName(newName);
                                 parsedData.set(pos, newName);
