@@ -17,8 +17,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.waves_app.fragments.CategoryFragment;
 import com.example.waves_app.fragments.TasksFragment;
 import com.example.waves_app.model.Task;
 
@@ -38,6 +42,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     private List<String> parsedData;
     private String catTasks; // sets the category file name that contains all of the tasks
     int pos;
+    boolean addingAction = false;
 
     public TaskAdapter (Context context, List<Task> tasks, List<String> twoStrings, String catTasks) {
         this.context = context;
@@ -137,6 +142,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                     String dueDate = reformatDate(month, day, year);
                     tvDueDate.setText(dueDate);
 
+                    // forces the user to have a task note before setting the due date
                     if (etTask.getText().toString().length() > 0 && task.getDueDate() != null) {
                         // the case if the user needs to edit the date
                         pos = getAdapterPosition();
@@ -147,6 +153,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                         // the case if the user is setting date
                         task.setDueDate(dueDate);
                         task.setTaskDetail(etTask.getText().toString());
+                        addingAction = true; // this gives us the power to avoid problems with add vs editing
                         parsedData.add(task.getTaskDetail() + "," + task.getDueDate());
                         writeTaskItems(); // update the persistence
                     } else {
@@ -164,7 +171,20 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
                     // When focus is lost check that the text field has valid values.
                     if (!hasFocus) {
-                        task.setTaskDetail(newDetail); // due date has all the writing code
+                        if (ogDetail == null) {
+                            // When you have no due date for a task
+                            Toast.makeText(context, "Due due date needed! Re-enter task.", Toast.LENGTH_LONG).show();
+                        } else if (etTask.getText().toString().length() > 0 && !ogDetail.equals(newDetail) && !addingAction) {
+                            // the case if the user needs to edit the name
+                            task.setTaskDetail(newDetail);
+                            parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
+                            writeTaskItems(); // update the persistence
+                        } else if (etTask.getText().toString().length() > 0 && !addingAction) {
+                            // the case if the user is setting name
+                            task.setTaskDetail(newDetail);
+                            parsedData.add(task.getTaskDetail() + "," + task.getDueDate());
+                            writeTaskItems(); // update the persistence
+                        }
                     } else {
                         // fixes the add on add issue that Android Studio doesn't account for
                         for (int i = 0; i < parsedData.size(); i++) {
