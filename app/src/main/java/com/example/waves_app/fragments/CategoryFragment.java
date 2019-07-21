@@ -22,7 +22,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class CategoryFragment extends Fragment {
 
@@ -48,10 +50,8 @@ public class CategoryFragment extends Fragment {
                 Category tempCat = new Category();
                 String name = obj;
 
-                //if (parsedData.contains(name)) {
-                    tempCat.setCategoryName(name);
-                    categories.add(tempCat);
-                //}
+                tempCat.setCategoryName(name);
+                categories.add(tempCat);
             }
 
         } catch (IOException e) {
