@@ -25,9 +25,10 @@
         </activity>
 
         <!-- registering the receiver -->
-        <receiver
-            android:name=".MyAlarm"
-            android:enabled="true"
-            android:exported="true" />
+        <receiver android:name=".MyAlarm">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>

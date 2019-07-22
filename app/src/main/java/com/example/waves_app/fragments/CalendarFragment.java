@@ -103,9 +103,7 @@ public class CalendarFragment extends Fragment {
 
             @Override
             public void onMonthScroll(Date firstDayOfNewMonth) {
-                // CODE ADDED FOR OUR APP
-                // https://gist.github.com/skooltch84/b7cb5361a09b687b4b9f434ddc33d2c6
-                // THIS IS FOR THE MONTH AND YEAR AT TOP OF CALENDAR
+                // For month and year at top of calendar
                 tvMonthYear.setText(dateFormatMonth.format(firstDayOfNewMonth));
             }
         });
