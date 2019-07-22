@@ -1,8 +1,6 @@
 package com.example.waves_app.fragments;
 
 import android.os.Bundle;
-import org.apache.commons.io.FileUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.waves_app.R;
 import com.example.waves_app.TaskAdapter;
-import com.example.waves_app.model.Category;
 import com.example.waves_app.model.Task;
+
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +37,6 @@ public class TasksFragment extends Fragment {
     private String catTasks;
 
     // returns the file in which the data is stored
-    // TODO: Make to-do dependent on the actual category
     private File getDataFile() {
         return new File(getContext().getFilesDir(), catTasks);
     }
@@ -62,7 +60,6 @@ public class TasksFragment extends Fragment {
 
                 mTasksList.add(tempTask);
             }
-
         } catch (IOException e) {
             // print the error to the console
             e.printStackTrace();
@@ -103,5 +100,4 @@ public class TasksFragment extends Fragment {
             }
         });
     }
-
 }
