@@ -1,7 +1,7 @@
 package com.example.waves_app;
 
+import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
@@ -16,25 +16,29 @@ public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
     private TaskAdapter taskAdapter;
     private Drawable completedIcon;
     private Drawable deleteIcon;
-    private final ColorDrawable background;
+    private ColorDrawable background;
 
-    public SwipeToDeleteCallback(TaskAdapter adapter) {
+    public SwipeToDeleteCallback(TaskAdapter adapter, Context context) {
         // First parameter in super adds support for draggin the RecyclerView item up or down.
         // Second parameter tells the holder to pass information about left/right swipes.
-        super(0, ItemTouchHelper.LEFT);
+        super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
         taskAdapter = adapter;
-        // TODO - come back to fix this part once the swipe is connected to another class or something
-//        completedIcon = ContextCompat.getDrawable(, R.drawable.ic_completed);
-//        deleteIcon = ContextCompat.getDrawable(, R.drawable.ic_delete_item);
-        background = new ColorDrawable(Color.BLUE);
+        completedIcon = ContextCompat.getDrawable(context, R.drawable.ic_completed);
+        deleteIcon = ContextCompat.getDrawable(context, R.drawable.ic_delete_item);
+        background = new ColorDrawable(context.getResources().getColor(R.color.blue_5_10_transparent));
     }
 
     // This method is called when an item is swiped off the screen
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder holder, int direction) {
         int position = holder.getAdapterPosition();
-        // TODO - the deleteItem method will be implemented later in adapter
-        taskAdapter.deleteItem(position);
+
+        // Check which direction user swiped
+        if (direction == 4) { // Delete task
+            taskAdapter.deleteTask(position);
+        } else { // Complete task
+            taskAdapter.markComplete(position);
+        }
     }
 
     @Override
@@ -52,11 +56,14 @@ public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
         if (dX > 0) { // Swiping to the right
             int iconLeft = itemView.getLeft() + iconMargin + completedIcon.getIntrinsicWidth();
             int iconRight = itemView.getLeft() + iconMargin;
-            completedIcon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
+            completedIcon.setBounds(iconRight, iconTop, iconLeft, iconBottom);
 
             background.setBounds(itemView.getLeft(), itemView.getTop(),
                     itemView.getLeft() + ((int) dX) + backgroundCornerOffset,
                     itemView.getBottom());
+
+            background.draw(c);
+            completedIcon.draw(c);
         } else if (dX < 0) { // Swiping to the left
             int iconLeft = itemView.getRight() - iconMargin - deleteIcon.getIntrinsicWidth();
             int iconRight = itemView.getRight() - iconMargin;
@@ -64,12 +71,12 @@ public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
 
             background.setBounds(itemView.getRight() + ((int) dX) - backgroundCornerOffset,
                     itemView.getTop(), itemView.getRight(), itemView.getBottom());
+
+            background.draw(c);
+            deleteIcon.draw(c);
         } else { // view is unSwiped
             background.setBounds(0, 0, 0, 0);
         }
-
-        background.draw(c);
-        completedIcon.draw(c);
     }
 
     @Override

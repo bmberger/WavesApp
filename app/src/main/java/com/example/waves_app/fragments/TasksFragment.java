@@ -5,16 +5,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.waves_app.R;
+import com.example.waves_app.SwipeToDeleteCallback;
 import com.example.waves_app.TaskAdapter;
 import com.example.waves_app.model.Task;
 
@@ -85,11 +85,14 @@ public class TasksFragment extends Fragment {
         catTasks = information.getString("catName") + ".txt";
 
         readTaskItems();
+
         taskAdapter = new TaskAdapter(getContext(), mTasksList, parsedData, catTasks);
         rvTasks.setAdapter(taskAdapter);
         rvTasks.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        rvTasks.addItemDecoration(new DividerItemDecoration(this.getActivity(), LinearLayout.VERTICAL));
+        // Attaching swipe capabilities to the recyclerView
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(taskAdapter, getContext()));
+        itemTouchHelper.attachToRecyclerView(rvTasks);
 
         btnAddTask.setOnClickListener(new View.OnClickListener() {
             @Override

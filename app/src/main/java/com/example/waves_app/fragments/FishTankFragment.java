@@ -37,7 +37,6 @@ public class FishTankFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        // TODO - use user persistence to find out how many tasks have been completed;
         // Calculate values for how many fish to display
         removedCount = readCompletedCount();
         displayCount = ((removedCount % 15) == 0) ? 15 : removedCount % 15;

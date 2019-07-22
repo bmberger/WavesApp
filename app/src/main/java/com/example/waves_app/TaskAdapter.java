@@ -2,7 +2,6 @@ package com.example.waves_app;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.waves_app.model.Task;
@@ -102,7 +100,29 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         return new ViewHolder(view);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
+    // Used in part with swipe functionality of recyclerView
+    public void deleteTask(int pos) {
+        mTasksList.remove(pos);
+        parsedData.remove(pos);
+        writeTaskItems();
+        notifyDataSetChanged();
+    }
+
+    // Used in part with swipe functionality of recyclerView
+    public void markComplete(int pos) {
+        mTasksList.remove(pos);
+        parsedData.remove(pos);
+
+        // Set the count for completedTasks
+        readCompletedCount();
+        completedTasks += 1;
+
+        writeTaskItems();
+        writeCompletedCount();
+        notifyDataSetChanged();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         private EditText etTask;
         private TextView tvDueDate;
@@ -116,9 +136,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             etTask = (EditText) itemView.findViewById(R.id.etTaskDescription);
             tvDueDate = (TextView) itemView.findViewById(R.id.tvDueDate);
             tvDueDateHolder = (TextView) itemView.findViewById(R.id.tvDateHolder);
-
-            // Attach a long click listener to the entire row view
-            itemView.setOnLongClickListener((View.OnLongClickListener)this);
         }
 
         public void bind(final Task task) {
@@ -236,69 +253,5 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
             return date + "/" + year;
         }
-
-        @Override
-        public boolean onLongClick(View view) {
-
-            // Create dialog popup to confirm completion of task
-            final AlertDialog.Builder dialog = new AlertDialog.Builder(context);
-            dialog.setMessage("Task has been completed?")
-                    .setCancelable(false)
-                    .setPositiveButton("Yes",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int id) {
-                                    pos = getAdapterPosition();
-                                    mTasksList.remove(pos);
-                                    parsedData.remove(pos);
-
-                                    // Set the count for completedTasks
-                                    readCompletedCount();
-                                    completedTasks += 1;
-
-                                    writeTaskItems();
-                                    writeCompletedCount();
-                                    notifyDataSetChanged();
-                                }
-                            })
-                    .setNegativeButton("No",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
-            final AlertDialog alert = dialog.create();
-            alert.show();
-
-            return true;
-        }
-
-//            // Create dialog popup to confirm deletion of task
-//            final AlertDialog.Builder dialog = new AlertDialog.Builder(context);
-//            dialog.setMessage("Delete this task?")
-//                    .setCancelable(false)
-//                    .setPositiveButton("Yes",
-//                            new DialogInterface.OnClickListener() {
-//                                public void onClick(DialogInterface dialog, int id) {
-//                                    pos = getAdapterPosition();
-//                                    mTasksList.remove(pos);
-//                                    parsedData.remove(pos);
-//                                    writeTaskItems();
-//                                    notifyDataSetChanged();
-//                                }
-//                            })
-//                    .setNegativeButton("No",
-//                            new DialogInterface.OnClickListener() {
-//                                public void onClick(DialogInterface dialog, int id) {
-//                                    dialog.cancel();
-//                                }
-//                            });
-//
-//            final AlertDialog alert = dialog.create();
-//            alert.show();
-//
-//            return true;
-//        }
     }
 }
