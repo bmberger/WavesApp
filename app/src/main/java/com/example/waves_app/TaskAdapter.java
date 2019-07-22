@@ -1,12 +1,10 @@
 package com.example.waves_app;
 
 import android.app.DatePickerDialog;
-import org.apache.commons.io.FileUtils;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,21 +15,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.waves_app.fragments.CategoryFragment;
-import com.example.waves_app.fragments.TasksFragment;
 import com.example.waves_app.model.Task;
 
-import org.w3c.dom.Text;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -42,6 +33,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     private List<String> parsedData;
     private String catTasks; // sets the category file name that contains all of the tasks
     int pos;
+    int completedTasks;
     boolean addingAction = false;
 
     public TaskAdapter (Context context, List<Task> tasks, List<String> twoStrings, String catTasks) {
@@ -51,12 +43,35 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         this.catTasks = catTasks;
     }
 
-    // returns the file in which the data is stored
+    // Returns the file in which the completedTask count is stored
+    private File getCompletedTaskCountFile() { return new File(context.getFilesDir(), "completedTaskCount"); }
+
+    // Write the count into the filesystem
+    private void writeCompletedCount() {
+        try {
+            FileUtils.writeStringToFile(getCompletedTaskCountFile(), Integer.toString(completedTasks), (String) null, false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Set the completedTasks count by reading what's currently in the file
+    private void readCompletedCount() {
+        try {
+            String count = FileUtils.readFileToString(getCompletedTaskCountFile(), (String) null);
+            completedTasks = Integer.parseInt(count);
+        } catch (IOException e) {
+            completedTasks = 0;
+            e.printStackTrace();
+        }
+    }
+
+    // Returns the file in which the data is stored
     private File getDataFile() {
         return new File(context.getFilesDir(), catTasks);
     }
 
-    // write the items to the filesystem
+    // Write the items to the filesystem
     private void writeTaskItems() {
         try {
             // save the item list as a line-delimited text file
@@ -225,43 +240,65 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         @Override
         public boolean onLongClick(View view) {
 
-            // Create dialog popup to confirm deletion of task
+            // Create dialog popup to confirm completion of task
             final AlertDialog.Builder dialog = new AlertDialog.Builder(context);
-            dialog.setMessage("Delete this task?")
+            dialog.setMessage("Task has been completed?")
                     .setCancelable(false)
                     .setPositiveButton("Yes",
                             new DialogInterface.OnClickListener() {
+                                @Override
                                 public void onClick(DialogInterface dialog, int id) {
                                     pos = getAdapterPosition();
                                     mTasksList.remove(pos);
                                     parsedData.remove(pos);
+
+                                    // Set the count for completedTasks
+                                    readCompletedCount();
+                                    completedTasks += 1;
+
                                     writeTaskItems();
+                                    writeCompletedCount();
                                     notifyDataSetChanged();
                                 }
                             })
                     .setNegativeButton("No",
                             new DialogInterface.OnClickListener() {
+                                @Override
                                 public void onClick(DialogInterface dialog, int id) {
                                     dialog.cancel();
                                 }
                             });
-
             final AlertDialog alert = dialog.create();
             alert.show();
 
             return true;
         }
-    }
 
-    public void getPos(EditText etTask) {
-        // fixes the add on add issue that Android Studio doesn't account for
-        for (int i = 0; i < parsedData.size(); i++) {
-            String temp = parsedData.get(i);
-            int delimiter = temp.indexOf(",");
-
-            if (etTask.getText().toString().equals(temp.substring(0, delimiter))) {
-                pos = i;
-            }
-        }
+//            // Create dialog popup to confirm deletion of task
+//            final AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+//            dialog.setMessage("Delete this task?")
+//                    .setCancelable(false)
+//                    .setPositiveButton("Yes",
+//                            new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int id) {
+//                                    pos = getAdapterPosition();
+//                                    mTasksList.remove(pos);
+//                                    parsedData.remove(pos);
+//                                    writeTaskItems();
+//                                    notifyDataSetChanged();
+//                                }
+//                            })
+//                    .setNegativeButton("No",
+//                            new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int id) {
+//                                    dialog.cancel();
+//                                }
+//                            });
+//
+//            final AlertDialog alert = dialog.create();
+//            alert.show();
+//
+//            return true;
+//        }
     }
 }

@@ -1,14 +1,13 @@
 package com.example.waves_app;
 
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
-import android.app.Activity;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.waves_app.fragments.CalendarFragment;
 import com.example.waves_app.fragments.FishTankFragment;
