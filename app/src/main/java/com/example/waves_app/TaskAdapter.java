@@ -314,7 +314,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.clear();
-        calendar.set(year,month - 1,dayOfMonth,16,22); //04:15pm
+        calendar.set(year,month - 1,dayOfMonth,16,39); //04:15pm
 
         //alarmManager.setTime(calendar.getTimeInMillis()); // sets up system wall clock time
 
