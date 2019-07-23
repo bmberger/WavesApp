@@ -170,7 +170,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                         task.setTaskDetail(etTask.getText().toString());
                         addingAction = true; // this gives us the power to avoid problems with add vs editing
                         parsedData.add(task.getTaskDetail() + "," + task.getDueDate());
-                        setAlarm(task.getDueDate());
+                        setAlarm(task.getDueDate(), task.getTaskDetail());
                         writeTaskItems(); // update the persistence
                     }
                 }
@@ -198,7 +198,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                             // the case if the user is adding name of task
                             task.setTaskDetail(newDetail);
                             parsedData.add(task.getTaskDetail() + "," + task.getDueDate());
-                            setAlarm(task.getDueDate());
+                            setAlarm(task.getDueDate(), task.getTaskDetail());
                             writeTaskItems(); // update the persistence
                         }
                     } else {
@@ -283,7 +283,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     //TODO: to be called in adding a task (for both due date AND task detail/desc)(JUST ADDING THOUGH)
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void setAlarm(String dueDate) {
+    public void setAlarm(String dueDate, String taskDetail) {
         // For adding/setting a new alarm
         Calendar calendar = Calendar.getInstance();
 
@@ -297,29 +297,19 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             e.printStackTrace();
         }
         LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
         int year = localDate.getYear();
         int month = localDate.getMonthValue();
         int dayOfMonth = localDate.getDayOfMonth();
 
         // has the alarm go off at 7pm on user's set date
-//        calendar.setTimeInMillis(System.currentTimeMillis());
-//        calendar.set(Calendar.MONTH, month);
-//        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-//        calendar.set(Calendar.YEAR, year);
-//        calendar.add(Calendar.HOUR_OF_DAY, diffHours); // 16
-//        calendar.add(Calendar.MINUTE, diffMinutes);
-//        calendar.set(Calendar.SECOND, 0);
-//        calendar.set(Calendar.MILLISECOND, 0);
-
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.clear();
-        calendar.set(year,month - 1,dayOfMonth,16,39); //04:15pm
-
-        //alarmManager.setTime(calendar.getTimeInMillis()); // sets up system wall clock time
+        calendar.set(year,month - 1,dayOfMonth,18,03); //04:15pm 18:00 is for 7pm
 
         // allows us to utilize broadcasting and alarms
         Intent myIntent = new Intent(this.context, MyAlarm.class);
+        myIntent.putExtra("taskDetail", taskDetail);
+
         // for others to understand a bit better: https://medium.com/@architgupta690/creating-pending-intent-in-android-a-step-by-step-guide-74784ec60c9e
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this.context, 0, myIntent, 0);
 
