@@ -175,14 +175,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         cancelAlarm(recentlyConfiguredTask.getTaskDetail());
         notifyDataSetChanged();
 
-        ImageView mock_ad = new ImageView(context);
-        mock_ad.setImageResource(R.drawable.mock_ad);
-
         Dialog ad_dialog = new Dialog(context);
         ad_dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         ad_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         ad_dialog.setCancelable(true);
-        ad_dialog.setContentView(mock_ad);
+        //ad_dialog.setContentView(mock_ad);
+        ad_dialog.setContentView(R.layout.ic_popup);
         ad_dialog.show();
     }
 

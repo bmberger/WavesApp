@@ -1,32 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#62def8">
-
-    <TextView
-        android:id="@+id/tvCongratsWords"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="43dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="30dp"
-        android:text="You have now saved x fish. Make sure to see how many fish you saved by going to your fish tank!"
-        android:textSize="22sp" />
+    android:background="#FFFFFF">
 
     <ImageView
         android:id="@+id/ivFishView"
-        android:layout_width="167dp"
-        android:layout_height="130dp"
+        android:layout_width="94dp"
+        android:layout_height="83dp"
         android:layout_below="@+id/tvCongratsWords"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="99dp"
-        android:layout_marginTop="17dp"
+        android:layout_marginStart="156dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCongratsWords"
         app:srcCompat="@drawable/fish_0" />
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/tvCongratsWords"
+        android:layout_width="280dp"
+        android:layout_height="71dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="You have now saved x fish. Make sure to see how many fish you saved by going to your fish tank!"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.467"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivAd"
+        android:layout_width="417dp"
+        android:layout_height="110dp"
+        android:layout_below="@+id/ivFishView"
+        app:layout_constraintTop_toBottomOf="@+id/ivFishView"
+        app:srcCompat="@drawable/chobani_ad"
+        tools:layout_editor_absoluteX="-3dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
