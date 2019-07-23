@@ -2,7 +2,6 @@ package com.example.waves_app;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -169,7 +168,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
         public void bind(final Category category) {
             etCategory.setText(category.getCategoryName());
-            count.setText(taskCount.get(getAdapterPosition()).toString());
+
+            if (new File(context.getFilesDir(), category.getCategoryName() + ".txt").exists()) {
+                count.setText(taskCount.get(getAdapterPosition()).toString());
+            } else {
+                count.setText(Integer.toString(0));
+            }
 
             // Get data from editText and set name for new category
             etCategory.setOnFocusChangeListener(new View.OnFocusChangeListener() {
