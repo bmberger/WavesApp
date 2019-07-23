@@ -172,6 +172,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
         writeTaskItems();
         writeCompletedCount();
+        cancelAlarm(recentlyConfiguredTask.getTaskDetail());
         notifyDataSetChanged();
 
         ImageView mock_ad = new ImageView(context);
@@ -365,7 +366,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     }
 
     // to be called in removing a task and in checking off a task
-    //TODO: needs to be called for checking off
     public void cancelAlarm(String taskDetail) {
         // For canceling an alarm
 
