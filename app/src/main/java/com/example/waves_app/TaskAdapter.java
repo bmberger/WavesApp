@@ -196,7 +196,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                             task.setTaskDetail(newDetail);
                             parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
                             writeTaskItems(); // update the persistence
-                        } else if (etTask.getText().toString().length() > 0 && !addingAction) {
+                        } else if (etTask.getText().toString().length() > 0 && !addingAction && !parsedData.contains(newDetail + "," + task.getDueDate())) {
                             // the case if the user is adding name of task
                             task.setTaskDetail(newDetail);
                             parsedData.add(task.getTaskDetail() + "," + task.getDueDate());
