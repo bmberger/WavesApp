@@ -34,7 +34,8 @@ public class MyAlarm extends BroadcastReceiver {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void createNotification (Context context, String msg, String msgAlert) {
-        PendingIntent goToWhenOpenNotif = PendingIntent.getActivity(context,0,
+        int id = msg.hashCode();
+        PendingIntent goToWhenOpenNotif = PendingIntent.getActivity(context,id,
                 new Intent(context, HomeActivity.class),0);
 
         // displays the notification

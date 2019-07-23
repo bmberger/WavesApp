@@ -161,6 +161,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                     if (etTask.getText().toString().length() > 0 && task.getDueDate() != null) {
                         // the case if the user needs to edit the date
                         pos = getAdapterPosition();
+                        editAlarm(dueDate, task.getTaskDetail(), task.getTaskDetail());
                         task.setDueDate(dueDate);
                         parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
                         writeTaskItems(); // update the persistence
@@ -191,6 +192,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                             Toast.makeText(context, "Due due date needed! Re-enter task.", Toast.LENGTH_LONG).show();
                         } else if (etTask.getText().toString().length() > 0 && !ogDetail.equals(newDetail) && !addingAction) {
                             // the case if the user needs to edit the name of task
+                            editAlarm(task.getDueDate(), newDetail, ogDetail);
                             task.setTaskDetail(newDetail);
                             parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
                             writeTaskItems(); // update the persistence
@@ -249,6 +251,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     pos = getAdapterPosition();
+                                    cancelAlarm(mTasksList.get(pos).getTaskDetail());
                                     mTasksList.remove(pos);
                                     parsedData.remove(pos);
                                     writeTaskItems();
@@ -281,7 +284,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         }
     }
 
-    //TODO: to be called in adding a task (for both due date AND task detail/desc)(JUST ADDING THOUGH)
+    // to be called in adding a task (for both due date AND task detail/desc)(JUST ADDING THOUGH)
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void setAlarm(String dueDate, String taskDetail) {
         // For adding/setting a new alarm
@@ -304,31 +307,48 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         // has the alarm go off at 7pm on user's set date
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.clear();
-        calendar.set(year,month - 1,dayOfMonth,18,03); //04:15pm 18:00 is for 7pm
+        calendar.set(year,month - 1,dayOfMonth,19,0); //19:00 is for 7pm
 
         // allows us to utilize broadcasting and alarms
         Intent myIntent = new Intent(this.context, MyAlarm.class);
         myIntent.putExtra("taskDetail", taskDetail);
 
+        // takes a task and returns a unique id - utilized to keep track of different alarms (adding, deleting, editing)
+        int id = taskDetail.hashCode();
+
         // for others to understand a bit better: https://medium.com/@architgupta690/creating-pending-intent-in-android-a-step-by-step-guide-74784ec60c9e
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this.context, 0, myIntent, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this.context, id, myIntent, 0);
 
         // sets up the actual alarm
         alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-        Toast.makeText(this.context, "Alarm is set", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this.context, "Alarm has been set", Toast.LENGTH_SHORT).show();
         Log.d("TaskAdapter", "Alarm set");
     }
 
-    //TODO: to be called in removing a task and in checking off a task
-    public static void cancelAlarm() {
+    // to be called in removing a task and in checking off a task
+    //TODO: needs to be called for checking off
+    public void cancelAlarm(String taskDetail) {
         // For canceling an alarm
 
+        // allows us to utilize broadcasting and alarms
+        Intent myIntent = new Intent(this.context, MyAlarm.class);
+        myIntent.putExtra("taskDetail", taskDetail);
+
+        int id = taskDetail.hashCode();
+
+        // for others to understand a bit better: https://medium.com/@architgupta690/creating-pending-intent-in-android-a-step-by-step-guide-74784ec60c9e
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this.context, id, myIntent, 0);
+
+        alarmManager.cancel(pendingIntent);
+        Log.d("TaskAdapter", "Alarm canceled");
     }
 
-    //TODO: to be called in editing a task (for both due date AND task detail/desc) (JUST EDITING THOUGH)
-    public static void editAlarm() {
+    //to be called in editing a task (for both due date AND task detail/desc) (JUST EDITING THOUGH)
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void editAlarm(String newDueDate, String newTaskDetail, String ogTaskDetail) {
         // For editing an alarm
-
+        cancelAlarm(ogTaskDetail);
+        setAlarm(newDueDate, newTaskDetail);
+        Log.d("TaskAdapter", "Alarm edited");
     }
-
 }
