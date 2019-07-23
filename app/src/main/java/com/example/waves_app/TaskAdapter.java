@@ -161,6 +161,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                     if (etTask.getText().toString().length() > 0 && task.getDueDate() != null) {
                         // the case if the user needs to edit the date
                         pos = getAdapterPosition();
+                        editAlarm(dueDate, task.getTaskDetail(), task.getTaskDetail());
                         task.setDueDate(dueDate);
                         parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
                         writeTaskItems(); // update the persistence
@@ -191,6 +192,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                             Toast.makeText(context, "Due due date needed! Re-enter task.", Toast.LENGTH_LONG).show();
                         } else if (etTask.getText().toString().length() > 0 && !ogDetail.equals(newDetail) && !addingAction) {
                             // the case if the user needs to edit the name of task
+                            editAlarm(task.getDueDate(), newDetail, ogDetail);
                             task.setTaskDetail(newDetail);
                             parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
                             writeTaskItems(); // update the persistence
@@ -305,7 +307,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         // has the alarm go off at 7pm on user's set date
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.clear();
-        calendar.set(year,month - 1,dayOfMonth,23,27); //04:15pm 19:00 is for 7pm
+        calendar.set(year,month - 1,dayOfMonth,23,41); //04:15pm 19:00 is for 7pm
 
         // allows us to utilize broadcasting and alarms
         Intent myIntent = new Intent(this.context, MyAlarm.class);
@@ -324,6 +326,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     }
 
     // to be called in removing a task and in checking off a task
+    //TODO: needs to be called for checking off
     public void cancelAlarm(String taskDetail) {
         // For canceling an alarm
 
@@ -340,9 +343,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         Log.d("TaskAdapter", "Alarm canceled");
     }
 
-    //TODO: to be called in editing a task (for both due date AND task detail/desc) (JUST EDITING THOUGH)
-    public void editAlarm() {
+    //to be called in editing a task (for both due date AND task detail/desc) (JUST EDITING THOUGH)
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void editAlarm(String newDueDate, String newTaskDetail, String ogTaskDetail) {
         // For editing an alarm
-
+        cancelAlarm(ogTaskDetail);
+        setAlarm(newDueDate, newTaskDetail);
+        Log.d("TaskAdapter", "Alarm edited");
     }
 }
