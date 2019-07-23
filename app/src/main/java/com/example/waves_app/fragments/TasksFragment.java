@@ -1,25 +1,24 @@
 package com.example.waves_app.fragments;
 
 import android.os.Bundle;
-import org.apache.commons.io.FileUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.waves_app.R;
+import com.example.waves_app.SwipeToDeleteTaskCallback;
 import com.example.waves_app.TaskAdapter;
-import com.example.waves_app.model.Category;
 import com.example.waves_app.model.Task;
+
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,7 +35,6 @@ public class TasksFragment extends Fragment {
     private List<String> parsedData;
     private TaskAdapter taskAdapter;
     private String catTasks;
-
 
     // returns the file in which the data is stored
     private File getDataFile() {
@@ -62,7 +60,6 @@ public class TasksFragment extends Fragment {
 
                 mTasksList.add(tempTask);
             }
-
         } catch (IOException e) {
             // print the error to the console
             e.printStackTrace();
@@ -83,17 +80,19 @@ public class TasksFragment extends Fragment {
         btnAddTask = (Button) view.findViewById(R.id.btnAddTask);
         rvTasks = (RecyclerView) view.findViewById(R.id.rvTasks);
 
-
         // getting the category file name that contains these tasks
         Bundle information = getArguments();
         catTasks = information.getString("catName") + ".txt";
 
         readTaskItems();
+
         taskAdapter = new TaskAdapter(getContext(), mTasksList, parsedData, catTasks);
         rvTasks.setAdapter(taskAdapter);
         rvTasks.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        rvTasks.addItemDecoration(new DividerItemDecoration(this.getActivity(), LinearLayout.VERTICAL));
+        // Attaching swipe capabilities to the recyclerView
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteTaskCallback(taskAdapter, getContext()));
+        itemTouchHelper.attachToRecyclerView(rvTasks);
 
         btnAddTask.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,6 +104,4 @@ public class TasksFragment extends Fragment {
         });
 
     }
-
-
 }

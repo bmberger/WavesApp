@@ -2,6 +2,10 @@ package com.example.waves_app;
 
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import org.apache.commons.io.FileUtils;
 
 import android.app.PendingIntent;
@@ -15,12 +19,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
@@ -28,11 +35,10 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.waves_app.fragments.CategoryFragment;
-import com.example.waves_app.fragments.TasksFragment;
 import com.example.waves_app.model.Task;
+import com.google.android.material.snackbar.Snackbar;
 
-import org.w3c.dom.Text;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -53,8 +59,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     private List<String> parsedData;
     private String catTasks; // sets the category file name that contains all of the tasks
     int pos;
+    int completedTasks;
     boolean addingAction = false;
     AlarmManager alarmManager;
+
+    // Variables to be used if user wants to undo delete/completion of task
+    private Task recentlyConfiguredTask;
+    private int configuredTaskPosition;
 
     public TaskAdapter (Context context, List<Task> tasks, List<String> twoStrings, String catTasks) {
         this.context = context;
@@ -64,12 +75,35 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         this.alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE); // sets up alarm manager
     }
 
-    // returns the file in which the data is stored
+    // Returns the file in which the completedTask count is stored
+    private File getCompletedTaskCountFile() { return new File(context.getFilesDir(), "completedTaskCount"); }
+
+    // Write the count into the filesystem
+    private void writeCompletedCount() {
+        try {
+            FileUtils.writeStringToFile(getCompletedTaskCountFile(), Integer.toString(completedTasks), (String) null, false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Set the completedTasks count by reading what's currently in the file
+    private void readCompletedCount() {
+        try {
+            String count = FileUtils.readFileToString(getCompletedTaskCountFile(), (String) null);
+            completedTasks = Integer.parseInt(count);
+        } catch (IOException e) {
+            completedTasks = 0;
+            e.printStackTrace();
+        }
+    }
+
+    // Returns the file in which the data is stored
     private File getDataFile() {
         return new File(context.getFilesDir(), catTasks);
     }
 
-    // write the items to the filesystem
+    // Write the items to the filesystem
     private void writeTaskItems() {
         try {
             // save the item list as a line-delimited text file
@@ -100,7 +134,58 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         return new ViewHolder(view);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
+    // Following four methods are used in part with swipe functionality of recyclerView
+    public void deleteTask(int pos, RecyclerView.ViewHolder holder) {
+        recentlyConfiguredTask = mTasksList.get(pos);
+        configuredTaskPosition = pos;
+
+        mTasksList.remove(pos);
+        parsedData.remove(pos);
+        writeTaskItems();
+        notifyDataSetChanged();
+
+        Snackbar.make(holder.itemView, "Undo task deletion", Snackbar.LENGTH_LONG)
+                .setAction("UNDO", myOnClickListenerDelete)
+                .setActionTextColor(ContextCompat.getColor(context, R.color.blue_5))
+                .show();
+    }
+
+    View.OnClickListener myOnClickListenerDelete = new View.OnClickListener(){
+        public void onClick(View v){
+            mTasksList.add(configuredTaskPosition, recentlyConfiguredTask);
+            parsedData.add(configuredTaskPosition, recentlyConfiguredTask.getTaskDetail() + "," + recentlyConfiguredTask.getDueDate());
+            writeTaskItems();
+            notifyItemInserted(configuredTaskPosition);
+        }
+    };
+
+    public void markComplete(int pos, RecyclerView.ViewHolder holder) {
+        recentlyConfiguredTask = mTasksList.get(pos);
+        configuredTaskPosition = pos;
+
+        mTasksList.remove(pos);
+        parsedData.remove(pos);
+
+        // Set the count for completedTasks
+        readCompletedCount();
+        completedTasks += 1;
+
+        writeTaskItems();
+        writeCompletedCount();
+        notifyDataSetChanged();
+
+        ImageView mock_ad = new ImageView(context);
+        mock_ad.setImageResource(R.drawable.mock_ad);
+
+        Dialog ad_dialog = new Dialog(context);
+        ad_dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        ad_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        ad_dialog.setCancelable(true);
+        ad_dialog.setContentView(mock_ad);
+        ad_dialog.show();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         private EditText etTask;
         private TextView tvDueDate;
@@ -115,9 +200,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             etTask = (EditText) itemView.findViewById(R.id.etTaskDescription);
             tvDueDate = (TextView) itemView.findViewById(R.id.tvDueDate);
             tvDueDateHolder = (TextView) itemView.findViewById(R.id.tvDateHolder);
-
-            // Attach a long click listener to the entire row view
-            itemView.setOnLongClickListener((View.OnLongClickListener)this);
         }
 
         public void bind(final Task task) {
@@ -238,49 +320,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             }
 
             return date + "/" + year;
-        }
-
-        @Override
-        public boolean onLongClick(View view) {
-
-            // Create dialog popup to confirm deletion of task
-            final AlertDialog.Builder dialog = new AlertDialog.Builder(context);
-            dialog.setMessage("Delete this task?")
-                    .setCancelable(false)
-                    .setPositiveButton("Yes",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    pos = getAdapterPosition();
-                                    cancelAlarm(mTasksList.get(pos).getTaskDetail());
-                                    mTasksList.remove(pos);
-                                    parsedData.remove(pos);
-                                    writeTaskItems();
-                                    notifyDataSetChanged();
-                                }
-                            })
-                    .setNegativeButton("No",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
-
-            final AlertDialog alert = dialog.create();
-            alert.show();
-
-            return true;
-        }
-    }
-
-    public void getPos(EditText etTask) {
-        // fixes the add on add issue that Android Studio doesn't account for
-        for (int i = 0; i < parsedData.size(); i++) {
-            String temp = parsedData.get(i);
-            int delimiter = temp.indexOf(",");
-
-            if (etTask.getText().toString().equals(temp.substring(0, delimiter))) {
-                pos = i;
-            }
         }
     }
 
