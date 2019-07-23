@@ -37,8 +37,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     boolean addingAction = false;
 
     // Variables to be used if user wants to undo delete/completion of task
-    Task recentlyConfiguredTask;
-    int configuredTaskPosition;
+    private Task recentlyConfiguredTask;
+    private int configuredTaskPosition;
 
     public TaskAdapter (Context context, List<Task> tasks, List<String> twoStrings, String catTasks) {
         this.context = context;
@@ -48,7 +48,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     }
 
     // Returns the file in which the completedTask count is stored
-    private File getCompletedTaskCountFile() { return new File(context.getFilesDir(), "completedTaskCount"); }
+    private File getCompletedTaskCountFile() { return new File(context.getFilesDir(), "completedTaskCount.txt"); }
 
     // Write the count into the filesystem
     private void writeCompletedCount() {

@@ -1,7 +1,6 @@
 package com.example.waves_app;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -25,6 +23,8 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
@@ -35,8 +35,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     int pos;
 
     // Variables to be used if user wants to undo deletion of category
-    Category recentlyDeletedCategory;
-    int deletedCategoryPosition;
+    private Category recentlyDeletedCategory;
+    private int deletedCategoryPosition;
+    private List<String> associatedTasks;
 
     // Data is passed into the constructor
     public CategoryAdapter(Context context, List<Category> data, List<String> parsedData) {
@@ -87,6 +88,18 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         recentlyDeletedCategory = categories.get(pos);
         deletedCategoryPosition = pos;
 
+        // Delete the file with all the tasks within the selected category
+        File toDelete = new File(context.getFilesDir(), categories.get(pos).getCategoryName() + ".txt");
+
+        // Store the tasks within the selected category in case user wants to undo
+        try {
+            associatedTasks = new ArrayList<>(FileUtils.readLines(toDelete, Charset.defaultCharset()));
+        } catch (IOException e) {
+            e.printStackTrace();
+            associatedTasks = new ArrayList<>();
+        }
+
+        context.deleteFile(toDelete.getName());
         categories.remove(pos);
         parsedData.remove(pos);
         writeCatItems();
@@ -103,13 +116,22 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             categories.add(deletedCategoryPosition, recentlyDeletedCategory);
             parsedData.add(deletedCategoryPosition, recentlyDeletedCategory.getCategoryName());
             writeCatItems();
+
+            // Rewrite the tasks into file so that information is restored
+            try {
+                File undoFile = new File(context.getFilesDir(), recentlyDeletedCategory.getCategoryName() + ".txt");
+                FileUtils.writeLines(undoFile, associatedTasks);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             notifyItemInserted(deletedCategoryPosition);
         }
     };
 
     // Provide a direct reference to each of the views within a data item
     // Used to cache the views within the item layout for fast access
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         // Member variable for view that will be set as row renders
         public EditText etCategory;
@@ -121,7 +143,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
             // Attach a click listener to the entire row view
             itemView.setOnClickListener((View.OnClickListener)this);
-            itemView.setOnLongClickListener((View.OnLongClickListener)this);
         }
 
         // goes into the actual task list
@@ -188,39 +209,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                     }
                 }
             });
-        }
-
-        @Override
-        public boolean onLongClick(View view) {
-            // Create dialog popup to confirm deletion of task
-            final AlertDialog.Builder dialog = new AlertDialog.Builder(context);
-            dialog.setMessage("Delete this category?")
-                    .setCancelable(false)
-                    .setPositiveButton("Yes",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    pos = getAdapterPosition();
-
-                                    File toDelete = new File(context.getFilesDir(), categories.get(pos) + ".txt");
-                                    toDelete.delete(); // removes the category file from allCategories.txt
-
-                                    categories.remove(pos);
-                                    parsedData.remove(pos);
-                                    writeCatItems();
-                                    notifyDataSetChanged();
-                                }
-                            })
-                    .setNegativeButton("No",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
-
-            final AlertDialog alert = dialog.create();
-            alert.show();
-
-            return true;
         }
     }
 }

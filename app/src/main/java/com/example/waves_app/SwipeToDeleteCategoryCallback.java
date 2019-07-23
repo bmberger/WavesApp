@@ -18,7 +18,7 @@ public class SwipeToDeleteCategoryCallback extends ItemTouchHelper.SimpleCallbac
     private ColorDrawable background;
 
     public SwipeToDeleteCategoryCallback(CategoryAdapter adapter, Context context) {
-        // First parameter in super adds support for draggin the RecyclerView item up or down.
+        // First parameter in super adds support for dragging the RecyclerView item up or down.
         // Second parameter tells the holder to pass information about left/right swipes.
         super(0, ItemTouchHelper.LEFT);
         categoryAdapter = adapter;
