@@ -6,26 +6,18 @@ Waves has two goals to incentivize productivity to everyone for free and help en
 - Get to iteration and market testing asap
 - scope creep 
 
-# The Plan
-ABC (all of us) = Bottom Navigation Bar (setup)
+# Milestones
 
-A = Angela
-- populate home page
-- animate fish tank page
-- remove item
-- pop-up
 
-B = Briana
-- Setting up category list using recycler view
-- item persistance
-- item list and reminders (connected to calendar)
+# Requirements within App
+1. You must do task detail then due date
+Reasoning:
+- It would either be this or due date then task detail as you need a way to confirm the user is done. This was easy in category as all it was is losing focus from editText. Meanwhile, here we have a date selector and an edit text/
 
-C = Aweys
-- Calendar
-- Adding item
-- Number of items
-
-![](AssignmentDistribution.jpg)
+2. No deleting of empty category or empty task
+Reasoning:
+- it's a common sense
+- we delete it for them already when they leave the screen for simplicity
 
 # List of Potential Stretch Goals: 
 - Tap for adding
