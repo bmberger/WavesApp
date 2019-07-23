@@ -8,11 +8,24 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import android.app.Activity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.waves_app.fragments.CalendarFragment;
 import com.example.waves_app.fragments.FishTankFragment;
 import com.example.waves_app.fragments.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 // Home page
 public class MainActivity extends AppCompatActivity {
@@ -55,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setSelectedItemId(R.id.miHome);
     }
 
+
     @Override
     public void onBackPressed() {
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
@@ -71,4 +85,6 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = (BottomNavigationView) activity.findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.miHome);
     }
+
+
 }

@@ -1,7 +1,6 @@
 package com.example.waves_app.fragments;
 
 import android.os.Bundle;
-import android.os.FileUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,13 +14,17 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.waves_app.MainActivity;
 import com.example.waves_app.R;
+
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class HomeFragment extends Fragment {
 
@@ -29,6 +32,7 @@ public class HomeFragment extends Fragment {
     ArrayList<String> items; // items data in strings (model)
     ArrayAdapter<String> itemsAdapter; // items that moves the model to the view (controller)
     ListView itemsList;
+    List<String> categoryData;
 
     @Nullable
     @Override
@@ -44,11 +48,14 @@ public class HomeFragment extends Fragment {
         itemsList = (ListView) view.findViewById(R.id.listItems);
         items = new ArrayList<String>();
 
-        String[] homePageOptions = new String[] { "My Categories", "FAQ", "Tutorial", "Settings" };
+        int categoryCount = categoryCount();
+
+        String[] homePageOptions = new String[] { "My Categories (" + categoryCount + ")", "FAQ", "Tutorial", "Settings" };
         items.addAll(Arrays.asList(homePageOptions));
 
         itemsAdapter = new ArrayAdapter<String>(getContext(), R.layout.simple_row_layout, items);
         itemsList.setAdapter(itemsAdapter);
+
 
         listViewListener();
     }
@@ -66,7 +73,7 @@ public class HomeFragment extends Fragment {
                 Fragment fragment;
 
                 // Switches to a different category dependent on user choice
-                if (clickedOption.equals("My Categories")) {
+                if (clickedOption.equals("My Categories (" + categoryCount() + ")")) {
                     fragment = new CategoryFragment();
                 } else if (clickedOption.equals("FAQ")) {
                     fragment = new FAQFragment();
@@ -75,10 +82,27 @@ public class HomeFragment extends Fragment {
                 } else {
                     fragment = new SettingsFragment();
                 }
-
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack(null).commit();
-                Log.i("MainActivity", "Fragment switched to " + clickedOption);
             }
         });
+    }
+
+    public int categoryCount() {
+        readCategoryItems();
+        return categoryData.size();
+    }
+
+    private File getCategoriesFile() {
+        return new File(getContext().getFilesDir(), "allCategories.txt");
+    }
+
+    public void readCategoryItems() {
+        try {
+            // create the array of categories
+            categoryData = new ArrayList<String>(FileUtils.readLines(getCategoriesFile(), Charset.defaultCharset()));
+        } catch (IOException e) {
+            categoryData = new ArrayList<>();
+            e.printStackTrace();
+        }
     }
 }

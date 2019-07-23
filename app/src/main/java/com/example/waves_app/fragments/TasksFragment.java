@@ -102,5 +102,6 @@ public class TasksFragment extends Fragment {
                 taskAdapter.notifyDataSetChanged();
             }
         });
+
     }
 }
