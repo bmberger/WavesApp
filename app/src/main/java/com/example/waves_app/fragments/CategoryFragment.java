@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
@@ -106,10 +108,8 @@ public class CategoryFragment extends Fragment {
         for(String obj : parsedData) {
             String cat = obj + ".txt";
             readTaskItems(cat);
-            Log.d("AA", "" + cat + " " + taskData.size());
             num.add(taskData.size());
         }
-        Log.d("AA",  " " + num.toString());
         return num;
     }
 
