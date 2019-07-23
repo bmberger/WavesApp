@@ -1,6 +1,7 @@
 package com.example.waves_app.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,8 @@ public class CategoryFragment extends Fragment {
     private RecyclerView rvCategories;
     private Button button;
     private List<String> parsedData;
+    private List<String> taskData;
+    private List<Integer> num;
 
     // returns the file in which the data is stored
     private File getDataFile() {
@@ -75,8 +78,10 @@ public class CategoryFragment extends Fragment {
 
         readCategoryItems();
 
+        num = taskCount();
+
         // Create the categoryAdapter
-        categoryAdapter = new CategoryAdapter(getContext(), categories, parsedData);
+        categoryAdapter = new CategoryAdapter(getContext(), categories, parsedData, num);
 
         // Set the layout manager on the recycler view
         rvCategories.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -95,4 +100,32 @@ public class CategoryFragment extends Fragment {
             }
         });
     }
+
+    public List<Integer> taskCount() {
+        num = new ArrayList<>();
+        for(String obj : parsedData) {
+            String cat = obj + ".txt";
+            readTaskItems(cat);
+            Log.d("AA", "" + cat + " " + taskData.size());
+            num.add(taskData.size());
+        }
+        Log.d("AA",  " " + num.toString());
+        return num;
+    }
+
+    private File getTaskFile(String cat) {
+        return new File(getContext().getFilesDir(), cat);
+    }
+
+    public void readTaskItems(String cat) {
+        try {
+            // create the array of tasks
+            taskData = new ArrayList<String>(FileUtils.readLines(getTaskFile(cat), Charset.defaultCharset()));
+        } catch (IOException e) {
+            taskData = new ArrayList<>();
+            e.printStackTrace();
+        }
+    }
+
+
 }

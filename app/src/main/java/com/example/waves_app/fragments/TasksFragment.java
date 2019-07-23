@@ -37,8 +37,8 @@ public class TasksFragment extends Fragment {
     private TaskAdapter taskAdapter;
     private String catTasks;
 
+
     // returns the file in which the data is stored
-    // TODO: Make to-do dependent on the actual category
     private File getDataFile() {
         return new File(getContext().getFilesDir(), catTasks);
     }
@@ -83,6 +83,7 @@ public class TasksFragment extends Fragment {
         btnAddTask = (Button) view.findViewById(R.id.btnAddTask);
         rvTasks = (RecyclerView) view.findViewById(R.id.rvTasks);
 
+
         // getting the category file name that contains these tasks
         Bundle information = getArguments();
         catTasks = information.getString("catName") + ".txt";
@@ -102,6 +103,8 @@ public class TasksFragment extends Fragment {
                 taskAdapter.notifyDataSetChanged();
             }
         });
+
     }
+
 
 }

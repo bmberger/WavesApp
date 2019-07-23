@@ -156,13 +156,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                         addingAction = true; // this gives us the power to avoid problems with add vs editing
                         parsedData.add(task.getTaskDetail() + "," + task.getDueDate());
                         writeTaskItems(); // update the persistence
-                    } else {
-                        //Toast.makeText(this.getContext(), "No task description has been entered!", Toast.LENGTH_LONG).show();
                     }
                 }
             };
 
-            // Get data from editText and set description for new task
+            // Get data from editText and set name for new task
             etTask.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
@@ -250,18 +248,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             alert.show();
 
             return true;
-        }
-    }
-
-    public void getPos(EditText etTask) {
-        // fixes the add on add issue that Android Studio doesn't account for
-        for (int i = 0; i < parsedData.size(); i++) {
-            String temp = parsedData.get(i);
-            int delimiter = temp.indexOf(",");
-
-            if (etTask.getText().toString().equals(temp.substring(0, delimiter))) {
-                pos = i;
-            }
         }
     }
 }
