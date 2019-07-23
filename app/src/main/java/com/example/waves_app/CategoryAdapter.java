@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.waves_app.fragments.TasksFragment;
 import com.example.waves_app.model.Category;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.apache.commons.io.FileUtils;
 
@@ -31,6 +33,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     private Context context;
     private List<String> parsedData;
     int pos;
+
+    // Variables to be used if user wants to undo deletion of category
+    Category recentlyDeletedCategory;
+    int deletedCategoryPosition;
 
     // Data is passed into the constructor
     public CategoryAdapter(Context context, List<Category> data, List<String> parsedData) {
@@ -75,6 +81,31 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     public int getItemCount() {
         return categories.size();
     }
+
+    // Following four methods are used in part with swipe functionality of recyclerView
+    public void deleteCategory(int pos, RecyclerView.ViewHolder holder) {
+        recentlyDeletedCategory = categories.get(pos);
+        deletedCategoryPosition = pos;
+
+        categories.remove(pos);
+        parsedData.remove(pos);
+        writeCatItems();
+        notifyDataSetChanged();
+
+        Snackbar.make(holder.itemView, "Undo category deletion", Snackbar.LENGTH_LONG)
+                .setAction("UNDO", myOnClickListenerDelete)
+                .setActionTextColor(ContextCompat.getColor(context, R.color.blue_5))
+                .show();
+    }
+
+    View.OnClickListener myOnClickListenerDelete = new View.OnClickListener(){
+        public void onClick(View v){
+            categories.add(deletedCategoryPosition, recentlyDeletedCategory);
+            parsedData.add(deletedCategoryPosition, recentlyDeletedCategory.getCategoryName());
+            writeCatItems();
+            notifyItemInserted(deletedCategoryPosition);
+        }
+    };
 
     // Provide a direct reference to each of the views within a data item
     // Used to cache the views within the item layout for fast access

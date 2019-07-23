@@ -9,11 +9,13 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.waves_app.CategoryAdapter;
 import com.example.waves_app.R;
+import com.example.waves_app.SwipeToDeleteCategoryCallback;
 import com.example.waves_app.model.Category;
 
 import org.apache.commons.io.FileUtils;
@@ -22,9 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class CategoryFragment extends Fragment {
 
@@ -83,6 +83,10 @@ public class CategoryFragment extends Fragment {
 
         // Set the categoryAdapter on the recycler view
         rvCategories.setAdapter(categoryAdapter);
+
+        // Attaching swipe capabilities to the recyclerView
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCategoryCallback(categoryAdapter, getContext()));
+        itemTouchHelper.attachToRecyclerView(rvCategories);
 
         // set on click listener on button
         button = view.findViewById(R.id.btnAdd);
