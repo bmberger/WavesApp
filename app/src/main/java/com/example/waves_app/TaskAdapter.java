@@ -177,7 +177,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                 }
             };
 
-            // Get data from editText and set description for new task
+            // Get data from editText and set name for new task
             etTask.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override

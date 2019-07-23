@@ -3,10 +3,12 @@ package com.example.waves_app;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,6 +25,8 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
@@ -30,13 +34,15 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     private List<Category> categories;
     private Context context;
     private List<String> parsedData;
+    private List<Integer> taskCount;
     int pos;
 
     // Data is passed into the constructor
-    public CategoryAdapter(Context context, List<Category> data, List<String> parsedData) {
+    public CategoryAdapter(Context context, List<Category> data, List<String> parsedData, List<Integer> taskCount) {
         this.categories = data;
         this.context = context;
         this.parsedData = parsedData;
+        this.taskCount = taskCount;
     }
 
     // returns the file in which the data is stored
@@ -82,11 +88,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
         // Member variable for view that will be set as row renders
         public EditText etCategory;
+        public TextView count;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             etCategory = (EditText) itemView.findViewById(R.id.etNewCategory);
+            count = (TextView) itemView.findViewById(R.id.taskCount);
 
             // Attach a click listener to the entire row view
             itemView.setOnClickListener((View.OnClickListener)this);
@@ -109,6 +117,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
         public void bind(final Category category) {
             etCategory.setText(category.getCategoryName());
+            count.setText(taskCount.get(getAdapterPosition()).toString());
 
             // Get data from editText and set name for new category
             etCategory.setOnFocusChangeListener(new View.OnFocusChangeListener() {
