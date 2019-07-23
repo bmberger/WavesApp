@@ -11,14 +11,14 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
+public class SwipeToDeleteTaskCallback extends ItemTouchHelper.SimpleCallback {
 
     private TaskAdapter taskAdapter;
     private Drawable completedIcon;
     private Drawable deleteIcon;
     private ColorDrawable background;
 
-    public SwipeToDeleteCallback(TaskAdapter adapter, Context context) {
+    public SwipeToDeleteTaskCallback(TaskAdapter adapter, Context context) {
         // First parameter in super adds support for draggin the RecyclerView item up or down.
         // Second parameter tells the holder to pass information about left/right swipes.
         super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
@@ -35,9 +35,9 @@ public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
 
         // Check which direction user swiped
         if (direction == 4) { // Delete task
-            taskAdapter.deleteTask(position);
+            taskAdapter.deleteTask(position, holder);
         } else { // Complete task
-            taskAdapter.markComplete(position);
+            taskAdapter.markComplete(position, holder);
         }
     }
 

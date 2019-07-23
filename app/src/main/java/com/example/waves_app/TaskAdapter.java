@@ -13,9 +13,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.waves_app.model.Task;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.apache.commons.io.FileUtils;
 
@@ -33,6 +35,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     int pos;
     int completedTasks;
     boolean addingAction = false;
+
+    // Variables to be used if user wants to undo delete/completion of task
+    Task recentlyConfiguredTask;
+    int configuredTaskPosition;
 
     public TaskAdapter (Context context, List<Task> tasks, List<String> twoStrings, String catTasks) {
         this.context = context;
@@ -100,16 +106,35 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         return new ViewHolder(view);
     }
 
-    // Used in part with swipe functionality of recyclerView
-    public void deleteTask(int pos) {
+    // Following four methods are used in part with swipe functionality of recyclerView
+    public void deleteTask(int pos, RecyclerView.ViewHolder holder) {
+        recentlyConfiguredTask = mTasksList.get(pos);
+        configuredTaskPosition = pos;
+
         mTasksList.remove(pos);
         parsedData.remove(pos);
         writeTaskItems();
         notifyDataSetChanged();
+
+        Snackbar.make(holder.itemView, "Undo task deletion", Snackbar.LENGTH_LONG)
+                .setAction("UNDO", myOnClickListenerDelete)
+                .setActionTextColor(ContextCompat.getColor(context, R.color.blue_5))
+                .show();
     }
 
-    // Used in part with swipe functionality of recyclerView
-    public void markComplete(int pos) {
+    View.OnClickListener myOnClickListenerDelete = new View.OnClickListener(){
+        public void onClick(View v){
+            mTasksList.add(configuredTaskPosition, recentlyConfiguredTask);
+            parsedData.add(configuredTaskPosition, recentlyConfiguredTask.getTaskDetail() + "," + recentlyConfiguredTask.getDueDate());
+            writeTaskItems();
+            notifyItemInserted(configuredTaskPosition);
+        }
+    };
+
+    public void markComplete(int pos, RecyclerView.ViewHolder holder) {
+        recentlyConfiguredTask = mTasksList.get(pos);
+        configuredTaskPosition = pos;
+
         mTasksList.remove(pos);
         parsedData.remove(pos);
 
@@ -120,7 +145,24 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         writeTaskItems();
         writeCompletedCount();
         notifyDataSetChanged();
+
+        Snackbar.make(holder.itemView, "Undo task completion", Snackbar.LENGTH_LONG)
+                .setAction("UNDO", myOnClickListenerComplete)
+                .setActionTextColor(ContextCompat.getColor(context, R.color.blue_5))
+                .show();
     }
+
+    View.OnClickListener myOnClickListenerComplete = new View.OnClickListener(){
+        public void onClick(View v){
+            mTasksList.add(configuredTaskPosition, recentlyConfiguredTask);
+            parsedData.add(configuredTaskPosition, recentlyConfiguredTask.getTaskDetail() + "," + recentlyConfiguredTask.getDueDate());
+            completedTasks -= 1;
+
+            writeTaskItems();
+            writeCompletedCount();
+            notifyItemInserted(configuredTaskPosition);
+        }
+    };
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 

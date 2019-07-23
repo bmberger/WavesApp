@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.waves_app.R;
-import com.example.waves_app.SwipeToDeleteCallback;
+import com.example.waves_app.SwipeToDeleteTaskCallback;
 import com.example.waves_app.TaskAdapter;
 import com.example.waves_app.model.Task;
 
@@ -91,7 +91,7 @@ public class TasksFragment extends Fragment {
         rvTasks.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // Attaching swipe capabilities to the recyclerView
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(taskAdapter, getContext()));
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteTaskCallback(taskAdapter, getContext()));
         itemTouchHelper.attachToRecyclerView(rvTasks);
 
         btnAddTask.setOnClickListener(new View.OnClickListener() {
