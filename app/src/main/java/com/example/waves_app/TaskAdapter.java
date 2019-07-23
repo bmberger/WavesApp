@@ -1,11 +1,16 @@
 package com.example.waves_app;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import org.apache.commons.io.FileUtils;
+
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -31,8 +37,13 @@ import org.w3c.dom.Text;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
@@ -43,12 +54,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     private String catTasks; // sets the category file name that contains all of the tasks
     int pos;
     boolean addingAction = false;
+    AlarmManager alarmManager;
 
     public TaskAdapter (Context context, List<Task> tasks, List<String> twoStrings, String catTasks) {
         this.context = context;
         this.mTasksList = tasks;
         this.parsedData = twoStrings;
         this.catTasks = catTasks;
+        this.alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE); // sets up alarm manager
     }
 
     // returns the file in which the data is stored
@@ -93,6 +106,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         private TextView tvDueDate;
         private TextView tvDueDateHolder;
         private DatePickerDialog.OnDateSetListener listener;
+        AlarmManager alarmManager;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -136,6 +150,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             });
 
             listener = new DatePickerDialog.OnDateSetListener() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                     month += 1;
@@ -146,15 +161,17 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                     if (etTask.getText().toString().length() > 0 && task.getDueDate() != null) {
                         // the case if the user needs to edit the date
                         pos = getAdapterPosition();
+                        editAlarm(dueDate, task.getTaskDetail(), task.getTaskDetail());
                         task.setDueDate(dueDate);
                         parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
                         writeTaskItems(); // update the persistence
                     } else if (etTask.getText().toString().length() > 0) {
-                        // the case if the user is setting date
+                        // the case if the user is adding/setting date
                         task.setDueDate(dueDate);
                         task.setTaskDetail(etTask.getText().toString());
                         addingAction = true; // this gives us the power to avoid problems with add vs editing
                         parsedData.add(task.getTaskDetail() + "," + task.getDueDate());
+                        setAlarm(task.getDueDate(), task.getTaskDetail());
                         writeTaskItems(); // update the persistence
                     }
                 }
@@ -162,6 +179,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
             // Get data from editText and set name for new task
             etTask.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
                     String ogDetail = task.getTaskDetail();
@@ -173,14 +191,16 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                             // When you have no due date for a task
                             Toast.makeText(context, "Due due date needed! Re-enter task.", Toast.LENGTH_LONG).show();
                         } else if (etTask.getText().toString().length() > 0 && !ogDetail.equals(newDetail) && !addingAction) {
-                            // the case if the user needs to edit the name
+                            // the case if the user needs to edit the name of task
+                            editAlarm(task.getDueDate(), newDetail, ogDetail);
                             task.setTaskDetail(newDetail);
                             parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
                             writeTaskItems(); // update the persistence
                         } else if (etTask.getText().toString().length() > 0 && !addingAction) {
-                            // the case if the user is setting name
+                            // the case if the user is adding name of task
                             task.setTaskDetail(newDetail);
                             parsedData.add(task.getTaskDetail() + "," + task.getDueDate());
+                            setAlarm(task.getDueDate(), task.getTaskDetail());
                             writeTaskItems(); // update the persistence
                         }
                     } else {
@@ -231,6 +251,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     pos = getAdapterPosition();
+                                    cancelAlarm(mTasksList.get(pos).getTaskDetail());
                                     mTasksList.remove(pos);
                                     parsedData.remove(pos);
                                     writeTaskItems();
@@ -249,5 +270,85 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
             return true;
         }
+    }
+
+    public void getPos(EditText etTask) {
+        // fixes the add on add issue that Android Studio doesn't account for
+        for (int i = 0; i < parsedData.size(); i++) {
+            String temp = parsedData.get(i);
+            int delimiter = temp.indexOf(",");
+
+            if (etTask.getText().toString().equals(temp.substring(0, delimiter))) {
+                pos = i;
+            }
+        }
+    }
+
+    // to be called in adding a task (for both due date AND task detail/desc)(JUST ADDING THOUGH)
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void setAlarm(String dueDate, String taskDetail) {
+        // For adding/setting a new alarm
+        Calendar calendar = Calendar.getInstance();
+
+        // getting the date in terms of MM, dd, yyyy for calendar
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        Date date = null;
+
+        try {
+            date = sdf.parse(dueDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        int year = localDate.getYear();
+        int month = localDate.getMonthValue();
+        int dayOfMonth = localDate.getDayOfMonth();
+
+        // has the alarm go off at 7pm on user's set date
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.clear();
+        calendar.set(year,month - 1,dayOfMonth,19,0); //19:00 is for 7pm
+
+        // allows us to utilize broadcasting and alarms
+        Intent myIntent = new Intent(this.context, MyAlarm.class);
+        myIntent.putExtra("taskDetail", taskDetail);
+
+        // takes a task and returns a unique id - utilized to keep track of different alarms (adding, deleting, editing)
+        int id = taskDetail.hashCode();
+
+        // for others to understand a bit better: https://medium.com/@architgupta690/creating-pending-intent-in-android-a-step-by-step-guide-74784ec60c9e
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this.context, id, myIntent, 0);
+
+        // sets up the actual alarm
+        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        Toast.makeText(this.context, "Alarm has been set", Toast.LENGTH_SHORT).show();
+        Log.d("TaskAdapter", "Alarm set");
+    }
+
+    // to be called in removing a task and in checking off a task
+    //TODO: needs to be called for checking off
+    public void cancelAlarm(String taskDetail) {
+        // For canceling an alarm
+
+        // allows us to utilize broadcasting and alarms
+        Intent myIntent = new Intent(this.context, MyAlarm.class);
+        myIntent.putExtra("taskDetail", taskDetail);
+
+        int id = taskDetail.hashCode();
+
+        // for others to understand a bit better: https://medium.com/@architgupta690/creating-pending-intent-in-android-a-step-by-step-guide-74784ec60c9e
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this.context, id, myIntent, 0);
+
+        alarmManager.cancel(pendingIntent);
+        Log.d("TaskAdapter", "Alarm canceled");
+    }
+
+    //to be called in editing a task (for both due date AND task detail/desc) (JUST EDITING THOUGH)
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void editAlarm(String newDueDate, String newTaskDetail, String ogTaskDetail) {
+        // For editing an alarm
+        cancelAlarm(ogTaskDetail);
+        setAlarm(newDueDate, newTaskDetail);
+        Log.d("TaskAdapter", "Alarm edited");
     }
 }

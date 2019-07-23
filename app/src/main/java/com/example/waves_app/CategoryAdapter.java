@@ -140,12 +140,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                                 e.printStackTrace();
                             }
 
-                            if (newName.length() > 0 && ogName != null && !ogName.equals(newName)) {
+                            if (newName.length() > 0 && ogName != null && !ogName.equals(newName) && !parsedData.contains(newName)) {
                                 // case if the user needs to edit the category
                                 category.setCategoryName(newName);
                                 parsedData.set(pos, newName);
                                 writeCatItems(); // update the persistence
-                            } else if (newName.length() > 0) {
+                            } else if (newName.length() > 0 && !parsedData.contains(newName)) {
                                 // the case if the user is setting category
                                 category.setCategoryName(newName);
                                 parsedData.add(newName);
