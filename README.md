@@ -7,12 +7,12 @@ Waves has two goals to incentivize productivity to everyone for free and help en
 - scope creep 
 
 # Milestones
-Milestone 1 (end of July 23rd - a Tuesday/middle of week 5): Basic MVP/functionality
-Milestone 2 (end of July 30th - a Tuesday/middle of week 6): UI (very attractive)
-Milestone 3 (end of August 7th/8th - a Tuesday/Wednesday/middle of week 7): Stretch goals and more UI
-Milestone 4 (end of August 9th - Friday/end of week 7): Pitch
+- Milestone 1 (end of July 23rd - a Tuesday/middle of week 5): Basic MVP/functionality
+- Milestone 2 (end of July 30th - a Tuesday/middle of week 6): UI (very attractive)
+- Milestone 3 (end of August 7th/8th - a Tuesday/Wednesday/middle of week 7): Stretch goals and more UI
+- Milestone 4 (end of August 9th - Friday/end of week 7): Pitch
 
-Practice pitch on August 12th (Monday)
+Practice pitch on August 12th (Monday). 
 Pitch is on August 13th and 14th.
 
 # Requirements within App
