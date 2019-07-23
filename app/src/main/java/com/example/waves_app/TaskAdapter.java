@@ -1,14 +1,17 @@
 package com.example.waves_app;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,7 +51,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     }
 
     // Returns the file in which the completedTask count is stored
-    private File getCompletedTaskCountFile() { return new File(context.getFilesDir(), "completedTaskCount.txt"); }
+    private File getCompletedTaskCountFile() { return new File(context.getFilesDir(), "completedTaskCount"); }
 
     // Write the count into the filesystem
     private void writeCompletedCount() {
@@ -146,23 +149,16 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         writeCompletedCount();
         notifyDataSetChanged();
 
-        Snackbar.make(holder.itemView, "Undo task completion", Snackbar.LENGTH_LONG)
-                .setAction("UNDO", myOnClickListenerComplete)
-                .setActionTextColor(ContextCompat.getColor(context, R.color.blue_5))
-                .show();
+        ImageView mock_ad = new ImageView(context);
+        mock_ad.setImageResource(R.drawable.mock_ad);
+
+        Dialog ad_dialog = new Dialog(context);
+        ad_dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        ad_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        ad_dialog.setCancelable(true);
+        ad_dialog.setContentView(mock_ad);
+        ad_dialog.show();
     }
-
-    View.OnClickListener myOnClickListenerComplete = new View.OnClickListener(){
-        public void onClick(View v){
-            mTasksList.add(configuredTaskPosition, recentlyConfiguredTask);
-            parsedData.add(configuredTaskPosition, recentlyConfiguredTask.getTaskDetail() + "," + recentlyConfiguredTask.getDueDate());
-            completedTasks -= 1;
-
-            writeTaskItems();
-            writeCompletedCount();
-            notifyItemInserted(configuredTaskPosition);
-        }
-    };
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 

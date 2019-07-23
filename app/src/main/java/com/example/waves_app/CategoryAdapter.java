@@ -99,11 +99,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             associatedTasks = new ArrayList<>();
         }
 
-        context.deleteFile(toDelete.getName());
-        categories.remove(pos);
-        parsedData.remove(pos);
-        writeCatItems();
-        notifyDataSetChanged();
+        if (categories.get(pos).getCategoryName() != null) {
+            context.deleteFile(toDelete.getName());
+            categories.remove(pos);
+            parsedData.remove(pos);
+            writeCatItems();
+            notifyDataSetChanged();
+        }
 
         Snackbar.make(holder.itemView, "Undo category deletion", Snackbar.LENGTH_LONG)
                 .setAction("UNDO", myOnClickListenerDelete)
