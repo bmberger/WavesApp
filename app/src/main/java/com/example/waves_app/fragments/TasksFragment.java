@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +16,7 @@ import com.example.waves_app.R;
 import com.example.waves_app.SwipeToDeleteTaskCallback;
 import com.example.waves_app.TaskAdapter;
 import com.example.waves_app.model.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.apache.commons.io.FileUtils;
 
@@ -29,7 +29,7 @@ import java.util.List;
 public class TasksFragment extends Fragment {
 
     public static final String TAG = "TasksFragment";
-    private Button btnAddTask;
+    private FloatingActionButton fabAddTask;
     private RecyclerView rvTasks;
     private List<Task> mTasksList;
     private List<String> parsedData;
@@ -77,8 +77,8 @@ public class TasksFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        btnAddTask = (Button) view.findViewById(R.id.btnAddTask);
         rvTasks = (RecyclerView) view.findViewById(R.id.rvTasks);
+        fabAddTask = (FloatingActionButton) view.findViewById(R.id.fabAddTask);
 
         // getting the category file name that contains these tasks
         Bundle information = getArguments();
@@ -94,7 +94,7 @@ public class TasksFragment extends Fragment {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteTaskCallback(taskAdapter, getContext()));
         itemTouchHelper.attachToRecyclerView(rvTasks);
 
-        btnAddTask.setOnClickListener(new View.OnClickListener() {
+        fabAddTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Task task = new Task();
@@ -102,6 +102,5 @@ public class TasksFragment extends Fragment {
                 taskAdapter.notifyDataSetChanged();
             }
         });
-
     }
 }

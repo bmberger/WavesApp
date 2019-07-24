@@ -1,13 +1,9 @@
 package com.example.waves_app.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
-import android.view.animation.LayoutAnimationController;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +16,7 @@ import com.example.waves_app.CategoryAdapter;
 import com.example.waves_app.R;
 import com.example.waves_app.SwipeToDeleteCategoryCallback;
 import com.example.waves_app.model.Category;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.apache.commons.io.FileUtils;
 
@@ -34,7 +31,7 @@ public class CategoryFragment extends Fragment {
     private List<Category> categories;
     private CategoryAdapter categoryAdapter;
     private RecyclerView rvCategories;
-    private Button button;
+    private FloatingActionButton fabAddCategory;
     private List<String> parsedData;
     private List<String> taskData;
     private List<Integer> num;
@@ -77,6 +74,7 @@ public class CategoryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         rvCategories = view.findViewById(R.id.categoriesList);
+        fabAddCategory = (FloatingActionButton) view.findViewById(R.id.fabAddCategory);
 
         readCategoryItems();
 
@@ -95,11 +93,10 @@ public class CategoryFragment extends Fragment {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCategoryCallback(categoryAdapter, getContext()));
         itemTouchHelper.attachToRecyclerView(rvCategories);
 
-        // set on click listener on button
-        button = view.findViewById(R.id.btnAdd);
-
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+        // set on click listener on fab
+        fabAddCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 Category category = new Category();
                 categories.add(category);
                 categoryAdapter.notifyDataSetChanged();
@@ -130,6 +127,4 @@ public class CategoryFragment extends Fragment {
             e.printStackTrace();
         }
     }
-
-
 }
