@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -180,6 +181,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         ad_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         ad_dialog.setCancelable(true);
         ad_dialog.setContentView(R.layout.ic_popup);
+
+        // Set congrats words for message on pop-up
+        TextView congratsWords = (TextView) ad_dialog.findViewById(R.id.tvCongratsWords);
+        congratsWords.setText("You have now saved " + completedTasks + " fish. Make sure to see all the fish you saved by going to your fish tank!");
+
         ad_dialog.show();
     }
 
@@ -344,7 +350,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         // has the alarm go off at 7pm on user's set date
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.clear();
-        calendar.set(year,month - 1,dayOfMonth,19,0); //19:00 is for 7pm
+        calendar.set(year,month - 1,dayOfMonth,19,21); //19:00 is for 7pm
 
         // allows us to utilize broadcasting and alarms
         Intent myIntent = new Intent(this.context, MyAlarm.class);
