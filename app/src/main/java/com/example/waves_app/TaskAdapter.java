@@ -179,9 +179,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         ad_dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         ad_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         ad_dialog.setCancelable(true);
-
-
-        ad_dialog.setContentView(R.layout.ic_popup).setClipToOutline(true);
+        ad_dialog.setContentView(R.layout.ic_popup);
         ad_dialog.show();
     }
 
