@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.example.waves_app.R;
 
 import org.apache.commons.io.FileUtils;
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +28,7 @@ public class FishTankFragment extends Fragment {
     private int maxHeight;
     private int maxWidth;
     private TextView tvTankCount;
+    private TextView tvTotalCount;
     private ConstraintLayout layout;
 
     @Nullable
@@ -47,10 +49,12 @@ public class FishTankFragment extends Fragment {
 
         // Get the objects by id
         tvTankCount = (TextView) view.findViewById(R.id.tvTankCount);
+        tvTotalCount = (TextView) view.findViewById(R.id.tvTotalCount);
         layout = (ConstraintLayout) view.findViewById(R.id.cLayout);
 
-        // Set information for fishCount
-        tvTankCount.setText(String.format("Fish Count: %d", displayCount));
+        // Set information for tankCount and totalCount
+        tvTankCount.setText(String.format("Tank Count: %d", displayCount));
+        tvTotalCount.setText(String.format("Total Count: %d", removedCount));
       
         // Generate an image per count
         for (int i = 0; i < displayCount; i++) {
