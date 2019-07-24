@@ -6,11 +6,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ItemMoveCallback extends ItemTouchHelper.Callback {
+public class ItemMoveCallbackCategory extends ItemTouchHelper.Callback {
 
     private final CategoryAdapter mAdapter;
 
-    public ItemMoveCallback(CategoryAdapter adapter) {
+    public ItemMoveCallbackCategory(CategoryAdapter adapter) {
         mAdapter = adapter;
     }
 
