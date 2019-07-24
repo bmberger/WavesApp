@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import android.widget.EditText;
+import android.widget.Toast;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
@@ -19,6 +22,7 @@ import com.example.waves_app.OnStartDragListener;
 import com.example.waves_app.R;
 import com.example.waves_app.SwipeToDeleteCategoryCallback;
 import com.example.waves_app.model.Category;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.apache.commons.io.FileUtils;
 
@@ -33,7 +37,7 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
     private List<Category> categories;
     private CategoryAdapter categoryAdapter;
     private RecyclerView rvCategories;
-    private Button button;
+    private FloatingActionButton fabAddCategory;
     private List<String> parsedData;
     private List<String> taskData;
     private List<Integer> num;
@@ -67,7 +71,6 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
         }
     }
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -77,6 +80,7 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         rvCategories = view.findViewById(R.id.categoriesList);
+        fabAddCategory = (FloatingActionButton) view.findViewById(R.id.fabAddCategory);
 
         readCategoryItems();
 
@@ -96,19 +100,25 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
         // Set the categoryAdapter on the recycler view
         rvCategories.setAdapter(categoryAdapter);
 
-
         // Attaching swipe capabilities to the recyclerView
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCategoryCallback(categoryAdapter, getContext()));
         itemTouchHelper.attachToRecyclerView(rvCategories);
 
-        // set on click listener on button
-        button = view.findViewById(R.id.btnAdd);
-
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Category category = new Category();
-                categories.add(category);
-                categoryAdapter.notifyDataSetChanged();
+        // set on click listener on fab
+        fabAddCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Prevent user with adding multiple blank categories
+                // First need to grab the last added category to check if it has been named
+                RecyclerView.ViewHolder lastCategory = rvCategories.findViewHolderForAdapterPosition(categoryAdapter.getItemCount() - 1);
+                EditText etCatName = (EditText) lastCategory.itemView.findViewById(R.id.etNewCategory);
+                if (etCatName.getText().toString().length() > 0) {
+                    Category category = new Category();
+                    categories.add(category);
+                    categoryAdapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(getContext(), "Fill out the current blank category!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -118,7 +128,6 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCategoryCallback(categoryAdapter, getContext()));
         itemTouchHelper.startDrag(viewHolder);
     }
-
 
     public List<Integer> taskCount() {
         num = new ArrayList<>();
@@ -143,6 +152,4 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
             e.printStackTrace();
         }
     }
-
-
 }

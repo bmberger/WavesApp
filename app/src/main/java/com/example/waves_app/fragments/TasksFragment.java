@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +23,7 @@ import com.example.waves_app.SwipeToDeleteCategoryCallback;
 import com.example.waves_app.SwipeToDeleteTaskCallback;
 import com.example.waves_app.TaskAdapter;
 import com.example.waves_app.model.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.apache.commons.io.FileUtils;
 
@@ -33,7 +36,7 @@ import java.util.List;
 public class TasksFragment extends Fragment implements OnStartDragListener {
 
     public static final String TAG = "TasksFragment";
-    private Button btnAddTask;
+    private FloatingActionButton fabAddTask;
     private RecyclerView rvTasks;
     private List<Task> mTasksList;
     private List<String> parsedData;
@@ -81,8 +84,8 @@ public class TasksFragment extends Fragment implements OnStartDragListener {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        btnAddTask = (Button) view.findViewById(R.id.btnAddTask);
         rvTasks = (RecyclerView) view.findViewById(R.id.rvTasks);
+        fabAddTask = (FloatingActionButton) view.findViewById(R.id.fabAddTask);
 
         // getting the category file name that contains these tasks
         Bundle information = getArguments();
@@ -104,15 +107,23 @@ public class TasksFragment extends Fragment implements OnStartDragListener {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteTaskCallback(taskAdapter, getContext()));
         itemTouchHelper.attachToRecyclerView(rvTasks);
 
-        btnAddTask.setOnClickListener(new View.OnClickListener() {
+        fabAddTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Task task = new Task();
-                mTasksList.add(task);
-                taskAdapter.notifyDataSetChanged();
+                // Prevent user with adding multiple blank categories
+                RecyclerView.ViewHolder lastTask = rvTasks.findViewHolderForAdapterPosition(taskAdapter.getItemCount() - 1);
+                EditText etTaskDescription = (EditText) lastTask.itemView.findViewById(R.id.etTaskDescription);
+                TextView tvDueDate = (TextView) lastTask.itemView.findViewById(R.id.tvDueDate);
+
+                if (etTaskDescription.getText().length() > 0 && !tvDueDate.getText().toString().equals("set due date")){
+                    Task task = new Task();
+                    mTasksList.add(task);
+                    taskAdapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(getContext(), "Fill out the current blank task!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
-
     }
 
     @Override
