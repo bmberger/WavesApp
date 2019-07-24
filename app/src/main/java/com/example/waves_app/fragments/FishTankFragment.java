@@ -26,7 +26,7 @@ public class FishTankFragment extends Fragment {
     private int displayCount;
     private int maxHeight;
     private int maxWidth;
-    private TextView tvFishCount;
+    private TextView tvTankCount;
     private ConstraintLayout layout;
 
     @Nullable
@@ -46,11 +46,11 @@ public class FishTankFragment extends Fragment {
         maxWidth = 700;
 
         // Get the objects by id
-        tvFishCount = (TextView) view.findViewById(R.id.tvFishCount);
+        tvTankCount = (TextView) view.findViewById(R.id.tvTankCount);
         layout = (ConstraintLayout) view.findViewById(R.id.cLayout);
 
         // Set information for fishCount
-        tvFishCount.setText(String.format("Fish Count: %d", displayCount));
+        tvTankCount.setText(String.format("Fish Count: %d", displayCount));
       
         // Generate an image per count
         for (int i = 0; i < displayCount; i++) {
