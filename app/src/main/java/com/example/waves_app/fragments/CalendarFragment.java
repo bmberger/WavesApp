@@ -1,13 +1,12 @@
 package com.example.waves_app.fragments;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,6 +35,9 @@ public class CalendarFragment extends Fragment {
     private CompactCalendarView compactCalendar;
     private SimpleDateFormat dateFormatMonth = new SimpleDateFormat("MMMM yyyy", Locale.getDefault());
     private TextView tvMonthYear;
+    private TextView tvEventHolder;
+    private TextView tvDaySelected;
+    private TextView tvTasksForDay;
 
     private List<String> categoryData;
     private List<Task> taskEvents = new ArrayList<>();
@@ -51,11 +53,17 @@ public class CalendarFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         tvMonthYear = (TextView) getActivity().findViewById(R.id.tvMonthYear);
+        tvEventHolder = (TextView) getActivity().findViewById(R.id.tvEventHolder);
+        tvDaySelected = (TextView) getActivity().findViewById(R.id.tvDaySelected);
+        tvTasksForDay = (TextView) getActivity().findViewById(R.id.tvTasksForDay);
         compactCalendar = (CompactCalendarView) getActivity().findViewById(R.id.calendarView);
-        compactCalendar.setFirstDayOfWeek(Calendar.SUNDAY);
+
+        compactCalendar.setFirstDayOfWeek(Calendar.SUNDAY); // Sets the first day of the calendar as specified
+        tvTasksForDay.setText("Select a day to view tasks");
+        tvTasksForDay.setMovementMethod(new ScrollingMovementMethod());
 
         // Initially sets the monthYear textView with information
-        Calendar c = Calendar.getInstance();   // this takes current date
+        Calendar c = Calendar.getInstance();   // This takes current date
         c.set(Calendar.DAY_OF_MONTH, 1);
         onMonthScroll(c.getTime());
 
@@ -78,25 +86,30 @@ public class CalendarFragment extends Fragment {
             compactCalendar.addEvent(ev1);
         }
 
+        // Display the tasks for a day that is selected
         compactCalendar.setListener(new CompactCalendarView.CompactCalendarViewListener() {
             @Override
             public void onDayClick(Date dateClicked) {
-                Context context = getActivity().getApplicationContext();
+                String month = tvMonthYear.getText().toString().substring(0, tvMonthYear.getText().toString().indexOf(" "));
+                int date = dateClicked.getDate();
+                tvDaySelected.setText(month + " " + date + ":");
 
                 List<Event> events = compactCalendar.getEvents(dateClicked);
-                String remindersOfDay = "";
+                String remindersOfDay = "- ";
                 if (events != null) {
                     for (int i = 0; i < events.size(); i++) {
                         String temp;
                         if (i == (events.size() - 1)) {
                             temp = events.get(i).getData().toString();
                         } else {
-                            temp = events.get(i).getData().toString() + "%n";
+                            temp = events.get(i).getData().toString() + "\n- ";
                         }
                         remindersOfDay += temp;
                     }
-                    if (remindersOfDay.length() != 0) {
-                        Toast.makeText(context, String.format(remindersOfDay), Toast.LENGTH_LONG).show();
+                    if (remindersOfDay.length() != 2) {
+                        tvTasksForDay.setText(remindersOfDay);
+                    } else {
+                        tvTasksForDay.setText("Nothing for this day!");
                     }
                 }
             }
