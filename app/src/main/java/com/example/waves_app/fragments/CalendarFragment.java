@@ -93,6 +93,7 @@ public class CalendarFragment extends Fragment {
                 String month = tvMonthYear.getText().toString().substring(0, tvMonthYear.getText().toString().indexOf(" "));
                 int date = dateClicked.getDate();
                 tvDaySelected.setText(month + " " + date + ":");
+                tvTasksForDay.scrollTo(0, 0);
 
                 List<Event> events = compactCalendar.getEvents(dateClicked);
                 String remindersOfDay = "- ";
