@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="#FFFFFF">
 
@@ -12,7 +12,7 @@
         android:layout_height="83dp"
         android:layout_below="@+id/tvCongratsWords"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="156dp"
+        android:layout_marginStart="120dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvCongratsWords"
         app:srcCompat="@drawable/fish_0" />
@@ -35,8 +35,8 @@
 
     <ImageView
         android:id="@+id/ivAd"
-        android:layout_width="417dp"
-        android:layout_height="110dp"
+        android:layout_width="341dp"
+        android:layout_height="91dp"
         android:layout_below="@+id/ivFishView"
         app:layout_constraintTop_toBottomOf="@+id/ivFishView"
         app:srcCompat="@drawable/chobani_ad"
