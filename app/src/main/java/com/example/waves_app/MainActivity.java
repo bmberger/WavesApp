@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setSelectedItemId(R.id.miHome);
     }
 
-
     @Override
     public void onBackPressed() {
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
@@ -73,6 +72,4 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = (BottomNavigationView) activity.findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.miHome);
     }
-
-
 }

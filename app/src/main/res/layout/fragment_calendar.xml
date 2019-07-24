@@ -15,7 +15,7 @@
         app:compactCalendarCurrentDayBackgroundColor="@android:color/transparent"
         app:compactCalendarCurrentDayTextColor="@color/blue_5"
         app:compactCalendarCurrentSelectedDayBackgroundColor="@color/blue_5_10_transparent"
-        app:compactCalendarTextSize="13dp"
+        app:compactCalendarTextSize="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,7 +28,7 @@
         android:layout_marginTop="16dp"
         android:text="Month Year"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="15dp"
+        android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -37,10 +37,10 @@
         android:id="@+id/tvEventHolder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="15dp"
         android:text="Tasks on "
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="13dp"
+        android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="@+id/calendarView"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -49,7 +49,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="13dp"
+        android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="@+id/calendarView"
         app:layout_constraintStart_toEndOf="@+id/tvEventHolder" />
 
@@ -61,7 +61,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:text="Select a day to view tasks"
-        android:textSize="13dp"
+        android:textSize="15dp"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

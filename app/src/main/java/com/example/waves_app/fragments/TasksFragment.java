@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -97,9 +100,18 @@ public class TasksFragment extends Fragment {
         fabAddTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Task task = new Task();
-                mTasksList.add(task);
-                taskAdapter.notifyDataSetChanged();
+                // Prevent user with adding multiple blank categories
+                RecyclerView.ViewHolder lastTask = rvTasks.findViewHolderForAdapterPosition(taskAdapter.getItemCount() - 1);
+                EditText etTaskDescription = (EditText) lastTask.itemView.findViewById(R.id.etTaskDescription);
+                TextView tvDueDate = (TextView) lastTask.itemView.findViewById(R.id.tvDueDate);
+
+                if (etTaskDescription.getText().length() > 0 && !tvDueDate.getText().toString().equals("set due date")){
+                    Task task = new Task();
+                    mTasksList.add(task);
+                    taskAdapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(getContext(), "Fill out the current blank task!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
