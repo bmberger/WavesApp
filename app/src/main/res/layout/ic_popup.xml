@@ -35,7 +35,7 @@
         android:layout_width="319dp"
         android:layout_height="89dp"
         android:layout_marginStart="4dp"
-        android:src="@drawable/chobani_ad"
+        android:src="@drawable/chobani_ad_mock"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivFishView"
         app:riv_corner_radius="20dp" />
