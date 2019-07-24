@@ -1,6 +1,7 @@
 package com.example.waves_app;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,9 +27,10 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
+public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> implements ItemTouchHelperAdapter {
 
     private List<Category> categories;
     private Context context;
@@ -134,9 +136,45 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         }
     };
 
+    public void onItemDismiss(int position) {
+        categories.remove(position);
+        parsedData.remove(position);
+        writeCatItems();
+        notifyItemRemoved(position);
+    }
+
+
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        //Log.v("", "Log position" + fromPosition + " " + toPosition);
+        if (fromPosition < categories.size() && toPosition < categories.size()) {
+            if (fromPosition < toPosition) {
+                for (int i = fromPosition; i < toPosition; i++) {
+                    Collections.swap(categories, i, i + 1);
+                    Collections.swap(parsedData, i, i + 1);
+                }
+            } else {
+                for (int i = fromPosition; i > toPosition; i--) {
+                    Collections.swap(categories, i, i - 1);
+                    Collections.swap(parsedData, i, i - 1);
+                }
+            }
+            notifyItemMoved(fromPosition, toPosition);
+            writeCatItems();
+        }
+        return true;
+    }
+
+
+    public void updateList(List<Category> Categories, List<String> ParsedData) {
+        categories = Categories;
+        parsedData = ParsedData;
+        notifyDataSetChanged();
+        writeCatItems();
+    }
+
     // Provide a direct reference to each of the views within a data item
     // Used to cache the views within the item layout for fast access
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, ItemTouchHelperViewHolder {
 
         // Member variable for view that will be set as row renders
         public EditText etCategory;
@@ -164,6 +202,16 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             information.putString("catName", catName);
             fragment.setArguments(information);
             manager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack(null).commit();
+        }
+
+        @Override
+        public void onItemSelected() {
+            itemView.setBackgroundColor(Color.LTGRAY);
+        }
+
+        @Override
+        public void onItemClear() {
+            itemView.setBackgroundColor(0);
         }
 
         public void bind(final Category category) {
