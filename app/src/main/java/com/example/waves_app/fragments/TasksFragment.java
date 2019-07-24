@@ -13,7 +13,11 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.waves_app.ItemMoveCallbackCategory;
+import com.example.waves_app.ItemMoveCallbackTask;
+import com.example.waves_app.OnStartDragListener;
 import com.example.waves_app.R;
+import com.example.waves_app.SwipeToDeleteCategoryCallback;
 import com.example.waves_app.SwipeToDeleteTaskCallback;
 import com.example.waves_app.TaskAdapter;
 import com.example.waves_app.model.Task;
@@ -26,7 +30,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TasksFragment extends Fragment {
+public class TasksFragment extends Fragment implements OnStartDragListener {
 
     public static final String TAG = "TasksFragment";
     private Button btnAddTask;
@@ -87,6 +91,12 @@ public class TasksFragment extends Fragment {
         readTaskItems();
 
         taskAdapter = new TaskAdapter(getContext(), mTasksList, parsedData, catTasks);
+
+        ItemTouchHelper.Callback callback =
+                new ItemMoveCallbackTask(taskAdapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(rvTasks);
+
         rvTasks.setAdapter(taskAdapter);
         rvTasks.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -103,5 +113,11 @@ public class TasksFragment extends Fragment {
             }
         });
 
+    }
+
+    @Override
+    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteTaskCallback(taskAdapter, getContext()));
+        itemTouchHelper.startDrag(viewHolder);
     }
 }

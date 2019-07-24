@@ -138,6 +138,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     public void onItemDismiss(int position) {
         categories.remove(position);
+        parsedData.remove(position);
+        writeCatItems();
         notifyItemRemoved(position);
     }
 
@@ -148,21 +150,26 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             if (fromPosition < toPosition) {
                 for (int i = fromPosition; i < toPosition; i++) {
                     Collections.swap(categories, i, i + 1);
+                    Collections.swap(parsedData, i, i + 1);
                 }
             } else {
                 for (int i = fromPosition; i > toPosition; i--) {
                     Collections.swap(categories, i, i - 1);
+                    Collections.swap(parsedData, i, i - 1);
                 }
             }
             notifyItemMoved(fromPosition, toPosition);
+            writeCatItems();
         }
         return true;
     }
 
 
-    public void updateList(List<Category> Categories) {
+    public void updateList(List<Category> Categories, List<String> ParsedData) {
         categories = Categories;
+        parsedData = ParsedData;
         notifyDataSetChanged();
+        writeCatItems();
     }
 
     // Provide a direct reference to each of the views within a data item

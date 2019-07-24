@@ -1,12 +1,9 @@
 package com.example.waves_app.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
-import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
@@ -17,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.waves_app.CategoryAdapter;
-import com.example.waves_app.ItemMoveCallback;
+import com.example.waves_app.ItemMoveCallbackCategory;
 import com.example.waves_app.OnStartDragListener;
 import com.example.waves_app.R;
 import com.example.waves_app.SwipeToDeleteCategoryCallback;
@@ -92,7 +89,7 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
         rvCategories.setLayoutManager(new LinearLayoutManager(getContext()));
 
         ItemTouchHelper.Callback callback =
-                new ItemMoveCallback(categoryAdapter);
+                new ItemMoveCallbackCategory(categoryAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(rvCategories);
 
