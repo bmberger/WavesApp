@@ -1,5 +1,6 @@
 package com.example.waves_app.fragments;
 
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import com.example.waves_app.R;
 
 import org.apache.commons.io.FileUtils;
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +28,8 @@ public class FishTankFragment extends Fragment {
     private int displayCount;
     private int maxHeight;
     private int maxWidth;
-    private TextView tvFishCount;
+    private TextView tvTankCount;
+    private TextView tvTotalCount;
     private ConstraintLayout layout;
 
     @Nullable
@@ -46,11 +49,14 @@ public class FishTankFragment extends Fragment {
         maxWidth = 700;
 
         // Get the objects by id
-        tvFishCount = (TextView) view.findViewById(R.id.tvFishCount);
+        tvTankCount = (TextView) view.findViewById(R.id.tvTankCount);
+        tvTotalCount = (TextView) view.findViewById(R.id.tvTotalCount);
         layout = (ConstraintLayout) view.findViewById(R.id.cLayout);
 
-        // Set information for fishCount
-        tvFishCount.setText(String.format("Fish Count: %d", displayCount));
+        // Set information for tankCount and totalCount
+        tvTankCount.setText(String.format("Tank Count: %d", displayCount));
+        tvTotalCount.setText(String.format("Total Count: %d", removedCount));
+        tvTotalCount.setPaintFlags(tvTotalCount.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
       
         // Generate an image per count
         for (int i = 0; i < displayCount; i++) {
