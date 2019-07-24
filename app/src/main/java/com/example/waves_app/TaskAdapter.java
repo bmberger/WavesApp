@@ -52,6 +52,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
@@ -186,7 +187,18 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         TextView congratsWords = (TextView) ad_dialog.findViewById(R.id.tvCongratsWords);
         congratsWords.setText("You have now saved " + completedTasks + " fish. Make sure to see all the fish you saved by going to your fish tank!");
 
+        // Set the fish image for pop-up
+        ImageView fishImage = (ImageView) ad_dialog.findViewById(R.id.ivFishView);
+        int fishID = getRandomFishId();
+        fishImage.setImageResource(fishID);
+
         ad_dialog.show();
+    }
+
+    public int getRandomFishId() {
+        // Generates random integer between 0 and 14 inclusive
+        int random = new Random().nextInt(15);
+        return context.getResources().getIdentifier("fish_" + random, "drawable", context.getPackageName());
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
