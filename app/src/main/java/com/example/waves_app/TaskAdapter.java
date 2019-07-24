@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,6 +52,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
@@ -172,17 +174,31 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
         writeTaskItems();
         writeCompletedCount();
+        cancelAlarm(recentlyConfiguredTask.getTaskDetail());
         notifyDataSetChanged();
-
-        ImageView mock_ad = new ImageView(context);
-        mock_ad.setImageResource(R.drawable.mock_ad);
 
         Dialog ad_dialog = new Dialog(context);
         ad_dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         ad_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         ad_dialog.setCancelable(true);
-        ad_dialog.setContentView(mock_ad);
+        ad_dialog.setContentView(R.layout.ic_popup);
+
+        // Set congrats words for message on pop-up
+        TextView congratsWords = (TextView) ad_dialog.findViewById(R.id.tvCongratsWords);
+        congratsWords.setText("You have now saved " + completedTasks + " fish. Make sure to see all the fish you saved by going to your fish tank!");
+
+        // Set the fish image for pop-up
+        ImageView fishImage = (ImageView) ad_dialog.findViewById(R.id.ivFishView);
+        int fishID = getRandomFishId();
+        fishImage.setImageResource(fishID);
+
         ad_dialog.show();
+    }
+
+    public int getRandomFishId() {
+        // Generates random integer between 0 and 14 inclusive
+        int random = new Random().nextInt(15);
+        return context.getResources().getIdentifier("fish_" + random, "drawable", context.getPackageName());
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -346,7 +362,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         // has the alarm go off at 7pm on user's set date
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.clear();
-        calendar.set(year,month - 1,dayOfMonth,19,0); //19:00 is for 7pm
+        calendar.set(year,month - 1,dayOfMonth,19,21); //19:00 is for 7pm
 
         // allows us to utilize broadcasting and alarms
         Intent myIntent = new Intent(this.context, MyAlarm.class);
@@ -365,7 +381,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     }
 
     // to be called in removing a task and in checking off a task
-    //TODO: needs to be called for checking off
     public void cancelAlarm(String taskDetail) {
         // For canceling an alarm
 
