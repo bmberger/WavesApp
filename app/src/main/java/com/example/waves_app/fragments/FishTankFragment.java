@@ -1,5 +1,6 @@
 package com.example.waves_app.fragments;
 
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,6 +56,7 @@ public class FishTankFragment extends Fragment {
         // Set information for tankCount and totalCount
         tvTankCount.setText(String.format("Tank Count: %d", displayCount));
         tvTotalCount.setText(String.format("Total Count: %d", removedCount));
+        tvTotalCount.setPaintFlags(tvTotalCount.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
       
         // Generate an image per count
         for (int i = 0; i < displayCount; i++) {
