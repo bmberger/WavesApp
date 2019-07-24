@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -97,9 +99,17 @@ public class CategoryFragment extends Fragment {
         fabAddCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Category category = new Category();
-                categories.add(category);
-                categoryAdapter.notifyDataSetChanged();
+                // Prevent user with adding multiple blank categories
+                // First need to grab the last added category to check if it has been named
+                RecyclerView.ViewHolder lastCategory = rvCategories.findViewHolderForAdapterPosition(categoryAdapter.getItemCount() - 1);
+                EditText etCatName = (EditText) lastCategory.itemView.findViewById(R.id.etNewCategory);
+                if (etCatName.getText().toString().length() > 0) {
+                    Category category = new Category();
+                    categories.add(category);
+                    categoryAdapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(getContext(), "Fill out the current blank category!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
