@@ -70,6 +70,8 @@ public class FishTankFragment extends Fragment {
             fishImage.setY(new Random().nextInt(maxHeight) + 100);
             layout.addView(fishImage);
         }
+
+        tvTotalCount.setOnClickListener();
     }
 
     public int getRandomFishId() {
