@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.waves_app.CategoryAdapter;
+import com.example.waves_app.ItemMoveCallback;
+import com.example.waves_app.OnStartDragListener;
 import com.example.waves_app.R;
 import com.example.waves_app.SwipeToDeleteCategoryCallback;
 import com.example.waves_app.model.Category;
@@ -29,7 +31,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryFragment extends Fragment {
+public class CategoryFragment extends Fragment implements OnStartDragListener {
 
     private List<Category> categories;
     private CategoryAdapter categoryAdapter;
@@ -68,6 +70,7 @@ public class CategoryFragment extends Fragment {
         }
     }
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -88,8 +91,14 @@ public class CategoryFragment extends Fragment {
         // Set the layout manager on the recycler view
         rvCategories.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        ItemTouchHelper.Callback callback =
+                new ItemMoveCallback(categoryAdapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(rvCategories);
+
         // Set the categoryAdapter on the recycler view
         rvCategories.setAdapter(categoryAdapter);
+
 
         // Attaching swipe capabilities to the recyclerView
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCategoryCallback(categoryAdapter, getContext()));
@@ -106,6 +115,13 @@ public class CategoryFragment extends Fragment {
             }
         });
     }
+
+    @Override
+    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCategoryCallback(categoryAdapter, getContext()));
+        itemTouchHelper.startDrag(viewHolder);
+    }
+
 
     public List<Integer> taskCount() {
         num = new ArrayList<>();
