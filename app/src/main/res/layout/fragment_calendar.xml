@@ -10,7 +10,7 @@
     <com.github.sundeepk.compactcalendarview.CompactCalendarView
         android:id="@+id/calendarView"
         android:layout_width="0dp"
-        android:layout_height="430dp"
+        android:layout_height="350dp"
         app:compactCalendarBackgroundColor="@android:color/transparent"
         app:compactCalendarCurrentDayBackgroundColor="@android:color/transparent"
         app:compactCalendarCurrentDayTextColor="@color/blue_5"
