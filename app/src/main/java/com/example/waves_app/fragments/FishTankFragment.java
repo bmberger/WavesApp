@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment;
 import com.example.waves_app.R;
 
 import org.apache.commons.io.FileUtils;
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.IOException;
@@ -66,6 +65,7 @@ public class FishTankFragment extends Fragment {
 
             int fishID = getRandomFishId();
             fishImage.setImageResource(fishID);
+
             fishImage.setX(new Random().nextInt(maxWidth));
             fishImage.setY(new Random().nextInt(maxHeight) + 100);
             layout.addView(fishImage);

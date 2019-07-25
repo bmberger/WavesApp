@@ -5,10 +5,7 @@
     <color name="colorAccent">#d5f3fe</color>
 
     <color name="not_checked">#808080</color>
-    <color name="sand">#f4d560</color>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#d81b60</color>
+    <color name="sand">#dab520</color>
     <color name="white">#ffffff</color>
     <color name="blue_2">#ffb4daff</color>
     <color name="blue_3">#ff89c5ff</color>

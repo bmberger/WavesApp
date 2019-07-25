@@ -15,11 +15,9 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.waves_app.ItemMoveCallbackCategory;
 import com.example.waves_app.ItemMoveCallbackTask;
 import com.example.waves_app.OnStartDragListener;
 import com.example.waves_app.R;
-import com.example.waves_app.SwipeToDeleteCategoryCallback;
 import com.example.waves_app.SwipeToDeleteTaskCallback;
 import com.example.waves_app.TaskAdapter;
 import com.example.waves_app.model.Task;
@@ -43,16 +41,16 @@ public class TasksFragment extends Fragment implements OnStartDragListener {
     private TaskAdapter taskAdapter;
     private String catTasks;
 
-    // returns the file in which the data is stored
+    // Returns the file in which the data is stored
     private File getDataFile() {
         return new File(getContext().getFilesDir(), catTasks);
     }
 
-    // read the items from the file system
+    // Read the items from the file system
     public void readTaskItems() {
         mTasksList = new ArrayList<>();
         try {
-            // create the array using the content in the file
+            // Create the array using the content in the file
             parsedData = new ArrayList<String>(FileUtils.readLines(getDataFile(), Charset.defaultCharset()));
 
             for(String obj : parsedData) {
@@ -68,9 +66,9 @@ public class TasksFragment extends Fragment implements OnStartDragListener {
                 mTasksList.add(tempTask);
             }
         } catch (IOException e) {
-            // print the error to the console
+            // Print the error to the console
             e.printStackTrace();
-            // just load an empty list
+            // Just load an empty list
             mTasksList = new ArrayList<>();
             parsedData = new ArrayList<>();
         }
@@ -87,7 +85,7 @@ public class TasksFragment extends Fragment implements OnStartDragListener {
         rvTasks = (RecyclerView) view.findViewById(R.id.rvTasks);
         fabAddTask = (FloatingActionButton) view.findViewById(R.id.fabAddTask);
 
-        // getting the category file name that contains these tasks
+        // Getting the category file name that contains these tasks
         Bundle information = getArguments();
         catTasks = information.getString("catName") + ".txt";
 
@@ -112,15 +110,18 @@ public class TasksFragment extends Fragment implements OnStartDragListener {
             public void onClick(View view) {
                 // Prevent user with adding multiple blank categories
                 RecyclerView.ViewHolder lastTask = rvTasks.findViewHolderForAdapterPosition(taskAdapter.getItemCount() - 1);
-                EditText etTaskDescription = (EditText) lastTask.itemView.findViewById(R.id.etTaskDescription);
-                TextView tvDueDate = (TextView) lastTask.itemView.findViewById(R.id.tvDueDate);
 
-                if (etTaskDescription.getText().length() > 0 && !tvDueDate.getText().toString().equals("set due date")){
-                    Task task = new Task();
-                    mTasksList.add(task);
-                    taskAdapter.notifyDataSetChanged();
-                } else {
-                    Toast.makeText(getContext(), "Fill out the current blank task!", Toast.LENGTH_SHORT).show();
+                if (lastTask != null) {
+                    EditText etTaskDescription = (EditText) lastTask.itemView.findViewById(R.id.etTaskDescription);
+                    TextView tvDueDate = (TextView) lastTask.itemView.findViewById(R.id.tvDueDate);
+
+                    if (etTaskDescription.getText().length() > 0 && !tvDueDate.getText().toString().equals("set due date")){
+                        addNewTask();
+                    } else {
+                        Toast.makeText(getContext(), "Fill out the current blank task!", Toast.LENGTH_SHORT).show();
+                    }
+                } else { // No tasks yet in the category
+                    addNewTask();
                 }
             }
         });
@@ -130,5 +131,11 @@ public class TasksFragment extends Fragment implements OnStartDragListener {
     public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteTaskCallback(taskAdapter, getContext()));
         itemTouchHelper.startDrag(viewHolder);
+    }
+
+    public void addNewTask() {
+        Task task = new Task();
+        mTasksList.add(task);
+        taskAdapter.notifyDataSetChanged();
     }
 }
