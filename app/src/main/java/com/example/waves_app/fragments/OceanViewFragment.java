@@ -1,14 +1,19 @@
 package com.example.waves_app.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.waves_app.R;
 import com.google.devrel.vrviewapp.ImageLoaderTask;
@@ -28,19 +33,31 @@ public class OceanViewFragment extends Fragment {
         panoWidgetView = (VrPanoramaView) view.findViewById(R.id.pano_view);
         plasticOceans = (ImageView) view.findViewById(R.id.ivPlasticOceans);
         oceanCleanup = (ImageView) view.findViewById(R.id.ivOceanCleanup);
+        final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
 
         // redirects to those organizations and their websites
         plasticOceans.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //https://plasticoceans.org
+                Fragment fragment = new WebViewFragment();
+                Bundle information = new Bundle();
+
+                information.putString("url", "https://plasticoceans.org");
+                fragment.setArguments(information);
+                fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack(null).commit();
             }
         });
 
         oceanCleanup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //http://theoceancleanup.com/north-pacific-foundation/
+                Fragment fragment = new WebViewFragment();
+                Bundle information = new Bundle();
+
+                information.putString("url", "http://theoceancleanup.com/north-pacific-foundation/");
+                fragment.setArguments(information);
+                fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack(null).commit();
             }
         });
 
