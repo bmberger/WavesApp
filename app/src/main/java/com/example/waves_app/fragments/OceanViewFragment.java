@@ -35,7 +35,6 @@ public class OceanViewFragment extends Fragment {
         oceanCleanup = (ImageView) view.findViewById(R.id.ivOceanCleanup);
         final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 
-
         // redirects to those organizations and their websites
         plasticOceans.setOnClickListener(new View.OnClickListener() {
             @Override
