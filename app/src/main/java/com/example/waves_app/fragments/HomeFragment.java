@@ -1,5 +1,7 @@
 package com.example.waves_app.fragments;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -50,10 +52,31 @@ public class HomeFragment extends Fragment {
 
         int categoryCount = categoryCount();
 
-        String[] homePageOptions = new String[] { "My Categories (" + categoryCount + ")", "FAQ", "Tutorial", "Settings" };
+        String[] homePageOptions = new String[] { "My Categories (" + categoryCount + ")", "FAQ", "Tutorial", "Fun Facts", "Share", "Settings" };
         items.addAll(Arrays.asList(homePageOptions));
 
-        itemsAdapter = new ArrayAdapter<String>(getContext(), R.layout.simple_row_layout, items);
+        itemsAdapter = new ArrayAdapter<String>(getContext(), R.layout.simple_row_layout, items) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent){
+                // Get the current item from ListView and sets colors for gradient
+                View view = super.getView(position, convertView, parent);
+
+                if (position == 0) {
+                    view.setBackgroundColor(getResources().getColor(R.color.blue_14));
+                } else if (position == 1) {
+                    view.setBackgroundColor(getResources().getColor(R.color.blue_12));
+                } else if (position == 2) {
+                    view.setBackgroundColor(getResources().getColor(R.color.blue_10));
+                } else if (position == 3) {
+                    view.setBackgroundColor(getResources().getColor(R.color.blue_8));
+                } else if (position == 4) {
+                    view.setBackgroundColor(getResources().getColor(R.color.blue_6));
+                } else if (position == 5) {
+                    view.setBackgroundColor(getResources().getColor(R.color.blue_4));
+                }
+                return view;
+            }
+        };
         itemsList.setAdapter(itemsAdapter);
 
 
@@ -79,8 +102,10 @@ public class HomeFragment extends Fragment {
                     fragment = new FAQFragment();
                 } else if (clickedOption.equals("Tutorial")) {
                     fragment = new TutorialFragment();
-                } else {
+                } else if (clickedOption.equals("Settings")){
                     fragment = new SettingsFragment();
+                } else {
+                    fragment = new HomeFragment();
                 }
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack(null).commit();
             }
