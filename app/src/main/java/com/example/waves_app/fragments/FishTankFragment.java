@@ -50,6 +50,9 @@ public class FishTankFragment extends Fragment {
         // Calculate values for how many fish to display
         removedCount = readCompletedCount();
         displayCount = ((removedCount % 15) == 0) ? 15 : removedCount % 15;
+        if (removedCount == 0) {
+            displayCount = 0; // for the base case, when user first installs app
+        }
 
         // Set layout width and height range
         Display display = view.getDisplay();
