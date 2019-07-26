@@ -59,12 +59,10 @@ public class CalendarFragment extends Fragment {
         compactCalendar = (CompactCalendarView) getActivity().findViewById(R.id.calendarView);
 
         compactCalendar.setFirstDayOfWeek(Calendar.SUNDAY); // Sets the first day of the calendar as specified
-        tvTasksForDay.setText("Select a day to view tasks");
         tvTasksForDay.setMovementMethod(new ScrollingMovementMethod());
 
         // Initially sets the monthYear textView with information
-        Calendar c = Calendar.getInstance();   // This takes current date
-        c.set(Calendar.DAY_OF_MONTH, 1);
+        Calendar c = Calendar.getInstance();   // This gets current date
         onMonthScroll(c.getTime());
 
         loadEvents();
@@ -86,33 +84,14 @@ public class CalendarFragment extends Fragment {
             compactCalendar.addEvent(ev1);
         }
 
+        // Start with tasks on the current day
+        loadTasksForDay(c.getTime());
+
         // Display the tasks for a day that is selected
         compactCalendar.setListener(new CompactCalendarView.CompactCalendarViewListener() {
             @Override
             public void onDayClick(Date dateClicked) {
-                String month = tvMonthYear.getText().toString().substring(0, tvMonthYear.getText().toString().indexOf(" "));
-                int date = dateClicked.getDate();
-                tvDaySelected.setText(month + " " + date + ":");
-                tvTasksForDay.scrollTo(0, 0);
-
-                List<Event> events = compactCalendar.getEvents(dateClicked);
-                String remindersOfDay = "- ";
-                if (events != null) {
-                    for (int i = 0; i < events.size(); i++) {
-                        String temp;
-                        if (i == (events.size() - 1)) {
-                            temp = events.get(i).getData().toString();
-                        } else {
-                            temp = events.get(i).getData().toString() + "\n- ";
-                        }
-                        remindersOfDay += temp;
-                    }
-                    if (remindersOfDay.length() != 2) {
-                        tvTasksForDay.setText(remindersOfDay);
-                    } else {
-                        tvTasksForDay.setText("Nothing for this day!");
-                    }
-                }
+                loadTasksForDay(dateClicked);
             }
 
             @Override
@@ -123,8 +102,34 @@ public class CalendarFragment extends Fragment {
         });
     }
 
-    public void onMonthScroll(Date firstDayOfNewMonth) {
+    private void onMonthScroll(Date firstDayOfNewMonth) {
         tvMonthYear.setText(dateFormatMonth.format(firstDayOfNewMonth));
+    }
+
+    private void loadTasksForDay(Date dateClicked) {
+        String month = tvMonthYear.getText().toString().substring(0, tvMonthYear.getText().toString().indexOf(" "));
+        int date = dateClicked.getDate();
+        tvDaySelected.setText(month + " " + date + ":");
+        tvTasksForDay.scrollTo(0, 0);
+
+        List<Event> events = compactCalendar.getEvents(dateClicked);
+        String remindersOfDay = "- ";
+        if (events != null) {
+            for (int i = 0; i < events.size(); i++) {
+                String temp;
+                if (i == (events.size() - 1)) {
+                    temp = events.get(i).getData().toString();
+                } else {
+                    temp = events.get(i).getData().toString() + "\n- ";
+                }
+                remindersOfDay += temp;
+            }
+            if (remindersOfDay.length() != 2) {
+                tvTasksForDay.setText(remindersOfDay);
+            } else {
+                tvTasksForDay.setText("Nothing for this day!");
+            }
+        }
     }
 
     private void loadEvents() {
@@ -157,7 +162,7 @@ public class CalendarFragment extends Fragment {
         }
     }
 
-    public void readCategoryItems() {
+    private void readCategoryItems() {
         try {
             // create the array of categories
             categoryData = new ArrayList<String>(FileUtils.readLines(getCategoriesFile(), Charset.defaultCharset()));
