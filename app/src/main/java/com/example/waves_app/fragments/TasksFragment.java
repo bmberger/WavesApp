@@ -137,5 +137,6 @@ public class TasksFragment extends Fragment implements OnStartDragListener {
         Task task = new Task();
         mTasksList.add(task);
         taskAdapter.notifyDataSetChanged();
+        rvTasks.scrollToPosition(taskAdapter.getItemCount() - 1);
     }
 }
