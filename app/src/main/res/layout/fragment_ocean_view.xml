@@ -1,15 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <com.google.vr.sdk.widgets.pano.VrPanoramaView
         android:id="@+id/pano_view"
-        android:layout_weight="5"
-        android:layout_height="0dp"
+        android:layout_width="409dp"
+        android:layout_height="300dp"
         android:layout_margin="5dip"
-        android:layout_width="match_parent"
+        android:layout_marginTop="116dp"
+        android:layout_weight="5"
+        android:contentDescription="VR"
         android:scrollbars="none"
-        android:contentDescription="VR"/>
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:layout_weight="5"
+        android:text="TextView"
+        app:layout_constraintTop_toBottomOf="@+id/pano_view"
+        tools:layout_editor_absoluteX="0dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

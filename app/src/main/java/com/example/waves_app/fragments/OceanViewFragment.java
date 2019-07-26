@@ -13,6 +13,8 @@ import com.example.waves_app.R;
 import com.google.devrel.vrviewapp.ImageLoaderTask;
 import com.google.vr.sdk.widgets.pano.VrPanoramaView;
 
+import java.util.Random;
+
 public class OceanViewFragment extends Fragment {
 
     private VrPanoramaView panoWidgetView;
@@ -60,12 +62,18 @@ public class OceanViewFragment extends Fragment {
         VrPanoramaView.Options viewOptions = new VrPanoramaView.Options();
         viewOptions.inputType = VrPanoramaView.Options.TYPE_STEREO_OVER_UNDER;
 
-        // use the name of the image in the assets/ directory.
-        String panoImageName = "sample_converted.jpg";
+        // use the name of the image in the assets/directory.
+        String panoImageName = getRandomFishScene();
 
         // create the task passing the widget view and call execute to start.
         task = new ImageLoaderTask(panoWidgetView, viewOptions, panoImageName);
         task.execute(getActivity().getAssets());
         backgroundImageLoaderTask = task;
+    }
+
+    public String getRandomFishScene() {
+        // Generates random integer between 0 and 4 inclusive
+        int random = new Random().nextInt(5);
+        return "vr_" + random + ".jpg";
     }
 }
