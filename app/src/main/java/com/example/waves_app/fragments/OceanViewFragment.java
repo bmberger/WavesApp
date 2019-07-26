@@ -30,6 +30,8 @@ public class OceanViewFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_ocean_view, container,false);
+        view.setBackgroundDrawable(getResources().getDrawable(R.drawable.sand_background));
+
         panoWidgetView = (VrPanoramaView) view.findViewById(R.id.pano_view);
         plasticOceans = (ImageView) view.findViewById(R.id.ivPlasticOceans);
         oceanCleanup = (ImageView) view.findViewById(R.id.ivOceanCleanup);
