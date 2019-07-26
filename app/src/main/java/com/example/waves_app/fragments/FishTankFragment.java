@@ -12,11 +12,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.waves_app.R;
 
 import org.apache.commons.io.FileUtils;
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.IOException;
@@ -70,6 +70,16 @@ public class FishTankFragment extends Fragment {
             fishImage.setY(new Random().nextInt(maxHeight) + 100);
             layout.addView(fishImage);
         }
+
+        tvTotalCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // move us into ocean view fragment
+                final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                Fragment fragment = new OceanViewFragment();
+                fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack(null).commit();
+            }
+        });
     }
 
     public int getRandomFishId() {
