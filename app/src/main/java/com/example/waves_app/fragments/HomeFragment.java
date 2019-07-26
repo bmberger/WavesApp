@@ -52,7 +52,7 @@ public class HomeFragment extends Fragment {
 
         int categoryCount = categoryCount();
 
-        String[] homePageOptions = new String[] { "My Categories (" + categoryCount + ")", "FAQ", "Tutorial", "Fun Facts", "Share", "Settings" };
+        String[] homePageOptions = new String[] { "My Categories (" + categoryCount + ")", "FAQ", "Tutorial", "Fun Facts", "Search", "Share", "Settings" };
         items.addAll(Arrays.asList(homePageOptions));
 
         itemsAdapter = new ArrayAdapter<String>(getContext(), R.layout.simple_row_layout, items) {
@@ -73,6 +73,8 @@ public class HomeFragment extends Fragment {
                     view.setBackgroundColor(getResources().getColor(R.color.blue_6));
                 } else if (position == 5) {
                     view.setBackgroundColor(getResources().getColor(R.color.blue_4));
+                } else if (position == 6) {
+                    view.setBackgroundColor(getResources().getColor(R.color.blue_2));
                 }
                 return view;
             }
@@ -102,6 +104,9 @@ public class HomeFragment extends Fragment {
                     fragment = new FAQFragment();
                 } else if (clickedOption.equals("Tutorial")) {
                     fragment = new TutorialFragment();
+                } else if (clickedOption.equals("Search")){
+                    //TODO: Angela's code for search fragment
+                    fragment = new HomeFragment();
                 } else if (clickedOption.equals("Settings")){
                     fragment = new SettingsFragment();
                 } else {
