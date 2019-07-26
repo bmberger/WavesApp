@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,10 +20,31 @@ public class OceanViewFragment extends Fragment {
 
     private VrPanoramaView panoWidgetView;
     private ImageLoaderTask backgroundImageLoaderTask;
+    private ImageView plasticOceans;
+    private ImageView oceanCleanup;
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_ocean_view, container,false);
         panoWidgetView = (VrPanoramaView) view.findViewById(R.id.pano_view);
+        plasticOceans = (ImageView) view.findViewById(R.id.ivPlasticOceans);
+        oceanCleanup = (ImageView) view.findViewById(R.id.ivOceanCleanup);
+
+        // redirects to those organizations and their websites
+        plasticOceans.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //https://plasticoceans.org
+            }
+        });
+
+        oceanCleanup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //http://theoceancleanup.com/north-pacific-foundation/
+            }
+        });
+
+
         return view;
     }
 
