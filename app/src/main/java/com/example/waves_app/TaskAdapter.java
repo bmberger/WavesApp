@@ -36,6 +36,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.waves_app.model.Category;
 import com.example.waves_app.model.Task;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -50,11 +51,12 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
+public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> implements ItemTouchHelperAdapter {
 
     private Context context;
     private List<Task> mTasksList;
@@ -127,6 +129,43 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     public int getItemCount() {
         return mTasksList.size();
     }
+
+    public void onItemDismiss(int position) {
+        mTasksList.remove(position);
+        parsedData.remove(position);
+        writeTaskItems();
+        notifyItemRemoved(position);
+    }
+
+
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        //Log.v("", "Log position" + fromPosition + " " + toPosition);
+        if (fromPosition < mTasksList.size() && toPosition < mTasksList.size()) {
+            if (fromPosition < toPosition) {
+                for (int i = fromPosition; i < toPosition; i++) {
+                    Collections.swap(mTasksList, i, i + 1);
+                    Collections.swap(parsedData, i, i + 1);
+                }
+            } else {
+                for (int i = fromPosition; i > toPosition; i--) {
+                    Collections.swap(mTasksList, i, i - 1);
+                    Collections.swap(parsedData, i, i - 1);
+                }
+            }
+            notifyItemMoved(fromPosition, toPosition);
+            writeTaskItems();
+        }
+        return true;
+    }
+
+
+    public void updateList(List<Task> MTasksList, List<String> ParsedData) {
+        mTasksList = MTasksList;
+        parsedData = ParsedData;
+        notifyDataSetChanged();
+        writeTaskItems();
+    }
+
 
     // Creates one individual row in the recycler view
     @NonNull
