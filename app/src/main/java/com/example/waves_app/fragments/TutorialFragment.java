@@ -15,7 +15,9 @@ public class TutorialFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_tutorial, container, false);
+        View view = inflater.inflate(R.layout.fragment_tutorial, container, false);
+        view.setBackgroundDrawable(getResources().getDrawable(R.drawable.sand_background));
+        return view;
     }
 
     @Override
