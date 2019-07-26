@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.waves_app.R;
 
@@ -85,6 +86,16 @@ public class FishTankFragment extends Fragment {
             // Displays the image onto screen
             layout.addView(fishImage);
         }
+
+        tvTotalCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // move us into ocean view fragment
+                final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                Fragment fragment = new OceanViewFragment();
+                fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack(null).commit();
+            }
+        });
     }
 
     private Path generatePath() {
