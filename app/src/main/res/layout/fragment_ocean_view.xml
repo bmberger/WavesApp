@@ -5,26 +5,64 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="375dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="According to National Geographic, there is about 8 million tons of plastic waste that escape into the oceans per year. "
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
     <com.google.vr.sdk.widgets.pano.VrPanoramaView
         android:id="@+id/pano_view"
         android:layout_width="409dp"
         android:layout_height="300dp"
         android:layout_margin="5dip"
-        android:layout_marginTop="116dp"
+        android:layout_marginTop="432dp"
         android:layout_weight="5"
         android:contentDescription="VR"
         android:scrollbars="none"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="0dp" />
+        tools:layout_editor_absoluteX="1dp" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
         android:layout_weight="5"
-        android:text="TextView"
-        app:layout_constraintTop_toBottomOf="@+id/pano_view"
-        tools:layout_editor_absoluteX="0dp" />
+        android:text="For every fish that you save on the app, we donate resources to nonprofits removing plastic pollution from our oceans. "
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pano_view" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="373dp"
+        android:layout_height="65dp"
+        android:layout_marginEnd="8dp"
+        android:text="We need to do something, which is why Waves is trying to make a wave in this movement. But, more work is always needed to be done."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.633"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="To learn more, please visit:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
