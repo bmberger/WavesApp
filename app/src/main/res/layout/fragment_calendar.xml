@@ -10,7 +10,7 @@
     <com.github.sundeepk.compactcalendarview.CompactCalendarView
         android:id="@+id/calendarView"
         android:layout_width="0dp"
-        android:layout_height="430dp"
+        android:layout_height="350dp"
         app:compactCalendarBackgroundColor="@android:color/transparent"
         app:compactCalendarCurrentDayBackgroundColor="@android:color/transparent"
         app:compactCalendarCurrentDayTextColor="@color/blue_5"
@@ -28,7 +28,7 @@
         android:layout_marginTop="16dp"
         android:text="Month Year"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="20dp"
+        android:textSize="23dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -40,7 +40,7 @@
         android:layout_marginStart="15dp"
         android:text="Tasks on "
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="15dp"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/calendarView"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -49,7 +49,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="15dp"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/calendarView"
         app:layout_constraintStart_toEndOf="@+id/tvEventHolder" />
 
@@ -61,7 +61,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:text="Select a day to view tasks"
-        android:textSize="15dp"
+        android:textSize="18dp"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

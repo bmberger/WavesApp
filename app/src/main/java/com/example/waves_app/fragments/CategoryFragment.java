@@ -4,10 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.EditText;
 import android.widget.Toast;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,16 +40,16 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
     private List<String> taskData;
     private List<Integer> num;
 
-    // returns the file in which the data is stored
+    // Returns the file in which the data is stored
     private File getDataFile() {
         return new File(getContext().getFilesDir(), "allCategories.txt");
     }
 
-    // read the items from the file system
+    // Read the items from the file system
     public void readCategoryItems() {
         categories = new ArrayList<>();
         try {
-            // create the array using the content in the file
+            // Create the array using the content in the file
             parsedData = new ArrayList<String>(FileUtils.readLines(getDataFile(), Charset.defaultCharset()));
 
             for(String obj : parsedData) {
@@ -63,9 +61,9 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
             }
 
         } catch (IOException e) {
-            // print the error to the console
+            // Print the error to the console
             e.printStackTrace();
-            // just load an empty list
+            // Just load an empty list
             categories = new ArrayList<>();
             parsedData = new ArrayList<>();
         }
@@ -92,8 +90,7 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
         // Set the layout manager on the recycler view
         rvCategories.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        ItemTouchHelper.Callback callback =
-                new ItemMoveCallbackCategory(categoryAdapter);
+        ItemTouchHelper.Callback callback = new ItemMoveCallbackCategory(categoryAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(rvCategories);
 
@@ -111,13 +108,16 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
                 // Prevent user with adding multiple blank categories
                 // First need to grab the last added category to check if it has been named
                 RecyclerView.ViewHolder lastCategory = rvCategories.findViewHolderForAdapterPosition(categoryAdapter.getItemCount() - 1);
-                EditText etCatName = (EditText) lastCategory.itemView.findViewById(R.id.etNewCategory);
-                if (etCatName.getText().toString().length() > 0) {
-                    Category category = new Category();
-                    categories.add(category);
-                    categoryAdapter.notifyDataSetChanged();
-                } else {
-                    Toast.makeText(getContext(), "Fill out the current blank category!", Toast.LENGTH_SHORT).show();
+
+                if (lastCategory != null) {
+                    EditText etCatName = (EditText) lastCategory.itemView.findViewById(R.id.etNewCategory);
+                    if (etCatName.getText().toString().length() > 0) {
+                        addNewCategory();
+                    } else {
+                        Toast.makeText(getContext(), "Fill out the current blank category!", Toast.LENGTH_SHORT).show();
+                    }
+                } else { // There are currently no categories in the list so it's okay to add one
+                    addNewCategory();
                 }
             }
         });
@@ -137,6 +137,12 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
             num.add(taskData.size());
         }
         return num;
+    }
+
+    public void addNewCategory() {
+        Category category = new Category();
+        categories.add(category);
+        categoryAdapter.notifyDataSetChanged();
     }
 
     private File getTaskFile(String cat) {
