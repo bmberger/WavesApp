@@ -73,6 +73,7 @@ public class FishTankFragment extends Fragment {
             ImageView fishImage = new ImageView(getContext());
             fishImage.setLayoutParams(new android.view.ViewGroup.LayoutParams(300, 200));
 
+            // Get the fish image and add it into the view
             int fishID = getRandomFishId();
             fishImage.setImageResource(fishID);
 
@@ -80,6 +81,8 @@ public class FishTankFragment extends Fragment {
             animator.setDuration(generateTime());
             animator.setRepeatCount(ValueAnimator.INFINITE);
             animator.start();
+
+            // Displays the image onto screen
             layout.addView(fishImage);
         }
     }
@@ -97,7 +100,7 @@ public class FishTankFragment extends Fragment {
     }
 
     private int generateTime() {
-        // Generate random number between 10 and 20 inclusive
+        // Generate random number between 20 and 30 inclusive
         int time = new Random().nextInt(11) + 20;
         return time * 1000;
     }
