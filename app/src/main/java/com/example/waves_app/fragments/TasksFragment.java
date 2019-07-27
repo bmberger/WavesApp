@@ -95,8 +95,7 @@ public class TasksFragment extends Fragment implements OnStartDragListener {
 
         taskAdapter = new TaskAdapter(getContext(), mTasksList, parsedData, catTasks);
 
-        ItemTouchHelper.Callback callback =
-                new ItemMoveCallbackTask(taskAdapter);
+        ItemTouchHelper.Callback callback = new ItemMoveCallbackTask(taskAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(rvTasks);
 
@@ -139,5 +138,6 @@ public class TasksFragment extends Fragment implements OnStartDragListener {
         Task task = new Task();
         mTasksList.add(task);
         taskAdapter.notifyDataSetChanged();
+        rvTasks.scrollToPosition(taskAdapter.getItemCount() - 1);
     }
 }

@@ -145,6 +145,7 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
         Category category = new Category();
         categories.add(category);
         categoryAdapter.notifyDataSetChanged();
+        rvCategories.scrollToPosition(categoryAdapter.getItemCount() - 1);
     }
 
     private File getTaskFile(String cat) {
