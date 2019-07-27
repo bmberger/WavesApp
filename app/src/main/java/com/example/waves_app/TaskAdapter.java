@@ -274,18 +274,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
             tvDueDate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Calendar cal = Calendar.getInstance();
-                    int year = cal.get(Calendar.YEAR);
-                    int month = cal.get(Calendar.MONTH);
-                    int day = cal.get(Calendar.DAY_OF_MONTH);
+                    getDateInfo(view);
+                }
+            });
 
-                    DatePickerDialog dialog = new DatePickerDialog(
-                            view.getContext(),
-                            android.R.style.Theme_Holo_Light_Dialog_MinWidth,
-                            listener,
-                            year, month, day);
-                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                    dialog.show();
+            tvDueDateHolder.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    getDateInfo(view);
                 }
             });
 
@@ -356,6 +352,21 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                     }
                 }
             });
+        }
+
+        public void getDateInfo(View view) {
+            Calendar cal = Calendar.getInstance();
+            int year = cal.get(Calendar.YEAR);
+            int month = cal.get(Calendar.MONTH);
+            int day = cal.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog dialog = new DatePickerDialog(
+                    view.getContext(),
+                    android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+                    listener,
+                    year, month, day);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.show();
         }
 
         // Gets the color id of that category item
