@@ -1,7 +1,5 @@
 package com.example.waves_app.fragments;
 
-import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +14,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.example.waves_app.MainActivity;
 import com.example.waves_app.R;
 
 import org.apache.commons.io.FileUtils;
@@ -105,8 +102,7 @@ public class HomeFragment extends Fragment {
                 } else if (clickedOption.equals("Tutorial")) {
                     fragment = new TutorialFragment();
                 } else if (clickedOption.equals("Search")){
-                    //TODO: Angela's code for search fragment
-                    fragment = new HomeFragment();
+                    fragment = new SearchFragment();
                 } else if (clickedOption.equals("Settings")){
                     fragment = new SettingsFragment();
                 } else {
