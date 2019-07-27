@@ -59,9 +59,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-        int seletedItemId = bottomNavigationView.getSelectedItemId();
+        int selectedItemId = bottomNavigationView.getSelectedItemId();
 
-        if (R.id.miHome != seletedItemId) {
+        if (R.id.miHome != selectedItemId) {
             setHomeItem(MainActivity.this);
         } else {
             super.onBackPressed();

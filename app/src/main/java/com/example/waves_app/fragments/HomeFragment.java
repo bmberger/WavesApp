@@ -1,7 +1,6 @@
 package com.example.waves_app.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,15 +75,13 @@ public class HomeFragment extends Fragment {
                 return view;
             }
         };
+
         itemsList.setAdapter(itemsAdapter);
-
-
         listViewListener();
     }
 
     // Listens for when someone clicks on an item in list
     private void listViewListener() {
-        Log.i("MainActivity", "Setting up listener on list view");
         itemsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
