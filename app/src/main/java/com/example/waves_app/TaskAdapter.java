@@ -258,6 +258,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
         }
 
         public void bind(final Task task) {
+            int id = getColorId(getAdapterPosition());
+            itemView.setBackgroundColor(context.getResources().getColor(id));
+
             etTask.setText(task.getTaskDetail());
             tvDueDateHolder.setText("Due Date:");
 
@@ -353,6 +356,59 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                     }
                 }
             });
+        }
+
+        // Gets the color id of that category item
+        public int getColorId(int viewColor) {
+            int id;
+            switch (viewColor) {
+                case 0:
+                    id = R.color.blue_14;
+                    break;
+                case 1:
+                    id = R.color.blue_13;
+                    break;
+                case 2:
+                    id = R.color.blue_12;
+                    break;
+                case 3:
+                    id = R.color.blue_11;
+                    break;
+                case 4:
+                    id = R.color.blue_10;
+                    break;
+                case 5:
+                    id = R.color.blue_9;
+                    break;
+                case 6:
+                    id = R.color.blue_8;
+                    break;
+                case 7:
+                    id = R.color.blue_7;
+                    break;
+                case 8:
+                    id = R.color.blue_6;
+                    break;
+                case 9:
+                    id = R.color.blue_5;
+                    break;
+                case 10:
+                    id = R.color.blue_4;
+                    break;
+                case 11:
+                    id = R.color.blue_3;
+                    break;
+                case 12:
+                    id = R.color.blue_2;
+                    break;
+                case 13:
+                    id = R.color.blue_1;
+                    break;
+                default:
+                    id = R.color.blue_0; // white
+                    break;
+            }
+            return id;
         }
 
         public String reformatDate(int month, int day, int year) {
