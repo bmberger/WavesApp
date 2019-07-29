@@ -137,7 +137,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
         parsedData.remove(position);
         writeTaskItems();
         notifyItemRemoved(position);
-        notifyItemChanged(position);
+        notifyItemRangeChanged(position, parsedData.size() - 1 - position);
     }
 
     public boolean onItemMove(int fromPosition, int toPosition) {
@@ -155,7 +155,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                 }
             }
             notifyItemMoved(fromPosition, toPosition);
-            notifyItemChanged(toPosition);
+            notifyItemRangeChanged(toPosition, parsedData.size() - 1 - toPosition);
             writeTaskItems();
         }
         //notifyDataSetChanged();
