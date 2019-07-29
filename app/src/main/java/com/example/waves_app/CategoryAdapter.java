@@ -144,7 +144,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         parsedData.remove(position);
         writeCatItems();
         notifyItemRemoved(position);
-        notifyItemChanged(position);
+        notifyItemRangeChanged(position, parsedData.size() - 1 - position);
     }
 
 
@@ -163,7 +163,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                 }
             }
             notifyItemMoved(fromPosition, toPosition);
-            notifyItemChanged(toPosition);
+            notifyItemRangeChanged(toPosition, parsedData.size() - 1 - toPosition);
             writeCatItems();
         }
         return true;
