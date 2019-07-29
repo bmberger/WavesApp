@@ -30,7 +30,6 @@ public class SwipeToDeleteCategoryCallback extends ItemTouchHelper.SimpleCallbac
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder holder, int direction) {
         int position = holder.getAdapterPosition();
-        // TODO - implement deleteCategory method in CategoryAdapter
         categoryAdapter.deleteCategory(position, holder);
     }
 
