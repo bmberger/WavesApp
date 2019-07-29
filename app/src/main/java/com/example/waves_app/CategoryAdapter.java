@@ -144,26 +144,28 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         parsedData.remove(position);
         writeCatItems();
         notifyItemRemoved(position);
-        notifyItemRangeChanged(position, parsedData.size() - 1 - position);
+        notifyItemRangeChanged(position, parsedData.size() - position);
     }
 
 
     public boolean onItemMove(int fromPosition, int toPosition) {
-        //Log.v("", "Log position" + fromPosition + " " + toPosition);
         if (fromPosition < categories.size() && toPosition < categories.size()) {
             if (fromPosition < toPosition) {
+                // if you are moving up list
                 for (int i = fromPosition; i < toPosition; i++) {
                     Collections.swap(categories, i, i + 1);
                     Collections.swap(parsedData, i, i + 1);
                 }
+                notifyItemRangeChanged(fromPosition, parsedData.size() - fromPosition);
             } else {
+                // if you are moving down list
                 for (int i = fromPosition; i > toPosition; i--) {
                     Collections.swap(categories, i, i - 1);
                     Collections.swap(parsedData, i, i - 1);
                 }
+                notifyItemRangeChanged(toPosition, parsedData.size() - toPosition);
             }
             notifyItemMoved(fromPosition, toPosition);
-            notifyItemRangeChanged(toPosition, parsedData.size() - 1 - toPosition);
             writeCatItems();
         }
         return true;

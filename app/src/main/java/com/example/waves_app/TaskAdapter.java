@@ -148,17 +148,17 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                     Collections.swap(mTasksList, i, i + 1);
                     Collections.swap(parsedData, i, i + 1);
                 }
+                notifyItemRangeChanged(fromPosition, parsedData.size() - fromPosition);
             } else {
                 for (int i = fromPosition; i > toPosition; i--) {
                     Collections.swap(mTasksList, i, i - 1);
                     Collections.swap(parsedData, i, i - 1);
                 }
+                notifyItemRangeChanged(toPosition, parsedData.size() - toPosition);
             }
             notifyItemMoved(fromPosition, toPosition);
-            notifyItemRangeChanged(toPosition, parsedData.size() - toPosition);
             writeTaskItems();
         }
-        //notifyDataSetChanged();
         return true;
     }
 
