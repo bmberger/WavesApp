@@ -156,7 +156,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                     Collections.swap(categories, i, i + 1);
                     Collections.swap(parsedData, i, i + 1);
                 }
-                notifyItemRangeChanged(fromPosition, parsedData.size() - toPosition);
+                notifyItemRangeChanged(fromPosition, parsedData.size() - fromPosition);
             } else {
                 // if you are moving down list
                 for (int i = fromPosition; i > toPosition; i--) {
