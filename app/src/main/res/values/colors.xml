@@ -1,21 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
-    <color name="white">#FFFFFF</color>
-    <color name="blue_2">#ffb4daff</color>
-    <color name="blue_3">#ff89c5ff</color>
-    <color name="blue_4">#ff5eb1ff</color>
-    <color name="blue_5">#ff3897f0</color>
+    <color name="colorPrimary">#51a2d5</color>
+    <color name="colorPrimaryDark">#0068CC</color>
+    <color name="colorAccent">#ff147b9f</color>
+
+    <color name="middle">#51a2d5</color>
+    <color name="top">#004c89</color>
+    <color name="bottom">#d5f3fe</color>
+
+    <color name="not_checked">#B98C5F</color>
+
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="blue_0">#ffffff</color>
+    <color name="blue_1">#ecf4fb</color>
+    <color name="blue_2">#dae9f7</color>
+    <color name="blue_3">#c8def4</color>
+    <color name="blue_4">#b6d4f0</color>
+    <color name="blue_5">#a3c9ec</color>
+    <color name="blue_6">#91bee9</color>
+    <color name="blue_7">#7fb4e5</color>
+    <color name="blue_8">#6da9e1</color>
+    <color name="blue_9">#5B9EDE</color>
+    <color name="blue_10">#4893DA</color>
+    <color name="blue_11">#3689D6</color>
+    <color name="blue_12">#247ED3</color>
+    <color name="blue_13">#1273CF</color>
+    <color name="blue_14">#0068CC</color>
+  
+    <color name="dark_blue_7">#ff0053a4</color>
+    <color name="dark_blue_8">#ff003569</color>
+    <color name="dark_blue_9">#ff00264a</color>
     <color name="blue_5_10_transparent">#1a3897f0</color>
     <color name="blue_5_20_transparent">#333897f0</color>
     <color name="blue_5_30_transparent">#4d3897f0</color>
     <color name="blue_5_70_transparent">#b33897f0</color>
-    <color name="blue_6">#ff1372cc</color>
-    <color name="blue_7">#ff0053a4</color>
-    <color name="blue_8">#ff003569</color>
-    <color name="blue_9">#ff00264a</color>
     <color name="blueteal_0">#ffd6eef8</color>
     <color name="blueteal_1">#ff78d0ef</color>
     <color name="blueteal_10">#ff02dce5</color>

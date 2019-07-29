@@ -4,7 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +20,7 @@ import com.example.waves_app.OnStartDragListener;
 import com.example.waves_app.R;
 import com.example.waves_app.SwipeToDeleteCategoryCallback;
 import com.example.waves_app.model.Category;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.apache.commons.io.FileUtils;
 
@@ -33,21 +35,21 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
     private List<Category> categories;
     private CategoryAdapter categoryAdapter;
     private RecyclerView rvCategories;
-    private Button button;
+    private FloatingActionButton fabAddCategory;
     private List<String> parsedData;
     private List<String> taskData;
     private List<Integer> num;
 
-    // returns the file in which the data is stored
+    // Returns the file in which the data is stored
     private File getDataFile() {
         return new File(getContext().getFilesDir(), "allCategories.txt");
     }
 
-    // read the items from the file system
+    // Read the items from the file system
     public void readCategoryItems() {
         categories = new ArrayList<>();
         try {
-            // create the array using the content in the file
+            // Create the array using the content in the file
             parsedData = new ArrayList<String>(FileUtils.readLines(getDataFile(), Charset.defaultCharset()));
 
             for(String obj : parsedData) {
@@ -59,24 +61,26 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
             }
 
         } catch (IOException e) {
-            // print the error to the console
+            // Print the error to the console
             e.printStackTrace();
-            // just load an empty list
+            // Just load an empty list
             categories = new ArrayList<>();
             parsedData = new ArrayList<>();
         }
     }
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_categories, container, false);
+        View view = inflater.inflate(R.layout.fragment_categories, container, false);
+        view.setBackgroundDrawable(getResources().getDrawable(R.drawable.sand_background));
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         rvCategories = view.findViewById(R.id.categoriesList);
+        fabAddCategory = (FloatingActionButton) view.findViewById(R.id.fabAddCategory);
 
         readCategoryItems();
 
@@ -88,27 +92,35 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
         // Set the layout manager on the recycler view
         rvCategories.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        ItemTouchHelper.Callback callback =
-                new ItemMoveCallbackCategory(categoryAdapter);
+        ItemTouchHelper.Callback callback = new ItemMoveCallbackCategory(categoryAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(rvCategories);
 
         // Set the categoryAdapter on the recycler view
         rvCategories.setAdapter(categoryAdapter);
 
-
         // Attaching swipe capabilities to the recyclerView
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCategoryCallback(categoryAdapter, getContext()));
         itemTouchHelper.attachToRecyclerView(rvCategories);
 
-        // set on click listener on button
-        button = view.findViewById(R.id.btnAdd);
+        // set on click listener on fab
+        fabAddCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Prevent user with adding multiple blank categories
+                // First need to grab the last added category to check if it has been named
+                RecyclerView.ViewHolder lastCategory = rvCategories.findViewHolderForAdapterPosition(categoryAdapter.getItemCount() - 1);
 
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Category category = new Category();
-                categories.add(category);
-                categoryAdapter.notifyDataSetChanged();
+                if (lastCategory != null) {
+                    EditText etCatName = (EditText) lastCategory.itemView.findViewById(R.id.etNewCategory);
+                    if (etCatName.getText().toString().length() > 0) {
+                        addNewCategory();
+                    } else {
+                        Toast.makeText(getContext(), "Fill out the current blank category!", Toast.LENGTH_SHORT).show();
+                    }
+                } else { // There are currently no categories in the list so it's okay to add one
+                    addNewCategory();
+                }
             }
         });
     }
@@ -119,7 +131,6 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
         itemTouchHelper.startDrag(viewHolder);
     }
 
-
     public List<Integer> taskCount() {
         num = new ArrayList<>();
         for(String obj : parsedData) {
@@ -128,6 +139,13 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
             num.add(taskData.size());
         }
         return num;
+    }
+
+    public void addNewCategory() {
+        Category category = new Category();
+        categories.add(category);
+        categoryAdapter.notifyDataSetChanged();
+        rvCategories.scrollToPosition(categoryAdapter.getItemCount() - 1);
     }
 
     private File getTaskFile(String cat) {
@@ -143,6 +161,4 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
             e.printStackTrace();
         }
     }
-
-
 }

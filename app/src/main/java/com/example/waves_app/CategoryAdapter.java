@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -36,6 +37,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     private Context context;
     private List<String> parsedData;
     private List<Integer> taskCount;
+    private int viewColor = 14; // used for coloring different items
     int pos;
 
     // Variables to be used if user wants to undo deletion of category
@@ -72,6 +74,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater mInflater = LayoutInflater.from(context);
         View view = mInflater.inflate(R.layout.item_category, parent, false);
+
         return new ViewHolder(view);
     }
 
@@ -141,6 +144,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         parsedData.remove(position);
         writeCatItems();
         notifyItemRemoved(position);
+        notifyItemRangeChanged(position, parsedData.size() - 1 - position);
     }
 
 
@@ -159,6 +163,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                 }
             }
             notifyItemMoved(fromPosition, toPosition);
+            notifyItemRangeChanged(toPosition, parsedData.size() - 1 - toPosition);
             writeCatItems();
         }
         return true;
@@ -215,6 +220,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         }
 
         public void bind(final Category category) {
+            int id = getColorId(getAdapterPosition());
+            itemView.setBackgroundColor(context.getResources().getColor(id));
+
             etCategory.setText(category.getCategoryName());
 
             if (new File(context.getFilesDir(), category.getCategoryName() + ".txt").exists()) {
@@ -271,5 +279,58 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                 }
             });
         }
+    }
+
+    // Gets the color id of that category item
+    public int getColorId(int viewColor) {
+        int id;
+        switch (viewColor) {
+            case 0:
+                id = R.color.blue_14;
+                break;
+            case 1:
+                id = R.color.blue_13;
+                break;
+            case 2:
+                id = R.color.blue_12;
+                break;
+            case 3:
+                id = R.color.blue_11;
+                break;
+            case 4:
+                id = R.color.blue_10;
+                break;
+            case 5:
+                id = R.color.blue_9;
+                break;
+            case 6:
+                id = R.color.blue_8;
+                break;
+            case 7:
+                id = R.color.blue_7;
+                break;
+            case 8:
+                id = R.color.blue_6;
+                break;
+            case 9:
+                id = R.color.blue_5;
+                break;
+            case 10:
+                id = R.color.blue_4;
+                break;
+            case 11:
+                id = R.color.blue_3;
+                break;
+            case 12:
+                id = R.color.blue_2;
+                break;
+            case 13:
+                id = R.color.blue_1;
+                break;
+            default:
+                id = R.color.blue_0; // white
+                break;
+        }
+        return id;
     }
 }

@@ -13,7 +13,7 @@
         app:showAsAction="always" />
     <item
         android:id="@+id/miFishTank"
-        android:icon="@drawable/ic_temp_fish_new"
+        android:icon="@drawable/ic_fishtank"
         android:title="Fish Tank"
         app:showAsAction="always" />
 </menu>
