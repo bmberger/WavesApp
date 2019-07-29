@@ -43,16 +43,15 @@ public class SwipeToDeleteTaskCallback extends ItemTouchHelper.SimpleCallback {
 
     @Override
     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-            // gives us a linear fade-out
-            float width = (float) viewHolder.itemView.getWidth();
-            float alpha = 1.0f - Math.abs(dX) / width;
-            viewHolder.itemView.setAlpha(alpha);
-            viewHolder.itemView.setTranslationX(dX);
-        } else {
-            super.onChildDraw(c, recyclerView, viewHolder, dX, dY,
+//        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+//            // gives us a linear fade-out
+//            float width = (float) viewHolder.itemView.getWidth();
+//            float alpha = 1.0f - Math.abs(dX) / width;
+//            viewHolder.itemView.setAlpha(alpha);
+//            viewHolder.itemView.setTranslationX(dX);
+//        }
+        super.onChildDraw(c, recyclerView, viewHolder, dX, dY,
                     actionState, isCurrentlyActive);
-        }
 
         View itemView = viewHolder.itemView;
         int backgroundCornerOffset = 20;

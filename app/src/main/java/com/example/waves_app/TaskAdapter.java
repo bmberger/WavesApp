@@ -471,7 +471,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
         // has the alarm go off at 7pm on user's set date
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.clear();
-        calendar.set(year,month - 1,dayOfMonth,19,21); //19:00 is for 7pm
+        calendar.set(year,month - 1,dayOfMonth,19,00); //19:00 is for 7pm
 
         // allows us to utilize broadcasting and alarms
         Intent myIntent = new Intent(this.context, MyAlarm.class);

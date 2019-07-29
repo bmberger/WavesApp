@@ -30,22 +30,12 @@ public class SwipeToDeleteCategoryCallback extends ItemTouchHelper.SimpleCallbac
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder holder, int direction) {
         int position = holder.getAdapterPosition();
-        // TODO - implement deleteCategory method in CategoryAdapter
         categoryAdapter.deleteCategory(position, holder);
     }
 
     @Override
     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-            // gives us a linear fade-out
-            float width = (float) viewHolder.itemView.getWidth();
-            float alpha = 1.0f - Math.abs(dX) / width;
-            viewHolder.itemView.setAlpha(alpha);
-            viewHolder.itemView.setTranslationX(dX);
-        } else {
-            super.onChildDraw(c, recyclerView, viewHolder, dX, dY,
-                    actionState, isCurrentlyActive);
-        }
+        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
 
         View itemView = viewHolder.itemView;
         int backgroundCornerOffset = 20;
