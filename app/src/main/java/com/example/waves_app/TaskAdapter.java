@@ -332,7 +332,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                         pos = getAdapterPosition();
                         // when you set due date first then task
                         task.setTaskDetail(etTask.getText().toString());
-                        addingAction = true; // this gives us the power to avoid problems with add vs editing
+                        //addingAction = true; // this gives us the power to avoid problems with add vs editing
                         parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
                         writeTaskItems(); // update the persistence
                     }
@@ -347,6 +347,16 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                     String ogDetail = task.getTaskDetail();
                     String newDetail = etTask.getText().toString();
 
+                    // fixes the add on add issue that Android Studio doesn't account for
+                    for (int i = 0; i < parsedData.size(); i++) {
+                        String temp = parsedData.get(i);
+                        int delimiter = temp.indexOf(",");
+
+                        if (newDetail.equals(temp.substring(0, delimiter))) {
+                            pos = i;
+                        }
+                    }
+
                     // When focus is lost check that the text field has valid values.
                     if (!hasFocus && mTasksList.contains(task)) {
                         if (ogDetail.equals("") && !task.getDueDate().equals("set due date")) {
@@ -355,7 +365,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                             addingAction = true; // this gives us the power to avoid problems with add vs editing
                             parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
                             writeTaskItems(); // update the persistence
-                        } else if (newDetail.length() > 0 && !ogDetail.equals(newDetail) && !addingAction) {
+                        } else if (newDetail.length() > 0 && !ogDetail.equals(newDetail)) {
+                            //  && !addingAction
                             // the case if the user needs to edit the name of task
                             if (!task.getDueDate().equals("set due date") && dueDateComparedToCurrent(task.getDueDate()) > 0) {
                                 editAlarm(task.getDueDate(), newDetail, ogDetail);
@@ -365,15 +376,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                             writeTaskItems(); // update the persistence
                         }
                     } else {
-                        // fixes the add on add issue that Android Studio doesn't account for
-                        for (int i = 0; i < parsedData.size(); i++) {
-                            String temp = parsedData.get(i);
-                            int delimiter = temp.indexOf(",");
-
-                            if (etTask.getText().toString().equals(temp.substring(0, delimiter))) {
-                                pos = i;
-                            }
-                        }
                     }
                 }
             });

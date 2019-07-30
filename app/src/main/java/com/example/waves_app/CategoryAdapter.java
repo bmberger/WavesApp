@@ -246,13 +246,22 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                     String ogName = category.getCategoryName();
                     String newName = etCategory.getText().toString();
 
+                    // fixes the add on add issue that Android Studio doesn't account for
+                    for (int i = 0; i < parsedData.size(); i++) {
+                        String temp = parsedData.get(i);
+
+                        if (newName.equals(temp)) {
+                            pos = i;
+                        }
+                    }
+
                     // When focus is lost check that the text field has valid values.
                     if (!hasFocus && categories.contains(category)) {
                         // If anything was typed
                         if (newName.length() > 0) {
 
                             File ogFile = new File(context.getFilesDir(), ogName + ".txt");
-                            File renameFile = new File(context.getFilesDir(), etCategory.getText().toString() + ".txt");
+                            File renameFile = new File(context.getFilesDir(), newName.toString() + ".txt");
                             try {
                                 FileUtils.moveFile(ogFile, renameFile);
                                 ogFile.delete();
@@ -260,7 +269,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                                 e.printStackTrace();
                             }
 
-                            if (newName.length() > 0 && ogName != null && !ogName.equals(newName) && !parsedData.contains(newName)) {
+                            //ogName != null &&
+                            if (!ogName.equals(newName) && !parsedData.contains(newName)) {
                                 // case if the user needs to edit the category
                                 category.setCategoryName(newName);
                                 parsedData.set(pos, newName);
@@ -268,15 +278,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                             }
                         } else {
                             Toast.makeText(v.getContext(), "No category name has been entered!", Toast.LENGTH_LONG).show();
-                        }
-                    } else {
-                        // fixes the add on add issue that Android Studio doesn't account for
-                        for (int i = 0; i < parsedData.size(); i++) {
-                            String temp = parsedData.get(i);
-
-                            if (etCategory.getText().toString().equals(temp)) {
-                                pos = i;
-                            }
                         }
                     }
                 }
