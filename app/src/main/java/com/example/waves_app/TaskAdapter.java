@@ -187,7 +187,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
 
         mTasksList.remove(pos);
         parsedData.remove(pos);
-        if (dueDateComparedToCurrent(recentlyConfiguredTask.getDueDate()) > 0) {
+        if (!recentlyConfiguredTask.getDueDate().equals("set due date") && dueDateComparedToCurrent(recentlyConfiguredTask.getDueDate()) > 0) {
             cancelAlarm(recentlyConfiguredTask.getTaskDetail());
         }
         writeTaskItems();
@@ -211,39 +211,45 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void markComplete(int pos, RecyclerView.ViewHolder holder) {
         recentlyConfiguredTask = mTasksList.get(pos);
+        EditText etTaskDetail = holder.itemView.findViewById(R.id.etTaskDescription);
         configuredTaskPosition = pos;
 
-        mTasksList.remove(pos);
-        parsedData.remove(pos);
+        if (recentlyConfiguredTask.getTaskDetail().length() > 0 || etTaskDetail.getText().toString().length() > 0) {
+            mTasksList.remove(pos);
+            parsedData.remove(pos);
 
-        // Set the count for completedTasks
-        readCompletedCount();
-        completedTasks += 1;
+            // Set the count for completedTasks
+            readCompletedCount();
+            completedTasks += 1;
 
-        writeTaskItems();
-        writeCompletedCount();
+            writeTaskItems();
+            writeCompletedCount();
 
-        if (dueDateComparedToCurrent(recentlyConfiguredTask.getDueDate()) > 0) {
-            cancelAlarm(recentlyConfiguredTask.getTaskDetail());
+            if (!recentlyConfiguredTask.getDueDate().equals("set due date") && dueDateComparedToCurrent(recentlyConfiguredTask.getDueDate()) > 0) {
+                cancelAlarm(recentlyConfiguredTask.getTaskDetail());
+            }
+            notifyDataSetChanged();
+
+            Dialog ad_dialog = new Dialog(context);
+            ad_dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+            ad_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            ad_dialog.setCancelable(true);
+            ad_dialog.setContentView(R.layout.ic_popup);
+
+            // Set congrats words for message on pop-up
+            TextView congratsWords = (TextView) ad_dialog.findViewById(R.id.tvCongratsWords);
+            congratsWords.setText("You have now saved " + completedTasks + " fish. Make sure to see all the fish you saved by going to your fish tank!");
+
+            // Set the fish image for pop-up
+            ImageView fishImage = (ImageView) ad_dialog.findViewById(R.id.ivFishView);
+            int fishID = getRandomFishId();
+            fishImage.setImageResource(fishID);
+
+            ad_dialog.show();
+        } else {
+            // if you had an empty task with deadline, we don't want it to count towards fish tank
+            deleteTask(pos, holder);
         }
-        notifyDataSetChanged();
-
-        Dialog ad_dialog = new Dialog(context);
-        ad_dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        ad_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        ad_dialog.setCancelable(true);
-        ad_dialog.setContentView(R.layout.ic_popup);
-
-        // Set congrats words for message on pop-up
-        TextView congratsWords = (TextView) ad_dialog.findViewById(R.id.tvCongratsWords);
-        congratsWords.setText("You have now saved " + completedTasks + " fish. Make sure to see all the fish you saved by going to your fish tank!");
-
-        // Set the fish image for pop-up
-        ImageView fishImage = (ImageView) ad_dialog.findViewById(R.id.ivFishView);
-        int fishID = getRandomFishId();
-        fishImage.setImageResource(fishID);
-
-        ad_dialog.show();
     }
 
     public int getRandomFishId() {
@@ -311,23 +317,19 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                         pos = getAdapterPosition();
                         editAlarm(dueDate, task.getTaskDetail(), task.getTaskDetail());
                         task.setDueDate(dueDate);
-                        if (dueDateComparedToCurrent(task.getDueDate()) > 0) {
+                        if (!task.getDueDate().equals("set due date") && dueDateComparedToCurrent(task.getDueDate()) > 0) {
                             editAlarm(dueDate, task.getTaskDetail(), task.getTaskDetail());
                         }
                         parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
                         writeTaskItems(); // update the persistence
-                    } else if (etTask.getText().toString().length() > 0) {
-                        // the case if the user is adding/setting date
-                        task.setDueDate(dueDate);
-                        task.setTaskDetail(etTask.getText().toString());
-                        addingAction = true; // this gives us the power to avoid problems with add vs editing
-                        parsedData.add(task.getTaskDetail() + "," + task.getDueDate());
-                        if (dueDateComparedToCurrent(task.getDueDate()) > 0) {
-                            setAlarm(task.getDueDate(), task.getTaskDetail());
-                        }
-                        writeTaskItems(); // update the persistence
                     } else { // due date is being set first
                         task.setDueDate(dueDate);
+                        pos = getAdapterPosition();
+                        // when you set due date first then task
+                        task.setTaskDetail(etTask.getText().toString());
+                        addingAction = true; // this gives us the power to avoid problems with add vs editing
+                        parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
+                        writeTaskItems(); // update the persistence
                     }
                 }
             };
@@ -341,37 +343,20 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                     String newDetail = etTask.getText().toString();
 
                     // When focus is lost check that the text field has valid values.
-                    if (!hasFocus) {
-                        if (ogDetail == null && task.getDueDate() != null) {
+                    if (!hasFocus && mTasksList.contains(task)) {
+                        if (ogDetail.equals("") && !task.getDueDate().equals("set due date")) {
                             // when you set due date first then task
-                            task.setTaskDetail(etTask.getText().toString());
+                            task.setTaskDetail(newDetail);
                             addingAction = true; // this gives us the power to avoid problems with add vs editing
-                            parsedData.add(task.getTaskDetail() + "," + task.getDueDate());
+                            parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
                             writeTaskItems(); // update the persistence
-                        } else if (ogDetail == null) {
-                            // When you have no due date for a task
-                            //Toast.makeText(context, "Due due date needed! Re-enter task.", Toast.LENGTH_LONG).show();
-                            // the case if the user is adding/setting task without due date
-                            task.setDueDate("set due date");
-                            task.setTaskDetail(etTask.getText().toString());
-                            addingAction = true; // this gives us the power to avoid problems with add vs editing
-                            parsedData.add(task.getTaskDetail() + "," + task.getDueDate());
-                            writeTaskItems(); // update the persistence
-                        } else if (etTask.getText().toString().length() > 0 && !ogDetail.equals(newDetail) && !addingAction) {
+                        } else if (newDetail.length() > 0 && !ogDetail.equals(newDetail) && !addingAction) {
                             // the case if the user needs to edit the name of task
-                            if (dueDateComparedToCurrent(task.getDueDate()) > 0) {
+                            if (!task.getDueDate().equals("set due date") && dueDateComparedToCurrent(task.getDueDate()) > 0) {
                                 editAlarm(task.getDueDate(), newDetail, ogDetail);
                             }
                             task.setTaskDetail(newDetail);
                             parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
-                            writeTaskItems(); // update the persistence
-                        } else if (etTask.getText().toString().length() > 0 && !addingAction && !parsedData.contains(newDetail + "," + task.getDueDate())) {
-                            // the case if the user is adding name of task
-                            task.setTaskDetail(newDetail);
-                            parsedData.add(task.getTaskDetail() + "," + task.getDueDate());
-                            if (dueDateComparedToCurrent(task.getDueDate()) > 0) {
-                                setAlarm(task.getDueDate(), task.getTaskDetail());
-                            }
                             writeTaskItems(); // update the persistence
                         }
                     } else {

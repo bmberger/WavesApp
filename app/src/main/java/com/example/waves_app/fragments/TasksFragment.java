@@ -138,7 +138,10 @@ public class TasksFragment extends Fragment implements OnStartDragListener {
 
     public void addNewTask() {
         Task task = new Task();
+        task.setDueDate("set due date");
+        task.setTaskDetail("");
         mTasksList.add(task);
+        parsedData.add(",set due date");
         taskAdapter.notifyDataSetChanged();
     }
 }
