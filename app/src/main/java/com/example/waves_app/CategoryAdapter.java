@@ -260,12 +260,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                                 parsedData.set(pos, newName);
                                 writeCatItems(); // update the persistence
                             }
-//                            } else if (newName.length() > 0 && !parsedData.contains(newName)) {
-//                                // the case if the user is setting category
-//                                category.setCategoryName(newName);
-//                                parsedData.add(newName);
-//                                writeCatItems(); // update the persistence
-//                            }
                         } else {
                             Toast.makeText(v.getContext(), "No category name has been entered!", Toast.LENGTH_LONG).show();
                         }

@@ -182,7 +182,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
     // Following four methods are used in part with swipe functionality of recyclerView
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void deleteTask(int pos, RecyclerView.ViewHolder holder) {
+        EditText etTaskDetail = holder.itemView.findViewById(R.id.etTaskDescription);
+        TextView tvDueDate = holder.itemView.findViewById(R.id.tvDueDate);
+
         recentlyConfiguredTask = mTasksList.get(pos);
+        recentlyConfiguredTask.setTaskDetail(etTaskDetail.getText().toString());
+        recentlyConfiguredTask.setDueDate(tvDueDate.getText().toString());
         configuredTaskPosition = pos;
 
         mTasksList.remove(pos);
@@ -194,12 +199,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
         notifyDataSetChanged();
 
         Snackbar.make(holder.itemView, "Undo task deletion", Snackbar.LENGTH_LONG)
-                .setAction("UNDO", myOnClickListenerDelete)
+                .setAction("UNDO", myOnClickListenerUndo)
                 .setActionTextColor(ContextCompat.getColor(context, R.color.blue_5))
                 .show();
     }
 
-    View.OnClickListener myOnClickListenerDelete = new View.OnClickListener(){
+    View.OnClickListener myOnClickListenerUndo = new View.OnClickListener(){
         public void onClick(View v){
             mTasksList.add(configuredTaskPosition, recentlyConfiguredTask);
             parsedData.add(configuredTaskPosition, recentlyConfiguredTask.getTaskDetail() + "," + recentlyConfiguredTask.getDueDate());
