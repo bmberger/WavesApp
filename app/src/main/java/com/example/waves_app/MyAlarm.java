@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
@@ -23,12 +24,20 @@ public class MyAlarm extends BroadcastReceiver {
         // Log.d("MyAlarm", "Alarm just fired");
 
         String taskDetail = intent.getStringExtra("taskDetail");
-        createNotification(context, taskDetail, "Alert");
+        String halfwayReminder = intent.getStringExtra("earlyPoint");
+        int id = taskDetail.hashCode();
+        if (halfwayReminder.equals("true")) {
+            id = taskDetail.hashCode() + 1;
+            createNotification(context, "Remember to do " + taskDetail + "! It is due in five days.", id,"Alert");
+            Log.d("MyAlarm", "Halfway alarm just fired");
+        } else {
+            createNotification(context, "Your task " + taskDetail + " is due today!", id,"Alert");
+            Log.d("MyAlarm", "Deadline alarm just fired");
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void createNotification (Context context, String msg, String msgAlert) {
-        int id = msg.hashCode();
+    public void createNotification (Context context, String msg, int id, String msgAlert) {
         PendingIntent goToWhenOpenNotif = PendingIntent.getActivity(context,id,
                 new Intent(context, HomeActivity.class),0);
 
@@ -38,7 +47,7 @@ public class MyAlarm extends BroadcastReceiver {
                 .setTicker(msgAlert)
                 .setContentTitle("Waves: Task Reminder!")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentText("Your task " + msg + " is due today!")
+                .setContentText(msg)
                 .setAutoCancel(true)
                 .setContentIntent(goToWhenOpenNotif)
                 .setDefaults(NotificationCompat.DEFAULT_SOUND);

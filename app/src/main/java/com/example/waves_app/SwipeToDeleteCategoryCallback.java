@@ -36,6 +36,7 @@ public class SwipeToDeleteCategoryCallback extends ItemTouchHelper.SimpleCallbac
     @Override
     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+
         View itemView = viewHolder.itemView;
         int backgroundCornerOffset = 20;
 
