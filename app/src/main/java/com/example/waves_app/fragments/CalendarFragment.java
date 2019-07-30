@@ -153,10 +153,13 @@ public class CalendarFragment extends Fragment {
                     String taskDetail = task.substring(0, delimiter);
                     String dueDate = task.substring(delimiter + 1);
 
-                    tEvent.setTaskDetail(taskDetail);
-                    tEvent.setDueDate(dueDate);
+                    if (!dueDate.equals("set due date")) {
+                        // ensures that no event that has a no due date is added
+                        tEvent.setTaskDetail(taskDetail);
+                        tEvent.setDueDate(dueDate);
 
-                    taskEvents.add(tEvent);
+                        taskEvents.add(tEvent);
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
