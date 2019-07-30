@@ -68,9 +68,8 @@ public class FishTankFragment extends Fragment {
 
         // Set information for tankCount and totalCount
         tvTankCount.setText(String.format("Tank Count: %d", displayCount));
-        tvTotalCount.setText(String.format("Total Count: %d", removedCount));
-        tvTotalCount.setPaintFlags(tvTotalCount.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-      
+        tvTotalCount.setText(String.format(" Total Count: %d ", removedCount));
+
         // Generate an image per count
         for (int i = 0; i < displayCount; i++) {
             // Prepare imageView for fish display
