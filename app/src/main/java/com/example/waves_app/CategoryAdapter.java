@@ -241,7 +241,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                     String newName = etCategory.getText().toString();
 
                     // When focus is lost check that the text field has valid values.
-                    if (!hasFocus) {
+                    if (!hasFocus && categories.contains(category)) {
                         // If anything was typed
                         if (newName.length() > 0) {
 
@@ -259,12 +259,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                                 category.setCategoryName(newName);
                                 parsedData.set(pos, newName);
                                 writeCatItems(); // update the persistence
-                            } else if (newName.length() > 0 && !parsedData.contains(newName)) {
-                                // the case if the user is setting category
-                                category.setCategoryName(newName);
-                                parsedData.add(newName);
-                                writeCatItems(); // update the persistence
                             }
+//                            } else if (newName.length() > 0 && !parsedData.contains(newName)) {
+//                                // the case if the user is setting category
+//                                category.setCategoryName(newName);
+//                                parsedData.add(newName);
+//                                writeCatItems(); // update the persistence
+//                            }
                         } else {
                             Toast.makeText(v.getContext(), "No category name has been entered!", Toast.LENGTH_LONG).show();
                         }

@@ -143,7 +143,9 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
 
     public void addNewCategory() {
         Category category = new Category();
+        category.setCategoryName("");
         categories.add(category);
+        parsedData.add(category.getCategoryName());
         categoryAdapter.notifyDataSetChanged();
     }
 
