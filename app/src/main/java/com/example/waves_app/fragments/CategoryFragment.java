@@ -37,8 +37,6 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
     private RecyclerView rvCategories;
     private FloatingActionButton fabAddCategory;
     private List<String> parsedData;
-    private List<String> taskData;
-    private List<Integer> num;
 
     // Returns the file in which the data is stored
     private File getDataFile() {
@@ -84,10 +82,10 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
 
         readCategoryItems();
 
-        num = taskCount();
+        //num = taskCount();
 
         // Create the categoryAdapter
-        categoryAdapter = new CategoryAdapter(getContext(), categories, parsedData, num);
+        categoryAdapter = new CategoryAdapter(getContext(), categories, parsedData);
 
         // Set the layout manager on the recycler view
         rvCategories.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -131,35 +129,11 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
         itemTouchHelper.startDrag(viewHolder);
     }
 
-    public List<Integer> taskCount() {
-        num = new ArrayList<>();
-        for(String obj : parsedData) {
-            String cat = obj + ".txt";
-            readTaskItems(cat);
-            num.add(taskData.size());
-        }
-        return num;
-    }
-
     public void addNewCategory() {
         Category category = new Category();
         category.setCategoryName("");
         categories.add(category);
         parsedData.add(category.getCategoryName());
         categoryAdapter.notifyDataSetChanged();
-    }
-
-    private File getTaskFile(String cat) {
-        return new File(getContext().getFilesDir(), cat);
-    }
-
-    public void readTaskItems(String cat) {
-        try {
-            // create the array of tasks
-            taskData = new ArrayList<String>(FileUtils.readLines(getTaskFile(cat), Charset.defaultCharset()));
-        } catch (IOException e) {
-            taskData = new ArrayList<>();
-            e.printStackTrace();
-        }
     }
 }
