@@ -100,8 +100,12 @@ public class HomeFragment extends Fragment {
                     fragment = new FAQFragment();
                 } else if (clickedOption.equals("Tutorial")) {
                     fragment = new TutorialFragment();
-                } else if (clickedOption.equals("Search")){
+                } else if (clickedOption.equals("Fun Facts")){
+                        fragment = new FunFactsFragment();
+                } else if (clickedOption.equals("Search")) {
                     fragment = new SearchFragment();
+                } else if (clickedOption.equals("Share")){
+                    fragment = new ShareFragment();
                 } else if (clickedOption.equals("Settings")){
                     fragment = new SettingsFragment();
                 } else {
