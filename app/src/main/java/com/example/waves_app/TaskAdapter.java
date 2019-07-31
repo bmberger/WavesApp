@@ -325,7 +325,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                         task.setDueDate(dueDate);
                         if (!task.getDueDate().equals("set due date") && dueDateComparedToCurrent(task.getDueDate()) > 0) {
                             editAlarm(dueDate, task.getTaskDetail(), task.getTaskDetail());
-                        } else if (dueDateComparedToCurrent(task.getDueDate()) <= 0) {
+                        } else if (!task.getDueDate().equals("set due date") && dueDateComparedToCurrent(task.getDueDate()) <= 0) {
                             cancelAlarm(task.getTaskDetail());
                         }
                         parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
@@ -337,7 +337,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                         task.setTaskDetail(etTask.getText().toString());
                         if (!task.getDueDate().equals("set due date") && dueDateComparedToCurrent(task.getDueDate()) > 0) {
                             editAlarm(dueDate, task.getTaskDetail(), task.getTaskDetail());
-                        } else if (dueDateComparedToCurrent(task.getDueDate()) <= 0) {
+                        } else if (!task.getDueDate().equals("set due date") && dueDateComparedToCurrent(task.getDueDate()) <= 0) {
                             cancelAlarm(task.getTaskDetail());
                         }
                         parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
@@ -370,7 +370,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                             // when you set due date first then task
                             if (!task.getDueDate().equals("set due date") && dueDateComparedToCurrent(task.getDueDate()) > 0) {
                                 editAlarm(task.getDueDate(), newDetail, ogDetail);
-                            } else if (dueDateComparedToCurrent(task.getDueDate()) <= 0) {
+                            } else if (!task.getDueDate().equals("set due date") && dueDateComparedToCurrent(task.getDueDate()) <= 0) {
                                 cancelAlarm(ogDetail);
                                 cancelAlarm(newDetail);
                             }
@@ -381,7 +381,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                             // the case if the user needs to edit the name of task
                             if (!task.getDueDate().equals("set due date") && dueDateComparedToCurrent(task.getDueDate()) > 0) {
                                 editAlarm(task.getDueDate(), newDetail, ogDetail);
-                            } else if (dueDateComparedToCurrent(task.getDueDate()) <= 0) {
+                            } else if (!task.getDueDate().equals("set due date") && dueDateComparedToCurrent(task.getDueDate()) <= 0) {
                                 cancelAlarm(ogDetail);
                                 cancelAlarm(newDetail);
                             }
@@ -389,7 +389,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                             parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
                             writeTaskItems(); // update the persistence
                         }
-                    } else {
                     }
                 }
             });
