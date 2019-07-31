@@ -50,7 +50,7 @@ public class HomeFragment extends Fragment {
 
         int categoryCount = categoryCount();
 
-        String[] homePageOptions = new String[] { "My Categories (" + categoryCount + ")", "FAQ", "Tutorial", "Fun Facts", "Search", "Share", "Settings" };
+        String[] homePageOptions = new String[] { "My Categories (" + categoryCount + ")", "FAQ", "Tutorial", "Fun Facts", "Search", "Share" };
         items.addAll(Arrays.asList(homePageOptions));
 
         itemsAdapter = new ArrayAdapter<String>(getContext(), R.layout.simple_row_layout, items) {
@@ -102,8 +102,6 @@ public class HomeFragment extends Fragment {
                     fragment = new TutorialFragment();
                 } else if (clickedOption.equals("Search")){
                     fragment = new SearchFragment();
-                } else if (clickedOption.equals("Settings")){
-                    fragment = new SettingsFragment();
                 } else {
                     fragment = new HomeFragment();
                 }
