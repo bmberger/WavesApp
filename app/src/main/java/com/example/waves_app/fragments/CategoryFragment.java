@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,7 +21,6 @@ import com.example.waves_app.OnStartDragListener;
 import com.example.waves_app.R;
 import com.example.waves_app.SwipeToDeleteCategoryCallback;
 import com.example.waves_app.model.Category;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.apache.commons.io.FileUtils;
 
@@ -35,8 +35,8 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
     private List<Category> categories;
     private CategoryAdapter categoryAdapter;
     private RecyclerView rvCategories;
-    private FloatingActionButton fabAddCategory;
     private List<String> parsedData;
+    private TextView tvSpaceHolder;
 
     // Returns the file in which the data is stored
     private File getDataFile() {
@@ -77,8 +77,8 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        tvSpaceHolder = view.findViewById(R.id.tvSpaceHolder);
         rvCategories = view.findViewById(R.id.categoriesList);
-        fabAddCategory = (FloatingActionButton) view.findViewById(R.id.fabAddCategory);
 
         readCategoryItems();
 
@@ -101,8 +101,8 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCategoryCallback(categoryAdapter, getContext()));
         itemTouchHelper.attachToRecyclerView(rvCategories);
 
-        // set on click listener on fab
-        fabAddCategory.setOnClickListener(new View.OnClickListener() {
+        // Set on click listener to the textView
+        tvSpaceHolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Prevent user with adding multiple blank categories
@@ -135,5 +135,6 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
         categories.add(category);
         parsedData.add(category.getCategoryName());
         categoryAdapter.notifyDataSetChanged();
+        rvCategories.scrollToPosition(categoryAdapter.getItemCount() - 1);
     }
 }

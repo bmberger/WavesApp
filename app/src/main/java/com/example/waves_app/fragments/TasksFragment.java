@@ -21,7 +21,6 @@ import com.example.waves_app.R;
 import com.example.waves_app.SwipeToDeleteTaskCallback;
 import com.example.waves_app.TaskAdapter;
 import com.example.waves_app.model.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.apache.commons.io.FileUtils;
 
@@ -33,13 +32,12 @@ import java.util.List;
 
 public class TasksFragment extends Fragment implements OnStartDragListener {
 
-    public static final String TAG = "TasksFragment";
-    private FloatingActionButton fabAddTask;
     private RecyclerView rvTasks;
     private List<Task> mTasksList;
     private List<String> parsedData;
     private TaskAdapter taskAdapter;
     private String catTasks;
+    private TextView tvSpaceHolder;
 
     // Returns the file in which the data is stored
     private File getDataFile() {
@@ -84,8 +82,8 @@ public class TasksFragment extends Fragment implements OnStartDragListener {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        tvSpaceHolder = (TextView) view.findViewById(R.id.tvSpaceHolder);
         rvTasks = (RecyclerView) view.findViewById(R.id.rvTasks);
-        fabAddTask = (FloatingActionButton) view.findViewById(R.id.fabAddTask);
 
         // Getting the category file name that contains these tasks
         Bundle information = getArguments();
@@ -95,8 +93,7 @@ public class TasksFragment extends Fragment implements OnStartDragListener {
 
         taskAdapter = new TaskAdapter(getContext(), mTasksList, parsedData, catTasks);
 
-        ItemTouchHelper.Callback callback =
-                new ItemMoveCallbackTask(taskAdapter);
+        ItemTouchHelper.Callback callback = new ItemMoveCallbackTask(taskAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(rvTasks);
 
@@ -107,7 +104,7 @@ public class TasksFragment extends Fragment implements OnStartDragListener {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteTaskCallback(taskAdapter, getContext()));
         itemTouchHelper.attachToRecyclerView(rvTasks);
 
-        fabAddTask.setOnClickListener(new View.OnClickListener() {
+        tvSpaceHolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Prevent user with adding multiple blank categories
@@ -143,5 +140,6 @@ public class TasksFragment extends Fragment implements OnStartDragListener {
         mTasksList.add(task);
         parsedData.add(",set due date");
         taskAdapter.notifyDataSetChanged();
+        rvTasks.scrollToPosition(taskAdapter.getItemCount() - 1);
     }
 }

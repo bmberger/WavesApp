@@ -1,9 +1,6 @@
 package com.example.waves_app.fragments;
 
-import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.example.waves_app.MainActivity;
 import com.example.waves_app.R;
 
 import org.apache.commons.io.FileUtils;
@@ -81,15 +77,13 @@ public class HomeFragment extends Fragment {
                 return view;
             }
         };
+
         itemsList.setAdapter(itemsAdapter);
-
-
         listViewListener();
     }
 
     // Listens for when someone clicks on an item in list
     private void listViewListener() {
-        Log.i("MainActivity", "Setting up listener on list view");
         itemsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -107,8 +101,7 @@ public class HomeFragment extends Fragment {
                 } else if (clickedOption.equals("Tutorial")) {
                     fragment = new TutorialFragment();
                 } else if (clickedOption.equals("Search")){
-                    //TODO: Angela's code for search fragment
-                    fragment = new HomeFragment();
+                    fragment = new SearchFragment();
                 } else if (clickedOption.equals("Settings")){
                     fragment = new SettingsFragment();
                 } else {
