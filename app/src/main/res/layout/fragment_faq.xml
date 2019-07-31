@@ -71,6 +71,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/josefin_sans"
         android:text="Across the globe, initiatives are being conducted to help alleviate the problem. To name a few, organizations put together beach cleanups, water refill stations, educational documentaries, and environmentally-friendly recycling of plastic waste from the oceans."
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />

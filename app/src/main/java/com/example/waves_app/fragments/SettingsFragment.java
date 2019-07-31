@@ -12,29 +12,51 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.waves_app.R;
 
 import org.apache.commons.io.FileUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import static com.parse.Parse.getApplicationContext;
 
 public class SettingsFragment extends Fragment {
     // Declarations
     ArrayList<String> settings; // items data in strings (model)
     ArrayAdapter<String> settingsAdapter; // items that moves the model to the view (controller)
     ListView settingsList;
+    Document doc;
+    //String filepath = "/Users/brianamb/AndroidStudioProjects/WavesApp/app/src/main/res/values/styles.xml";
+    String filepath = "styles.xml";
 
     @Nullable
     @Override
@@ -67,6 +89,22 @@ public class SettingsFragment extends Fragment {
 
         settingsList.setAdapter(settingsAdapter);
         listViewListener();
+
+        // write the content into xml file
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = null;
+        try {
+            transformer = transformerFactory.newTransformer();
+        } catch (TransformerConfigurationException e) {
+            e.printStackTrace();
+        }
+        DOMSource source = new DOMSource(doc);
+        StreamResult result = new StreamResult(new File(filepath));
+        try {
+            transformer.transform(source, result);
+        } catch (TransformerException e) {
+            e.printStackTrace();
+        }
     }
 
     // Listens for when someone clicks on an item in list
@@ -82,24 +120,61 @@ public class SettingsFragment extends Fragment {
 
                 // Switches to a different category dependent on user choice
                 if (clickedOption.equals("Change Font Style")) {
-                    fragment = new CategoryFragment();
+                    try {
+                        popup("font style");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (SAXException e) {
+                        e.printStackTrace();
+                    } catch (ParserConfigurationException e) {
+                        e.printStackTrace();
+                    }
                 } else if (clickedOption.equals("Change Font Size")) {
-                    fragment = new FAQFragment();
-                } else {
-                    fragment = new SettingsFragment();
+                    try {
+                        popup("font size");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (SAXException e) {
+                        e.printStackTrace();
+                    } catch (ParserConfigurationException e) {
+                        e.printStackTrace();
+                    }
                 }
-                fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack(null).commit();
             }
         });
     }
 
-    public void popup() {
+    public void popup(String popupType) throws IOException, SAXException, ParserConfigurationException {
         Dialog dialog = new Dialog(this.getContext());
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setCancelable(true);
-        dialog.setContentView(R.layout.ic_popup);
+        dialog.setContentView(R.layout.ic_popup_select);
+        TextView tvSelectStatement;
+        
+        tvSelectStatement = (TextView) dialog.findViewById(R.id.tvSelectStatement);
+        tvSelectStatement.setText("Select " + popupType);
+
+        final Spinner spinner = (Spinner) dialog.findViewById(R.id.spinner);
+        ArrayAdapter<CharSequence> adapter;
+
+        adapter = (ArrayAdapter<CharSequence>) ArrayAdapter.createFromResource(dialog.getContext(), R.array.preloaded_fonts, android.R.layout.simple_spinner_dropdown_item);
+
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
 
         dialog.show();
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> arg0, View view,
+                                       int pos, long id) {
+            }
+            public void onNothingSelected(AdapterView<?> arg0) {
+
+            }
+        });
     }
 }

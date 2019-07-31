@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:fontFamily">@font/josefin_sans</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
 </resources>
