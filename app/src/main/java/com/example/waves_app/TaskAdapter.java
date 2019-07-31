@@ -341,7 +341,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                         String temp = parsedData.get(i);
                         int delimiter = temp.indexOf(",");
 
-                        if (newDetail.equals(temp.substring(0, delimiter)) || ogDetail.equals(temp.substring(0, delimiter))) {
+                        if (newDetail.equals(temp.substring(0, delimiter))) {
                             pos = i;
                         }
                     }

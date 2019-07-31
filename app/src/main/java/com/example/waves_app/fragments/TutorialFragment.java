@@ -23,7 +23,7 @@ public class TutorialFragment extends Fragment {
     private ViewPager viewPager;
     private TutorialAdapter tutorialAdapter;
     private List<String> tutorials;
-    private Button  btnFinish;
+    private Button btnFinish;
 
     @Nullable
     @Override
