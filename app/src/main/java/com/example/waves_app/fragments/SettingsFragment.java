@@ -1,12 +1,18 @@
 package com.example.waves_app.fragments;
 
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -75,9 +81,9 @@ public class SettingsFragment extends Fragment {
                 Fragment fragment;
 
                 // Switches to a different category dependent on user choice
-                if (clickedOption.equals("My Categories")) {
+                if (clickedOption.equals("Change Font Style")) {
                     fragment = new CategoryFragment();
-                } else if (clickedOption.equals("FAQ")) {
+                } else if (clickedOption.equals("Change Font Size")) {
                     fragment = new FAQFragment();
                 } else {
                     fragment = new SettingsFragment();
@@ -85,5 +91,15 @@ public class SettingsFragment extends Fragment {
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack(null).commit();
             }
         });
+    }
+
+    public void popup() {
+        Dialog dialog = new Dialog(this.getContext());
+        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.ic_popup);
+
+        dialog.show();
     }
 }
