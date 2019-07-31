@@ -11,7 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -147,18 +146,17 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         notifyItemRangeChanged(position, parsedData.size() - position);
     }
 
-
     public boolean onItemMove(int fromPosition, int toPosition) {
         if (fromPosition < categories.size() && toPosition < categories.size()) {
             if (fromPosition < toPosition) {
-                // if you are moving up list
+                // If you are moving up list
                 for (int i = fromPosition; i < toPosition; i++) {
                     Collections.swap(categories, i, i + 1);
                     Collections.swap(parsedData, i, i + 1);
                 }
                 notifyItemRangeChanged(fromPosition, parsedData.size() - fromPosition);
             } else {
-                // if you are moving down list
+                // If you are moving down list
                 for (int i = fromPosition; i > toPosition; i--) {
                     Collections.swap(categories, i, i - 1);
                     Collections.swap(parsedData, i, i - 1);
@@ -170,7 +168,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         }
         return true;
     }
-
 
     public void updateList(List<Category> Categories, List<String> ParsedData) {
         categories = Categories;
@@ -250,7 +247,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                     for (int i = 0; i < parsedData.size(); i++) {
                         String temp = parsedData.get(i);
 
-                        if (newName.equals(temp)) {
+                        if (newName.equals(temp) || ogName.equals(temp)) {
                             pos = i;
                         }
                     }
@@ -261,7 +258,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                         if (newName.length() > 0) {
 
                             File ogFile = new File(context.getFilesDir(), ogName + ".txt");
-                            File renameFile = new File(context.getFilesDir(), newName.toString() + ".txt");
+                            File renameFile = new File(context.getFilesDir(), newName + ".txt");
                             try {
                                 FileUtils.moveFile(ogFile, renameFile);
                                 ogFile.delete();
@@ -269,7 +266,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                                 e.printStackTrace();
                             }
 
-                            //ogName != null &&
                             if (!ogName.equals(newName) && !parsedData.contains(newName)) {
                                 // case if the user needs to edit the category
                                 category.setCategoryName(newName);
@@ -277,7 +273,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                                 writeCatItems(); // update the persistence
                             }
                         } else {
-                            Toast.makeText(v.getContext(), "No category name has been entered!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(v.getContext(), "No category name has been entered!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
