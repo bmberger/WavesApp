@@ -3,20 +3,12 @@ package com.example.waves_app;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import org.apache.commons.io.FileUtils;
-
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,19 +18,12 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.waves_app.model.Category;
 import com.example.waves_app.model.Task;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -46,13 +31,11 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -66,10 +49,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
     private Context context;
     private List<Task> mTasksList;
     private List<String> parsedData;
-    private String catTasks; // sets the category file name that contains all of the tasks
+    private String catTasks; // Sets the category file name that contains all of the tasks
     int pos;
     int completedTasks;
-    boolean addingAction = false;
     AlarmManager alarmManager;
 
     // Variables to be used if user wants to undo delete/completion of task
@@ -81,7 +63,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
         this.mTasksList = tasks;
         this.parsedData = twoStrings;
         this.catTasks = catTasks;
-        this.alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE); // sets up alarm manager
+        this.alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE); // Sets up alarm manager
     }
 
     // Returns the file in which the completedTask count is stored
@@ -115,10 +97,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
     // Write the items to the filesystem
     private void writeTaskItems() {
         try {
-            // save the item list as a line-delimited text file
+            // Save the item list as a line-delimited text file
             FileUtils.writeLines(getDataFile(), parsedData);
         } catch (IOException e) {
-            // print the error to the console
+            // Print the error to the console
             e.printStackTrace();
         }
     }
@@ -144,7 +126,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
     }
 
     public boolean onItemMove(int fromPosition, int toPosition) {
-        //Log.v("", "Log position" + fromPosition + " " + toPosition);
         if (fromPosition < mTasksList.size() && toPosition < mTasksList.size()) {
             if (fromPosition < toPosition) {
                 for (int i = fromPosition; i < toPosition; i++) {
@@ -162,6 +143,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
             notifyItemMoved(fromPosition, toPosition);
             writeTaskItems();
         }
+
         return true;
     }
 
@@ -254,7 +236,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
 
             ad_dialog.show();
         } else {
-            // if you had an empty task with deadline, we don't want it to count towards fish tank
+            // If you had an empty task with deadline, we don't want it to count towards fish tank
             deleteTask(pos, holder);
         }
     }
@@ -318,9 +300,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                     String dueDate = reformatDate(month, day, year);
                     tvDueDate.setText(dueDate);
 
-                    // forces the user to have a task note before setting the due date
+                    // Forces the user to have a task note before setting the due date
                     if (etTask.getText().toString().length() > 0 && task.getDueDate() != null) {
-                        // the case if the user needs to edit the date
+                        // The case if the user needs to edit the date
                         pos = getAdapterPosition();
                         task.setDueDate(dueDate);
                         if (!task.getDueDate().equals("set due date") && dueDateComparedToCurrent(task.getDueDate()) > 0) {
@@ -329,11 +311,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                             cancelAlarm(task.getTaskDetail());
                         }
                         parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
-                        writeTaskItems(); // update the persistence
-                    } else { // due date is being set first
+                        writeTaskItems(); // Update the persistence
+                    } else { // Due date is being set first
                         task.setDueDate(dueDate);
                         pos = getAdapterPosition();
-                        // when you set due date first then task
+                        // When you set due date first then task
                         task.setTaskDetail(etTask.getText().toString());
                         if (!task.getDueDate().equals("set due date") && dueDateComparedToCurrent(task.getDueDate()) > 0) {
                             editAlarm(dueDate, task.getTaskDetail(), task.getTaskDetail());
@@ -341,7 +323,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                             cancelAlarm(task.getTaskDetail());
                         }
                         parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
-                        writeTaskItems(); // update the persistence
+                        writeTaskItems(); // Update the persistence
                     }
                 }
             };
@@ -354,12 +336,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                     String ogDetail = task.getTaskDetail();
                     String newDetail = etTask.getText().toString();
 
-                    // fixes the add on add issue that Android Studio doesn't account for
+                    // Fixes the add on add issue that Android Studio doesn't account for
                     for (int i = 0; i < parsedData.size(); i++) {
                         String temp = parsedData.get(i);
                         int delimiter = temp.indexOf(",");
 
-                        if (newDetail.equals(temp.substring(0, delimiter))) {
+                        if (newDetail.equals(temp.substring(0, delimiter)) || ogDetail.equals(temp.substring(0, delimiter))) {
                             pos = i;
                         }
                     }
@@ -367,7 +349,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                     // When focus is lost check that the text field has valid values.
                     if (!hasFocus && mTasksList.contains(task)) {
                         if (ogDetail.equals("") && !task.getDueDate().equals("set due date")) {
-                            // when you set due date first then task
+                            // When you set due date first then task
                             if (!task.getDueDate().equals("set due date") && dueDateComparedToCurrent(task.getDueDate()) > 0) {
                                 editAlarm(task.getDueDate(), newDetail, ogDetail);
                             } else if (!task.getDueDate().equals("set due date") && dueDateComparedToCurrent(task.getDueDate()) <= 0) {
@@ -376,9 +358,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                             }
                             task.setTaskDetail(newDetail);
                             parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
-                            writeTaskItems(); // update the persistence
+                            writeTaskItems(); // Update the persistence
                         } else if (newDetail.length() > 0 && !ogDetail.equals(newDetail)) {
-                            // the case if the user needs to edit the name of task
+                            // The case if the user needs to edit the name of task
                             if (!task.getDueDate().equals("set due date") && dueDateComparedToCurrent(task.getDueDate()) > 0) {
                                 editAlarm(task.getDueDate(), newDetail, ogDetail);
                             } else if (!task.getDueDate().equals("set due date") && dueDateComparedToCurrent(task.getDueDate()) <= 0) {
@@ -387,7 +369,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                             }
                             task.setTaskDetail(newDetail);
                             parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
-                            writeTaskItems(); // update the persistence
+                            writeTaskItems(); // Update the persistence
                         }
                     }
                 }
@@ -485,14 +467,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
         return id;
     }
 
-    // to be called in adding a task (for both due date AND task detail/desc)(JUST ADDING THOUGH)
+    // To be called in adding a task (for both due date AND task detail/desc)(JUST ADDING THOUGH)
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void setAlarm(String dueDate, String taskDetail) {
         // For adding/setting a new alarm
         Calendar calendarDeadline = Calendar.getInstance();
         Calendar calendarEarly = Calendar.getInstance();
 
-        // getting the date in terms of MM, dd, yyyy for calendar
+        // Getting the date in terms of MM, dd, yyyy for calendar
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         Date date = null;
 
@@ -506,12 +488,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
         int month = localDate.getMonthValue();
         int dayOfMonth = localDate.getDayOfMonth();
 
-        // deadline alarm - has the alarm go off at 7pm on user's set date
+        // Deadline alarm - has the alarm go off at 7pm on user's set date
         calendarDeadline.setTimeInMillis(System.currentTimeMillis());
         calendarDeadline.clear();
         calendarDeadline.set(year,month - 1, dayOfMonth,19,00); //19:00 is for 7pm
 
-        // early point alarm math - has alarm go off at 7pm two days before its due
+        // Early point alarm math - has alarm go off at 7pm two days before its due
         Date deadlineDate = calendarDeadline.getTime();
         Date currentDate = calendarEarly.getTime();
         long deadlineTime = deadlineDate.getTime();
@@ -519,31 +501,31 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
         long diffTime = currentTime - deadlineTime;
         long diffDays = abs(diffTime / (1000 * 60 * 60 * 24));
 
-        // allows us to utilize broadcasting and alarms
+        // Allows us to utilize broadcasting and alarms
         Intent deadlineIntent = new Intent(this.context, MyAlarm.class);
         deadlineIntent.putExtra("taskDetail", taskDetail);
         deadlineIntent.putExtra("earlyPoint", "false");
 
-        // takes a task and returns a unique id - utilized to keep track of different alarms (adding, deleting, editing)
+        // Takes a task and returns a unique id - utilized to keep track of different alarms (adding, deleting, editing)
         int deadlineId = taskDetail.hashCode();
 
-        // the early point alarm only occurs if the deadline is more than two days away
+        // The early point alarm only occurs if the deadline is more than two days away
         if (diffDays > 2) {
-            // early point alarm - has alarm go off at 7pm five days before its due
+            // Early point alarm - has alarm go off at 7pm five days before its due
             calendarEarly.setTimeInMillis(System.currentTimeMillis());
             calendarEarly.clear();
 
             int newDay = dayOfMonth - 2;
             if (month == 1 && newDay < 0) {
-                // adjusts for case if January (underflow)
+                // Adjusts for case if January (underflow)
                 calendarEarly.set(year - 1,12, 31 + newDay - 1,19,00);
             } else if (newDay < 0) {
-                // adjusts for case if beginning of month (underflow)
+                // Adjusts for case if beginning of month (underflow)
                 YearMonth yearMonthObject = YearMonth.of(year, month - 1); // gets previous month - aka 1 is January here
                 int daysInMonth = yearMonthObject.lengthOfMonth();
                 calendarEarly.set(year,month - 2, daysInMonth + newDay - 1,19,00);
             } else {
-                // for regular case
+                // For regular case
                 calendarEarly.set(year,month - 1, newDay,19,00); //19:00 is for 7pm
             }
 
@@ -557,22 +539,21 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
             Log.d("TaskAdapter", "Early point alarm set");
         }
 
-        // for others to understand a bit better: https://medium.com/@architgupta690/creating-pending-intent-in-android-a-step-by-step-guide-74784ec60c9e
+        // For others to understand a bit better: https://medium.com/@architgupta690/creating-pending-intent-in-android-a-step-by-step-guide-74784ec60c9e
         PendingIntent pendingIntentDeadline = PendingIntent.getBroadcast(this.context, deadlineId, deadlineIntent, 0);
 
-        // sets up the actual alarm - for deadline and halfway point
+        // Sets up the actual alarm - for deadline and halfway point
         alarmManager.set(AlarmManager.RTC_WAKEUP, calendarDeadline.getTimeInMillis(), pendingIntentDeadline);
-
         Log.d("TaskAdapter", "The deadline alarm set");
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    // utilized to know when to set, edit, cancel alarm
+    // Utilized to know when to set, edit, cancel alarm
     public int dueDateComparedToCurrent(String dueDate) {
         Calendar currentCal = Calendar.getInstance();
         Calendar dueDateCal = Calendar.getInstance();
 
-        // getting the date in terms of MM, dd, yyyy for calendar
+        // Getting the date in terms of MM, dd, yyyy for calendar
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         Date date = null;
 
@@ -581,6 +562,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
         LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         int yearDeadline = localDate.getYear();
         int monthDeadline = localDate.getMonthValue();
@@ -599,25 +581,25 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
         dueDateCal.set(yearDeadline,monthDeadline - 1, dayOfMonthDeadline,19,00); //19:00 is for 7pm
         currentCal.set(yearCurrent, monthCurrent, dayOfMonthCurrent, 19, 00);
 
-        // early point alarm math - has alarm go off at 7pm two days before its due
+        // Early point alarm math - has alarm go off at 7pm two days before its due
         Date deadlineDate = dueDateCal.getTime();
         Date currentDate = currentCal.getTime();
 
-        // only set, cancel, or edit alarm is this function returns > 0
+        // Only set, cancel, or edit alarm is this function returns > 0
         return deadlineDate.compareTo(currentDate);
     }
 
-    // to be called in removing a task and in checking off a task
+    // To be called in removing a task and in checking off a task
     public void cancelAlarm(String taskDetail) {
         // For canceling an alarm
 
-        // allows us to utilize broadcasting and alarms
+        // Allows us to utilize broadcasting and alarms
         Intent myIntent = new Intent(this.context, MyAlarm.class);
         myIntent.putExtra("taskDetail", taskDetail);
 
         int id = taskDetail.hashCode();
 
-        // for others to understand a bit better: https://medium.com/@architgupta690/creating-pending-intent-in-android-a-step-by-step-guide-74784ec60c9e
+        // For others to understand a bit better: https://medium.com/@architgupta690/creating-pending-intent-in-android-a-step-by-step-guide-74784ec60c9e
         PendingIntent pendingIntentDeadline = PendingIntent.getBroadcast(this.context, id, myIntent, 0);
         PendingIntent pendingIntentHalfway = PendingIntent.getBroadcast(this.context, id + 1, myIntent, 0);
 
@@ -627,7 +609,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
         Log.d("TaskAdapter", "Alarm early canceled");
     }
 
-    //to be called in editing a task (for both due date AND task detail/desc)
+    // To be called in editing a task (for both due date AND task detail/desc)
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void editAlarm(String newDueDate, String newTaskDetail, String ogTaskDetail) {
         // For editing an alarm
