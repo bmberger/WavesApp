@@ -2,7 +2,6 @@ package com.example.waves_app.fragments;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.graphics.Paint;
 import android.graphics.Path;
 import android.os.Bundle;
 import android.view.Display;
@@ -51,7 +50,7 @@ public class FishTankFragment extends Fragment {
         removedCount = readCompletedCount();
         displayCount = ((removedCount % 15) == 0) ? 15 : removedCount % 15;
         if (removedCount == 0) {
-            displayCount = 0; // for the base case, when user first installs app
+            displayCount = 0; // For the base case, when user first installs app
         }
 
         // Set layout width and height range
@@ -92,7 +91,7 @@ public class FishTankFragment extends Fragment {
         tvTotalCount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // move us into ocean view fragment
+                // Move us into ocean view fragment
                 final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 Fragment fragment = new OceanViewFragment();
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack(null).commit();
