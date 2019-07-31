@@ -4,9 +4,12 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.view.View;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,6 +32,7 @@ public class SwipeToDeleteTaskCallback extends ItemTouchHelper.SimpleCallback {
     }
 
     // This method is called when an item is swiped off the screen
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder holder, int direction) {
         int position = holder.getAdapterPosition();
@@ -43,13 +47,6 @@ public class SwipeToDeleteTaskCallback extends ItemTouchHelper.SimpleCallback {
 
     @Override
     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-//        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-//            // gives us a linear fade-out
-//            float width = (float) viewHolder.itemView.getWidth();
-//            float alpha = 1.0f - Math.abs(dX) / width;
-//            viewHolder.itemView.setAlpha(alpha);
-//            viewHolder.itemView.setTranslationX(dX);
-//        }
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY,
                     actionState, isCurrentlyActive);
 
@@ -62,7 +59,7 @@ public class SwipeToDeleteTaskCallback extends ItemTouchHelper.SimpleCallback {
 
         // Cover left, right, and no swipe cases
         // Sets bounds for background in each case and draws onto canvas
-        if (dX > 0) { // Swiping to the right
+        if (dX > 0) { // Swiping to the right aka checking off
             int iconLeft = itemView.getLeft() + iconMargin + completedIcon.getIntrinsicWidth();
             int iconRight = itemView.getLeft() + iconMargin;
             completedIcon.setBounds(iconRight, iconTop, iconLeft, iconBottom);
@@ -73,7 +70,7 @@ public class SwipeToDeleteTaskCallback extends ItemTouchHelper.SimpleCallback {
 
             background.draw(c);
             completedIcon.draw(c);
-        } else if (dX < 0) { // Swiping to the left
+        } else if (dX < 0) { // Swiping to the left aka deleting
             int iconLeft = itemView.getRight() - iconMargin - deleteIcon.getIntrinsicWidth();
             int iconRight = itemView.getRight() - iconMargin;
             deleteIcon.setBounds(iconLeft, iconTop, iconRight, iconBottom);

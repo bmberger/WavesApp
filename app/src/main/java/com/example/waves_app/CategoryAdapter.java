@@ -36,8 +36,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     private List<Category> categories;
     private Context context;
     private List<String> parsedData;
-    private List<Integer> taskCount;
-    private int viewColor = 14; // used for coloring different items
     int pos;
 
     // Variables to be used if user wants to undo deletion of category
@@ -46,11 +44,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     private List<String> associatedTasks;
 
     // Data is passed into the constructor
-    public CategoryAdapter(Context context, List<Category> data, List<String> parsedData, List<Integer> taskCount) {
+    public CategoryAdapter(Context context, List<Category> data, List<String> parsedData) {
         this.categories = data;
         this.context = context;
         this.parsedData = parsedData;
-        this.taskCount = taskCount;
     }
 
     // returns the file in which the data is stored
@@ -93,7 +90,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     // Following four methods are used in part with swipe functionality of recyclerView
     public void deleteCategory(int pos, RecyclerView.ViewHolder holder) {
+        EditText etCategoryName = holder.itemView.findViewById(R.id.etNewCategory);
+
         recentlyDeletedCategory = categories.get(pos);
+        recentlyDeletedCategory.setCategoryName(etCategoryName.getText().toString());
         deletedCategoryPosition = pos;
 
         // Delete the file with all the tasks within the selected category
@@ -202,13 +202,18 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         public void onClick(View view) {
             String catName = etCategory.getText().toString();
 
-            FragmentManager manager = ((FragmentActivity)context).getSupportFragmentManager();
-            Fragment fragment = new TasksFragment();
-            Bundle information = new Bundle();
+            if (catName.length() > 0) {
+                // ensures that the category can't be empty when clicking into it
+                FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
+                Fragment fragment = new TasksFragment();
+                Bundle information = new Bundle();
 
-            information.putString("catName", catName);
-            fragment.setArguments(information);
-            manager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack(null).commit();
+                information.putString("catName", catName);
+                fragment.setArguments(information);
+                manager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack(null).commit();
+            } else {
+                Toast.makeText(context, "Enter a category name.", Toast.LENGTH_SHORT).show();
+            }
         }
 
         @Override
@@ -228,7 +233,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             etCategory.setText(category.getCategoryName());
 
             if (new File(context.getFilesDir(), category.getCategoryName() + ".txt").exists()) {
-                count.setText(taskCount.get(getAdapterPosition()).toString());
+                //count.setText(taskCount.get(getAdapterPosition()).toString());
+                count.setText(Integer.toString(getSizeOfCatList(category.getCategoryName())));
             } else {
                 count.setText(Integer.toString(0));
             }
@@ -240,13 +246,22 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                     String ogName = category.getCategoryName();
                     String newName = etCategory.getText().toString();
 
+                    // fixes the add on add issue that Android Studio doesn't account for
+                    for (int i = 0; i < parsedData.size(); i++) {
+                        String temp = parsedData.get(i);
+
+                        if (newName.equals(temp)) {
+                            pos = i;
+                        }
+                    }
+
                     // When focus is lost check that the text field has valid values.
-                    if (!hasFocus) {
+                    if (!hasFocus && categories.contains(category)) {
                         // If anything was typed
                         if (newName.length() > 0) {
 
                             File ogFile = new File(context.getFilesDir(), ogName + ".txt");
-                            File renameFile = new File(context.getFilesDir(), etCategory.getText().toString() + ".txt");
+                            File renameFile = new File(context.getFilesDir(), newName.toString() + ".txt");
                             try {
                                 FileUtils.moveFile(ogFile, renameFile);
                                 ogFile.delete();
@@ -254,28 +269,15 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                                 e.printStackTrace();
                             }
 
-                            if (newName.length() > 0 && ogName != null && !ogName.equals(newName) && !parsedData.contains(newName)) {
+                            //ogName != null &&
+                            if (!ogName.equals(newName) && !parsedData.contains(newName)) {
                                 // case if the user needs to edit the category
                                 category.setCategoryName(newName);
                                 parsedData.set(pos, newName);
                                 writeCatItems(); // update the persistence
-                            } else if (newName.length() > 0 && !parsedData.contains(newName)) {
-                                // the case if the user is setting category
-                                category.setCategoryName(newName);
-                                parsedData.add(newName);
-                                writeCatItems(); // update the persistence
                             }
                         } else {
                             Toast.makeText(v.getContext(), "No category name has been entered!", Toast.LENGTH_LONG).show();
-                        }
-                    } else {
-                        // fixes the add on add issue that Android Studio doesn't account for
-                        for (int i = 0; i < parsedData.size(); i++) {
-                            String temp = parsedData.get(i);
-
-                            if (etCategory.getText().toString().equals(temp)) {
-                                pos = i;
-                            }
                         }
                     }
                 }
@@ -334,5 +336,21 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                 break;
         }
         return id;
+    }
+
+    private File getTaskFile(String cat) {
+        return new File(context.getFilesDir(), cat + ".txt");
+    }
+
+    public int getSizeOfCatList(String cat) {
+        ArrayList<String> taskData;
+        try {
+            // create the array of tasks
+            taskData = new ArrayList<String>(FileUtils.readLines(getTaskFile(cat), Charset.defaultCharset()));
+        } catch (IOException e) {
+            taskData = new ArrayList<>();
+            e.printStackTrace();
+        }
+        return taskData.size();
     }
 }
