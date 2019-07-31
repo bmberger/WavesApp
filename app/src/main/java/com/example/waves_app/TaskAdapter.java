@@ -153,7 +153,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
         writeTaskItems();
     }
 
-
     // Creates one individual row in the recycler view
     @NonNull
     @Override
@@ -178,6 +177,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
         if (!recentlyConfiguredTask.getDueDate().equals("set due date") && dueDateComparedToCurrent(recentlyConfiguredTask.getDueDate()) > 0) {
             cancelAlarm(recentlyConfiguredTask.getTaskDetail());
         }
+
         writeTaskItems();
         notifyDataSetChanged();
 
@@ -199,8 +199,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void markComplete(int pos, RecyclerView.ViewHolder holder) {
         recentlyConfiguredTask = mTasksList.get(pos);
-        EditText etTaskDetail = holder.itemView.findViewById(R.id.etTaskDescription);
         configuredTaskPosition = pos;
+        EditText etTaskDetail = holder.itemView.findViewById(R.id.etTaskDescription);
 
         if (recentlyConfiguredTask.getTaskDetail().length() > 0 || etTaskDetail.getText().toString().length() > 0) {
             mTasksList.remove(pos);
@@ -312,9 +312,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                         parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
                         writeTaskItems(); // Update the persistence
                     } else { // Due date is being set first
-                        task.setDueDate(dueDate);
                         pos = getAdapterPosition();
-                        // When you set due date first then task
+                        task.setDueDate(dueDate);
                         task.setTaskDetail(etTask.getText().toString());
                         if (!task.getDueDate().equals("set due date") && dueDateComparedToCurrent(task.getDueDate()) > 0) {
                             editAlarm(dueDate, task.getTaskDetail(), task.getTaskDetail());
@@ -366,6 +365,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                                 cancelAlarm(ogDetail);
                                 cancelAlarm(newDetail);
                             }
+
                             task.setTaskDetail(newDetail);
                             parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
                             writeTaskItems(); // Update the persistence
