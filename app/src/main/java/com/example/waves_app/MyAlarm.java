@@ -24,12 +24,12 @@ public class MyAlarm extends BroadcastReceiver {
         // Log.d("MyAlarm", "Alarm just fired");
 
         String taskDetail = intent.getStringExtra("taskDetail");
-        String halfwayReminder = intent.getStringExtra("earlyPoint");
+        String earlyReminder = intent.getStringExtra("earlyPoint");
         int id = taskDetail.hashCode();
-        if (halfwayReminder.equals("true")) {
+        if (earlyReminder.equals("true")) {
             id = taskDetail.hashCode() + 1;
-            createNotification(context, "Remember to do " + taskDetail + "! It is due in five days.", id,"Alert");
-            Log.d("MyAlarm", "Halfway alarm just fired");
+            createNotification(context, "Remember to do " + taskDetail + "! It is due in two days.", id,"Alert");
+            Log.d("MyAlarm", "Early alarm just fired");
         } else {
             createNotification(context, "Your task " + taskDetail + " is due today!", id,"Alert");
             Log.d("MyAlarm", "Deadline alarm just fired");
