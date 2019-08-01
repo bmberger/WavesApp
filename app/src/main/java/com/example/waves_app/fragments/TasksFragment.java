@@ -125,7 +125,6 @@ public class TasksFragment extends Fragment implements OnStartDragListener {
                     EditText etTaskDescription = (EditText) lastTask.itemView.findViewById(R.id.etTaskDescription);
                     TextView tvDueDate = (TextView) lastTask.itemView.findViewById(R.id.tvDueDate);
 
-                    // TODO: && !tvDueDate.getText().toString().equals("set due date")
                     if (etTaskDescription.getText().length() > 0){
                         addNewTask();
                     } else {
