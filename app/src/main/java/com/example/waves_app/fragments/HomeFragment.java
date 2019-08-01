@@ -35,9 +35,9 @@ public class HomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
-        view.setBackgroundDrawable(getResources().getDrawable(R.drawable.sand_background));
-        return view;
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_home, container, false);
+        rootView.setBackgroundDrawable(getResources().getDrawable(R.drawable.sand_background));
+        return rootView;
     }
 
     @Override
