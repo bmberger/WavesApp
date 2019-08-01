@@ -1,3 +1,11 @@
+/*
+ * Project: Waves
+ *
+ * Purpose: Displays the view for the calendar page
+ *
+ * Reference(s): Angela Liu, Briana Berger
+ */
+
 package com.example.waves_app.fragments;
 
 import android.graphics.Color;
@@ -35,10 +43,11 @@ public class CalendarFragment extends Fragment {
     private CompactCalendarView compactCalendar;
     private SimpleDateFormat dateFormatMonth = new SimpleDateFormat("MMMM yyyy", Locale.getDefault());
     private TextView tvMonthYear;
+
+    // Variables for displaying tasks due on a selected day
     private TextView tvEventHolder;
     private TextView tvDaySelected;
     private TextView tvTasksForDay;
-
     private List<String> categoryData;
     private List<Task> taskEvents = new ArrayList<>();
 
@@ -61,6 +70,7 @@ public class CalendarFragment extends Fragment {
         compactCalendar = (CompactCalendarView) getActivity().findViewById(R.id.calendarView);
 
         compactCalendar.setFirstDayOfWeek(Calendar.SUNDAY); // Sets the first day of the calendar as specified
+        tvEventHolder.setText("Tasks on ");
         tvTasksForDay.setMovementMethod(new ScrollingMovementMethod());
 
         // Initially sets the monthYear textView with information
@@ -111,6 +121,7 @@ public class CalendarFragment extends Fragment {
     private void loadTasksForDay(Date dateClicked) {
         String month = tvMonthYear.getText().toString().substring(0, tvMonthYear.getText().toString().indexOf(" "));
         int date = dateClicked.getDate();
+        
         tvDaySelected.setText(month + " " + date + ":");
         tvTasksForDay.scrollTo(0, 0);
 
@@ -157,7 +168,6 @@ public class CalendarFragment extends Fragment {
                         // ensures that no event that has a no due date is added
                         tEvent.setTaskDetail(taskDetail);
                         tEvent.setDueDate(dueDate);
-
                         taskEvents.add(tEvent);
                     }
                 }
@@ -169,7 +179,7 @@ public class CalendarFragment extends Fragment {
 
     private void readCategoryItems() {
         try {
-            // create the array of categories
+            // Create the array of categories
             categoryData = new ArrayList<String>(FileUtils.readLines(getCategoriesFile(), Charset.defaultCharset()));
         } catch (IOException e) {
             categoryData = new ArrayList<>();
