@@ -1,3 +1,11 @@
+/*
+ * Project: Waves
+ *
+ * Purpose: Populates the search fragment with all the data based on a search that user entered
+ *
+ * Reference(s): Angela Liu
+ */
+
 package com.example.waves_app;
 
 import android.content.Context;
