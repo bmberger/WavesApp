@@ -1,3 +1,11 @@
+/*
+ * Project: Waves
+ *
+ * Purpose: Handles deleting a task or marking it as complete when user swipes on one
+ *
+ * Reference(s): Angela Liu
+ */
+
 package com.example.waves_app;
 
 import android.content.Context;
@@ -6,7 +14,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.View;
-import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -52,7 +59,6 @@ public class SwipeToDeleteTaskCallback extends ItemTouchHelper.SimpleCallback {
 
         View itemView = viewHolder.itemView;
         int backgroundCornerOffset = 20;
-
         int iconMargin = (itemView.getHeight() - completedIcon.getIntrinsicHeight()) / 2;
         int iconTop = itemView.getTop() + (itemView.getHeight() - completedIcon.getIntrinsicHeight()) / 2;
         int iconBottom = iconTop + completedIcon.getIntrinsicHeight();
@@ -62,8 +68,8 @@ public class SwipeToDeleteTaskCallback extends ItemTouchHelper.SimpleCallback {
         if (dX > 0) { // Swiping to the right aka checking off
             int iconLeft = itemView.getLeft() + iconMargin + completedIcon.getIntrinsicWidth();
             int iconRight = itemView.getLeft() + iconMargin;
-            completedIcon.setBounds(iconRight, iconTop, iconLeft, iconBottom);
 
+            completedIcon.setBounds(iconRight, iconTop, iconLeft, iconBottom);
             background.setBounds(itemView.getLeft(), itemView.getTop(),
                     itemView.getLeft() + ((int) dX) + backgroundCornerOffset,
                     itemView.getBottom());
@@ -73,14 +79,14 @@ public class SwipeToDeleteTaskCallback extends ItemTouchHelper.SimpleCallback {
         } else if (dX < 0) { // Swiping to the left aka deleting
             int iconLeft = itemView.getRight() - iconMargin - deleteIcon.getIntrinsicWidth();
             int iconRight = itemView.getRight() - iconMargin;
-            deleteIcon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
 
+            deleteIcon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
             background.setBounds(itemView.getRight() + ((int) dX) - backgroundCornerOffset,
                     itemView.getTop(), itemView.getRight(), itemView.getBottom());
 
             background.draw(c);
             deleteIcon.draw(c);
-        } else { // view is unSwiped
+        } else { // View is unSwiped
             background.setBounds(0, 0, 0, 0);
         }
     }
