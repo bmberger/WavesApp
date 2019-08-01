@@ -1,3 +1,11 @@
+/*
+ * Project: Waves
+ *
+ * Purpose: Displays the home page
+ *
+ * Reference(s): Briana Berger, Angela Liu, Aweys Abdul
+ */
+
 package com.example.waves_app.fragments;
 
 import android.os.Bundle;
@@ -27,10 +35,10 @@ import java.util.List;
 public class HomeFragment extends Fragment {
 
     // Declarations
-    ArrayList<String> items; // items data in strings (model)
-    ArrayAdapter<String> itemsAdapter; // items that moves the model to the view (controller)
-    ListView itemsList;
-    List<String> categoryData;
+    private ArrayList<String> items; // Items data in strings (model)
+    private ArrayAdapter<String> itemsAdapter; // Items that moves the model to the view (controller)
+    private ListView itemsList;
+    private List<String> categoryData;
 
     @Nullable
     @Override
@@ -49,7 +57,6 @@ public class HomeFragment extends Fragment {
         items = new ArrayList<String>();
 
         int categoryCount = categoryCount();
-
         String[] homePageOptions = new String[] { "My Categories (" + categoryCount + ")", "FAQ", "Tutorial", "Fun Facts", "Search", "Share" };
         items.addAll(Arrays.asList(homePageOptions));
 
@@ -121,7 +128,7 @@ public class HomeFragment extends Fragment {
 
     public void readCategoryItems() {
         try {
-            // create the array of categories
+            // Create the array of categories
             categoryData = new ArrayList<String>(FileUtils.readLines(getCategoriesFile(), Charset.defaultCharset()));
         } catch (IOException e) {
             categoryData = new ArrayList<>();
