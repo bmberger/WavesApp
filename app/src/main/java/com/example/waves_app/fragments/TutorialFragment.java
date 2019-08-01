@@ -53,7 +53,7 @@ public class TutorialFragment extends Fragment {
         viewPager.setAdapter(tutorialAdapter);
 
         // Adds padding to the cardViews (distance from the borders)
-        viewPager.setPadding(130, 450, 130, 0);
+        viewPager.setPadding(130, 380, 100, 0);
 
         // Sets background color of the viewPager
         viewPager.setBackgroundColor(getResources().getColor(R.color.blue_5_10_transparent));
