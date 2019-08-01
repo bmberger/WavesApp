@@ -10,20 +10,51 @@ import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
 public class VerticalViewPager extends ViewPager {
-    public VerticalViewPager(@NonNull Context context) {
+
+    public VerticalViewPager(Context context) {
         super(context);
+        init();
     }
 
-    public VerticalViewPager(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public VerticalViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init();
     }
 
     private void init() {
-        setPageTransformer(true, new VerticalPage());
+        setPageTransformer(true, new VerticalPageTransformer());
         setOverScrollMode(OVER_SCROLL_NEVER);
     }
 
-    private MotionEvent getIntercabioXY(MotionEvent ev) {
+    private class VerticalPageTransformer implements ViewPager.PageTransformer {
+
+        @Override
+        public void transformPage(View view, float position) {
+
+            if (position < -1) {
+                // This page is off-screen to the left.
+                view.setAlpha(0);
+
+            } else if (position <= 1) {
+                // This page is within view
+                view.setAlpha(1);
+
+                // Counteract the default slide transition
+                view.setTranslationX(view.getWidth() * -position);
+
+                //set Y position to swipe in from top
+                float yPosition = position * view.getHeight();
+                view.setTranslationY(yPosition);
+
+            } else {
+                // This page is off-screen to the right.
+                view.setAlpha(0);
+            }
+        }
+    }
+
+    // Swaps the X and Y coordinates of your touch event.
+    private MotionEvent swapXY(MotionEvent ev) {
         float width = getWidth();
         float height = getHeight();
 
@@ -31,36 +62,19 @@ public class VerticalViewPager extends ViewPager {
         float newY = (ev.getX() / width) * height;
 
         ev.setLocation(newX, newY);
+
         return ev;
     }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        boolean intercepted = super.onInterceptTouchEvent(getIntercabioXY(ev));
-        getIntercabioXY(ev);
+        boolean intercepted = super.onInterceptTouchEvent(swapXY(ev));
+        swapXY(ev); // return touch coordinates to original reference frame for any child views
         return intercepted;
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        return super.onTouchEvent(getIntercabioXY(ev));
-    }
-
-    private class VerticalPage implements ViewPager.PageTransformer {
-
-        @Override
-        public void transformPage(@NonNull View page, float position) {
-            if (position < -1) {
-                page.setAlpha(0);
-            } else if (position <= 1) {
-                page.setAlpha(1);
-                page.setTranslationX(page.getWidth() * -position);
-
-                float yPosition = position * page.getHeight();
-                page.setTranslationY(yPosition);
-            } else {
-                page.setAlpha(0);
-            }
-        }
+        return super.onTouchEvent(swapXY(ev));
     }
 }

@@ -35,9 +35,9 @@ public class HomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_home, container, false);
-        rootView.setBackgroundDrawable(getResources().getDrawable(R.drawable.sand_background));
-        return rootView;
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        view.setBackgroundDrawable(getResources().getDrawable(R.drawable.sand_background));
+        return view;
     }
 
     @Override
@@ -50,7 +50,7 @@ public class HomeFragment extends Fragment {
 
         int categoryCount = categoryCount();
 
-        String[] homePageOptions = new String[] {"My Categories (" + categoryCount + ")", "Search", "Share", "Fun Facts", "Tutorial", "FAQ"};
+        String[] homePageOptions = new String[] { "My Categories (" + categoryCount + ")", "FAQ", "Tutorial", "Fun Facts", "Search", "Share" };
         items.addAll(Arrays.asList(homePageOptions));
 
         itemsAdapter = new ArrayAdapter<String>(getContext(), R.layout.simple_row_layout, items) {
