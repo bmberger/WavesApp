@@ -39,6 +39,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     // Variables to be used if user wants to undo deletion of category
     private Category recentlyDeletedCategory;
+    private Category testRecentlyDeleted;
     private int deletedCategoryPosition;
     private List<String> associatedTasks;
 
@@ -92,7 +93,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         EditText etCategoryName = holder.itemView.findViewById(R.id.etNewCategory);
 
         recentlyDeletedCategory = categories.get(pos);
+        testRecentlyDeleted = categories.get(pos);
+
         recentlyDeletedCategory.setCategoryName(etCategoryName.getText().toString());
+        testRecentlyDeleted.setCategoryName(etCategoryName.getText().toString());
+
         deletedCategoryPosition = pos;
 
         // Delete the file with all the tasks within the selected category
@@ -230,7 +235,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             etCategory.setText(category.getCategoryName());
 
             if (new File(context.getFilesDir(), category.getCategoryName() + ".txt").exists()) {
-                //count.setText(taskCount.get(getAdapterPosition()).toString());
                 count.setText(Integer.toString(getSizeOfCatList(category.getCategoryName())));
             } else {
                 count.setText(Integer.toString(0));
@@ -247,7 +251,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                     for (int i = 0; i < parsedData.size(); i++) {
                         String temp = parsedData.get(i);
 
-                        if (newName.equals(temp) || ogName.equals(temp)) {
+                        if (newName.equals(temp)) {
                             pos = i;
                         }
                     }
@@ -269,6 +273,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                             if (!ogName.equals(newName) && !parsedData.contains(newName)) {
                                 // case if the user needs to edit the category
                                 category.setCategoryName(newName);
+                                if (testRecentlyDeleted != null && pos > 0) {
+                                    // tests if a task was deleted/completed while editing this category
+                                    pos--;
+                                    testRecentlyDeleted = null;
+                                }
                                 parsedData.set(pos, newName);
                                 writeCatItems(); // update the persistence
                             }
