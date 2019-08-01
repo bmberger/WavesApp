@@ -41,7 +41,6 @@ public class TutorialFragment extends Fragment {
         tutorials.add("Swipe up and down on the screen to navigate between the home page, calendar, and fish tank.");
         tutorials.add("Press the back button to return to the home page.");
         tutorials.add("To add a new category or task, tap below the current list and we'll generate one for you!");
-        tutorials.add("Delete an unused category or task or else it will remain there when you return!");
         tutorials.add("Swipe left on a category or task to delete the selected item.");
         tutorials.add("Swipe right on a task to mark it as complete");
         tutorials.add("Check your fish tank to see how much fish you've saved!");
