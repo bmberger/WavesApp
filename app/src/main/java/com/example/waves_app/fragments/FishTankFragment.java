@@ -101,7 +101,7 @@ public class FishTankFragment extends Fragment {
 
     private Path generatePath() {
         int left = new Random().nextInt(midWidth);
-        int top = new Random().nextInt(midHeight);
+        int top = new Random().nextInt(midHeight - 50) + 50;
         int right = new Random().nextInt(maxWidth - midWidth + 1) + midWidth;
         int bottom = new Random().nextInt(maxHeight - midHeight + 1) + midHeight;
         int startAngle = new Random().nextInt(360);
