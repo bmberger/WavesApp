@@ -1,3 +1,11 @@
+/*
+ * Project: Waves
+ *
+ * Purpose: Updates data set of fragments for gesture-based navigation
+ *
+ * Reference(s): Briana Berger, Angela Liu
+ */
+
 package com.example.waves_app;
 
 import androidx.annotation.NonNull;
@@ -18,6 +26,7 @@ public class VPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getItemPosition(@NonNull Object object) {
+        // Ensures that each time data set is notified of change that it resets each fragment
         return POSITION_NONE;
     }
 
