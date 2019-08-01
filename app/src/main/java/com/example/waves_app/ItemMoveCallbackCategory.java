@@ -3,7 +3,7 @@
  *
  * Purpose: Allows user to move a category up and down from its current position
  *
- * Reference(s): Aweys Abdul
+ * Reference(s): Aweys Abdullatif
  */
 
 package com.example.waves_app;

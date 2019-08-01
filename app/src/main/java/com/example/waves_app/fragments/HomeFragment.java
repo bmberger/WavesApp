@@ -3,7 +3,7 @@
  *
  * Purpose: Displays the home page
  *
- * Reference(s): Briana Berger, Angela Liu, Aweys Abdul
+ * Reference(s): Briana Berger, Angela Liu, Aweys Abdullatif
  */
 
 package com.example.waves_app.fragments;

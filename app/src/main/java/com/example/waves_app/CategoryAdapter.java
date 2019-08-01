@@ -102,12 +102,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         EditText etCategoryName = holder.itemView.findViewById(R.id.etNewCategory);
 
         recentlyDeletedCategory = categories.get(pos);
-        testRecentlyDeleted = categories.get(pos);
-
         recentlyDeletedCategory.setCategoryName(etCategoryName.getText().toString());
-        testRecentlyDeleted.setCategoryName(etCategoryName.getText().toString());
-
         deletedCategoryPosition = pos;
+
+        testRecentlyDeleted = categories.get(pos);
+        testRecentlyDeleted.setCategoryName(etCategoryName.getText().toString());
 
         // Delete the file with all the tasks within the selected category
         File toDelete = new File(context.getFilesDir(), categories.get(pos).getCategoryName() + ".txt");
@@ -182,13 +181,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             writeCatItems();
         }
         return true;
-    }
-
-    public void updateList(List<Category> Categories, List<String> ParsedData) {
-        categories = Categories;
-        parsedData = ParsedData;
-        notifyDataSetChanged();
-        writeCatItems();
     }
 
     // Provides a direct reference to each of the views within a data item
