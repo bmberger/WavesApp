@@ -1,7 +1,7 @@
 /*
  * Project: Waves
  *
- * Purpose: Models how a category object
+ * Purpose: Models a category object
  *
  * Reference(s): Angela Liu
  */
