@@ -3,7 +3,7 @@
  *
  * Purpose: Interface for recognizing when an item is dragged
  *
- * Reference(s): Aweys Abdul
+ * Reference(s): Aweys Abdullatif
  */
 
 package com.example.waves_app;

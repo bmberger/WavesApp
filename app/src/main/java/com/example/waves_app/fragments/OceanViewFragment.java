@@ -9,14 +9,10 @@
 
 package com.example.waves_app.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -71,7 +67,6 @@ public class OceanViewFragment extends Fragment {
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack(null).commit();
             }
         });
-
 
         return view;
     }
