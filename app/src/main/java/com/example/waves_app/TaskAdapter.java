@@ -55,6 +55,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
 
     // Variables to be used if user wants to undo delete/completion of task
     private Task recentlyConfiguredTask;
+    private Task testDeletedTask;
     private int configuredTaskPosition;
 
     public TaskAdapter (Context context, List<Task> tasks, List<String> twoStrings, String catTasks) {
@@ -169,12 +170,19 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
         TextView tvDueDate = holder.itemView.findViewById(R.id.tvDueDate);
 
         recentlyConfiguredTask = mTasksList.get(pos);
+        testDeletedTask = mTasksList.get(pos);
+
         recentlyConfiguredTask.setTaskDetail(etTaskDetail.getText().toString());
         recentlyConfiguredTask.setDueDate(tvDueDate.getText().toString());
+
+        testDeletedTask.setTaskDetail(etTaskDetail.getText().toString());
+        testDeletedTask.setDueDate(tvDueDate.getText().toString());
+
         configuredTaskPosition = pos;
 
         mTasksList.remove(pos);
         parsedData.remove(pos);
+
         if (!recentlyConfiguredTask.getDueDate().equals("set due date") && dueDateComparedToCurrent(recentlyConfiguredTask.getDueDate()) > 0) {
             cancelAlarm(recentlyConfiguredTask.getTaskDetail());
         }
@@ -199,6 +207,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void markComplete(int pos, RecyclerView.ViewHolder holder) {
         recentlyConfiguredTask = mTasksList.get(pos);
+        testDeletedTask = mTasksList.get(pos);
+
         EditText etTaskDetail = holder.itemView.findViewById(R.id.etTaskDescription);
         configuredTaskPosition = pos;
 
@@ -367,6 +377,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                                 cancelAlarm(newDetail);
                             }
                             task.setTaskDetail(newDetail);
+
+                            if (testDeletedTask != null && pos > 0) {
+                                // tests if a task was deleted/completed while editing this task
+                                pos--;
+                                testDeletedTask = null;
+                            }
                             parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
                             writeTaskItems(); // Update the persistence
                         }
