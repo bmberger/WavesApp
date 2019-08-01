@@ -37,6 +37,7 @@ public class TutorialFragment extends Fragment {
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         // Create the list of all the steps that will be displayed in the tutorial
         tutorials = new ArrayList<>();
+        tutorials.add("Welcome to Waves, an app that promotes productivity and environmental cleanliness! Swipe to the right to learn more about how to use it.");
         tutorials.add("To add a new category or task, tap below the current list and we'll generate one for you!");
         tutorials.add("Delete an unused category or task or else it will remain there when you return!");
         tutorials.add("Swipe left on a category or task to delete the selected item.");
@@ -51,7 +52,7 @@ public class TutorialFragment extends Fragment {
         viewPager.setAdapter(tutorialAdapter);
 
         // Adds padding to the cardViews (distance from the borders)
-        viewPager.setPadding(130, 250, 130, 0);
+        viewPager.setPadding(130, 280, 130, 0);
 
         // Sets background color of the viewPager
         viewPager.setBackgroundColor(getResources().getColor(R.color.blue_5_10_transparent));
