@@ -1,3 +1,12 @@
+/*
+ * Project: Waves
+ *
+ * Purpose: To display a VR view of the ocean
+ * and informs the user on plastic pollution resources
+ *
+ * Reference(s): Briana Berger
+ */
+
 package com.example.waves_app.fragments;
 
 import android.content.Intent;
@@ -32,12 +41,13 @@ public class OceanViewFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_ocean_view, container,false);
         view.setBackgroundDrawable(getResources().getDrawable(R.drawable.sand_background));
 
+        // Intializes views for screen
         panoWidgetView = (VrPanoramaView) view.findViewById(R.id.pano_view);
         plasticOceans = (ImageView) view.findViewById(R.id.ivPlasticOceans);
         oceanCleanup = (ImageView) view.findViewById(R.id.ivOceanCleanup);
         final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 
-        // redirects to those organizations and their websites
+        // Redirects to specific organizations and their websites
         plasticOceans.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,18 +104,18 @@ public class OceanViewFragment extends Fragment {
     private synchronized void loadPanoImage() {
         ImageLoaderTask task = backgroundImageLoaderTask;
         if (task != null && !task.isCancelled()) {
-            // Cancel any task from a previous loading.
+            // Cancel any task from a previous loading
             task.cancel(true);
         }
 
-        // pass in the name of the image to load from assets.
+        // Pass in the name of the image to load from assets
         VrPanoramaView.Options viewOptions = new VrPanoramaView.Options();
         viewOptions.inputType = VrPanoramaView.Options.TYPE_STEREO_OVER_UNDER;
 
-        // use the name of the image in the assets/directory.
+        // Use the name of the image in the assets/directory
         String panoImageName = getRandomFishScene();
 
-        // create the task passing the widget view and call execute to start.
+        // Create the task passing the widget view and call execute to start
         task = new ImageLoaderTask(panoWidgetView, viewOptions, panoImageName);
         task.execute(getActivity().getAssets());
         backgroundImageLoaderTask = task;

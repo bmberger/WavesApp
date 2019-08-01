@@ -1,13 +1,24 @@
+/*
+ * Project: Waves
+ *
+ * Purpose: Listens to and reacts to a user's swipe for gesture-based navigation
+ *
+ * Reference(s): Briana Berger, Angela Liu
+ */
+
 package com.example.waves_app;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.TimeUtils;
 import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
+
+import java.util.concurrent.TimeUnit;
 
 public class VerticalViewPager extends ViewPager {
 
@@ -30,9 +41,14 @@ public class VerticalViewPager extends ViewPager {
 
         @Override
         public void transformPage(View view, float position) {
-
+            // Displays the animation between each fragment
+            try {
+                TimeUnit.MILLISECONDS.sleep(3);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             if (position < -1) {
-                // This page is off-screen to the left.
+                // This page is off-screen to the left/above
                 view.setAlpha(0);
 
             } else if (position <= 1) {
@@ -47,7 +63,7 @@ public class VerticalViewPager extends ViewPager {
                 view.setTranslationY(yPosition);
 
             } else {
-                // This page is off-screen to the right.
+                // This page is off-screen to the right/below
                 view.setAlpha(0);
             }
         }
@@ -69,7 +85,7 @@ public class VerticalViewPager extends ViewPager {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         boolean intercepted = super.onInterceptTouchEvent(swapXY(ev));
-        swapXY(ev); // return touch coordinates to original reference frame for any child views
+        swapXY(ev); // Return touch coordinates to original reference frame for any child views
         return intercepted;
     }
 

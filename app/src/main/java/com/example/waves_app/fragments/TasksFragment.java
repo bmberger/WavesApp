@@ -1,3 +1,12 @@
+/*
+ * Project: Waves
+ *
+ * Purpose: To display all of the user's tasks for specific category and
+ * listens for when a user adds/edits a task
+ *
+ * Reference(s): Angela Liu, Briana Berger
+ */
+
 package com.example.waves_app.fragments;
 
 import android.os.Bundle;
@@ -51,6 +60,7 @@ public class TasksFragment extends Fragment implements OnStartDragListener {
             // Create the array using the content in the file
             parsedData = new ArrayList<String>(FileUtils.readLines(getDataFile(), Charset.defaultCharset()));
 
+            // Parses through and creates each task from string in parsedData
             for(String obj : parsedData) {
                 Task tempTask = new Task();
 
@@ -66,6 +76,7 @@ public class TasksFragment extends Fragment implements OnStartDragListener {
         } catch (IOException e) {
             // Print the error to the console
             e.printStackTrace();
+
             // Just load an empty list
             mTasksList = new ArrayList<>();
             parsedData = new ArrayList<>();
@@ -135,10 +146,13 @@ public class TasksFragment extends Fragment implements OnStartDragListener {
 
     public void addNewTask() {
         Task task = new Task();
+
         task.setDueDate("set due date");
         task.setTaskDetail("");
+
         mTasksList.add(task);
         parsedData.add(",set due date");
+
         taskAdapter.notifyDataSetChanged();
         rvTasks.scrollToPosition(taskAdapter.getItemCount() - 1);
     }

@@ -1,3 +1,12 @@
+/*
+ * Project: Waves
+ *
+ * Purpose: To display all of the user's categories and
+ * listens for when a user adds/edits a category
+ *
+ * Reference(s): Briana Berger, Angela Liu, Aweys Abdullatif
+ */
+
 package com.example.waves_app.fragments;
 
 import android.os.Bundle;
@@ -50,6 +59,7 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
             // Create the array using the content in the file
             parsedData = new ArrayList<String>(FileUtils.readLines(getDataFile(), Charset.defaultCharset()));
 
+            // Parses through and creates each category from string in parsedData
             for(String obj : parsedData) {
                 Category tempCat = new Category();
                 String name = obj;
@@ -61,6 +71,7 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
         } catch (IOException e) {
             // Print the error to the console
             e.printStackTrace();
+
             // Just load an empty list
             categories = new ArrayList<>();
             parsedData = new ArrayList<>();
@@ -81,8 +92,6 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
         rvCategories = view.findViewById(R.id.categoriesList);
 
         readCategoryItems();
-
-        //num = taskCount();
 
         // Create the categoryAdapter
         categoryAdapter = new CategoryAdapter(getContext(), categories, parsedData);
@@ -106,7 +115,6 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
             @Override
             public void onClick(View view) {
                 // Prevent user with adding multiple blank categories
-                // First need to grab the last added category to check if it has been named
                 RecyclerView.ViewHolder lastCategory = rvCategories.findViewHolderForAdapterPosition(categoryAdapter.getItemCount() - 1);
 
                 if (lastCategory != null) {
@@ -132,8 +140,10 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
     public void addNewCategory() {
         Category category = new Category();
         category.setCategoryName("");
+
         categories.add(category);
         parsedData.add(category.getCategoryName());
+
         categoryAdapter.notifyDataSetChanged();
         rvCategories.scrollToPosition(categoryAdapter.getItemCount() - 1);
     }

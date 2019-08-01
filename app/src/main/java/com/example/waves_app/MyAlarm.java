@@ -1,3 +1,11 @@
+/*
+ * Project: Waves
+ *
+ * Purpose: Utilized when an alarm is signaled to go off to display the notification
+ *
+ * Reference(s): Briana Berger
+ */
+
 package com.example.waves_app;
 
 import android.app.NotificationChannel;
@@ -15,18 +23,16 @@ import androidx.core.app.NotificationCompat;
 // Class extending the Broadcast Receiver
 public class MyAlarm extends BroadcastReceiver {
 
-    // The method will be fired when the alarm is triggerred
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onReceive(Context context, Intent intent) {
-
-        // You can check the log to see if it is fired - you can do any task here
-        // Log.d("MyAlarm", "Alarm just fired");
-
+        // Alarm was triggered
         String taskDetail = intent.getStringExtra("taskDetail");
         String earlyReminder = intent.getStringExtra("earlyPoint");
+
         int id = taskDetail.hashCode();
         if (earlyReminder.equals("true")) {
+            // If task had more than two dates from current date (when set), early reminder is also set for two days before to-do is due
             id = taskDetail.hashCode() + 1;
             createNotification(context, "Remember to do " + taskDetail + "! It is due in two days.", id,"Alert");
             Log.d("MyAlarm", "Early alarm just fired");
@@ -52,6 +58,7 @@ public class MyAlarm extends BroadcastReceiver {
                 .setContentIntent(goToWhenOpenNotif)
                 .setDefaults(NotificationCompat.DEFAULT_SOUND);
 
+        // Channels between channel and manager to display notification to user
         NotificationChannel channel = new NotificationChannel("1", "Channel", NotificationManager.IMPORTANCE_DEFAULT);
         NotificationManager nNotifManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
         nNotifManager.createNotificationChannel(channel);

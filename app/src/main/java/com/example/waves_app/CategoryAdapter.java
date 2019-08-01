@@ -1,3 +1,12 @@
+/*
+ * Project: Waves
+ *
+ * Purpose: To update the data behind all the categories (adding, deleting, editing), moving items up and down,
+ * swiping, and dynamically changing colors as the item is moved.
+ *
+ * Reference(s): Briana Berger, Angela Liu, Aweys Abdullatif
+ */
+
 package com.example.waves_app;
 
 import android.content.Context;
@@ -50,18 +59,18 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         this.parsedData = parsedData;
     }
 
-    // returns the file in which the data is stored
+    // Returns the file in which the data is stored
     private File getDataFile() {
         return new File(context.getFilesDir(), "allCategories.txt");
     }
 
-    // write the items to the filesystem
+    // Write the items to the filesystem
     private void writeCatItems() {
         try {
-            // save the item list as a line-delimited text file
+            // Save the item list as a line-delimited text file
             FileUtils.writeLines(getDataFile(), parsedData);
         } catch (IOException e) {
-            // print the error to the console
+            // Print the error to the console
             e.printStackTrace();
         }
     }
@@ -146,6 +155,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     public void onItemDismiss(int position) {
         categories.remove(position);
         parsedData.remove(position);
+
         writeCatItems();
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, parsedData.size() - position);
@@ -159,16 +169,16 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                     Collections.swap(categories, i, i + 1);
                     Collections.swap(parsedData, i, i + 1);
                 }
-                notifyItemRangeChanged(fromPosition, parsedData.size() - fromPosition);
+                notifyItemRangeChanged(fromPosition, parsedData.size() - fromPosition); // Enables colors
             } else {
                 // If you are moving down list
                 for (int i = fromPosition; i > toPosition; i--) {
                     Collections.swap(categories, i, i - 1);
                     Collections.swap(parsedData, i, i - 1);
                 }
-                notifyItemRangeChanged(toPosition, parsedData.size() - toPosition);
+                notifyItemRangeChanged(toPosition, parsedData.size() - toPosition);  // Enables colors
             }
-            notifyItemMoved(fromPosition, toPosition);
+            notifyItemMoved(fromPosition, toPosition);  // Enables colors
             writeCatItems();
         }
         return true;
@@ -181,8 +191,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         writeCatItems();
     }
 
-    // Provide a direct reference to each of the views within a data item
-    // Used to cache the views within the item layout for fast access
+    // Provides a direct reference to each of the views within a data item
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, ItemTouchHelperViewHolder {
 
         // Member variable for view that will be set as row renders
@@ -199,13 +208,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             itemView.setOnClickListener((View.OnClickListener)this);
         }
 
-        // goes into the actual task list
+        // Goes into the actual list of to-dos under that category
         @Override
         public void onClick(View view) {
             String catName = etCategory.getText().toString();
 
             if (catName.length() > 0) {
-                // ensures that the category can't be empty when clicking into it
+                // Ensures that the category can't be empty when clicking into it
                 FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
                 Fragment fragment = new TasksFragment();
                 Bundle information = new Bundle();
@@ -229,6 +238,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         }
 
         public void bind(final Category category) {
+            // Binds values to the itemView/specific category's view
             int id = getColorId(getAdapterPosition());
             itemView.setBackgroundColor(context.getResources().getColor(id));
 
@@ -247,7 +257,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                     String ogName = category.getCategoryName();
                     String newName = etCategory.getText().toString();
 
-                    // fixes the add on add issue that Android Studio doesn't account for
+                    // Fixes the add on add issue that Android Studio doesn't account for
                     for (int i = 0; i < parsedData.size(); i++) {
                         String temp = parsedData.get(i);
 
@@ -271,15 +281,15 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                             }
 
                             if (!ogName.equals(newName) && !parsedData.contains(newName)) {
-                                // case if the user needs to edit the category
+                                // Case if the user needs to edit the category
                                 category.setCategoryName(newName);
                                 if (testRecentlyDeleted != null && pos > 0) {
-                                    // tests if a task was deleted/completed while editing this category
+                                    // Tests if a task was deleted/completed while editing this category (which would mess up pos)
                                     pos--;
                                     testRecentlyDeleted = null;
                                 }
                                 parsedData.set(pos, newName);
-                                writeCatItems(); // update the persistence
+                                writeCatItems(); // Updates persistence
                             }
                         } else {
                             Toast.makeText(v.getContext(), "No category name has been entered!", Toast.LENGTH_SHORT).show();
@@ -290,7 +300,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         }
     }
 
-    // Gets the color id of that category item
+    // Gets the color id of that category item for the intensity gradient
     public int getColorId(int viewColor) {
         int id;
         switch (viewColor) {
@@ -350,7 +360,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     public int getSizeOfCatList(String cat) {
         ArrayList<String> taskData;
         try {
-            // create the array of tasks
+            // Create the array of tasks
             taskData = new ArrayList<String>(FileUtils.readLines(getTaskFile(cat), Charset.defaultCharset()));
         } catch (IOException e) {
             taskData = new ArrayList<>();

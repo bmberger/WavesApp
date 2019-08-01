@@ -1,8 +1,18 @@
+/*
+ * Project: Waves
+ *
+ * Purpose: To travel between different fragments via gesture-based navigation
+ *
+ * Reference(s): Briana Berger, Angela Liu
+ */
+
 package com.example.waves_app;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -13,6 +23,7 @@ import com.example.waves_app.fragments.HomeFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 // Home page
 public class MainActivity extends AppCompatActivity {
@@ -25,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Enables us to have gesture-based navigation between the three main fragments
         List<Fragment> fragmentList = new ArrayList<>();
         fragmentList.add(new HomeFragment());
         fragmentList.add(new CalendarFragment());
@@ -43,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
+                // Utilized when you scroll to a different fragment and need the updated data
                 viewPager.getAdapter().notifyDataSetChanged();
             }
 

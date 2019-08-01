@@ -1,3 +1,11 @@
+/*
+ * Project: Waves
+ *
+ * Purpose: To educate the user on how the app works
+ *
+ * Reference(s): Angela Liu
+ */
+
 package com.example.waves_app;
 
 import android.content.Context;

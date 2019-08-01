@@ -1,3 +1,12 @@
+/*
+ * Project: Waves
+ *
+ * Purpose: To display all of the user's fish with animations and
+ * listens for when a user hits total tank
+ *
+ * Reference(s): Angela Liu, Briana Berger
+ */
+
 package com.example.waves_app.fragments;
 
 import android.animation.ObjectAnimator;
@@ -122,7 +131,6 @@ public class FishTankFragment extends Fragment {
         if (random == 0) {
             return 1;
         }
-
         return -1;
     }
 
