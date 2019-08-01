@@ -1,3 +1,11 @@
+/*
+ * Project: Waves
+ *
+ * Purpose: Displays the tutorial with a viewPager
+ *
+ * Reference(s): Angela Liu
+ */
+
 package com.example.waves_app.fragments;
 
 import android.os.Bundle;
