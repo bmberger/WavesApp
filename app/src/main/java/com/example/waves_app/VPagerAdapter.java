@@ -1,5 +1,6 @@
 package com.example.waves_app;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
@@ -13,6 +14,11 @@ public class VPagerAdapter extends FragmentStatePagerAdapter {
     public VPagerAdapter(FragmentManager manager, List<Fragment> fragmentList) {
         super(manager);
         this.fragmentList = fragmentList;
+    }
+
+    @Override
+    public int getItemPosition(@NonNull Object object) {
+        return POSITION_NONE;
     }
 
     @Override
