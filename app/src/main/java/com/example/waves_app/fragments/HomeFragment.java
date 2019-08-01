@@ -88,7 +88,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 // Get the item at position in the items ArrayList<String>
-                String clickedOption = items.get(position).toString();
+                String clickedOption = items.get(position);
 
                 final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 Fragment fragment;
