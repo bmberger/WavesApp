@@ -1,3 +1,11 @@
+/*
+ * Project: Waves
+ *
+ * Purpose: Models how a category object
+ *
+ * Reference(s): Angela Liu
+ */
+
 package com.example.waves_app.model;
 
 public class Category {
