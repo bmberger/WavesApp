@@ -1,14 +1,21 @@
+/*
+ * Project: Waves
+ *
+ * Purpose: Populates the task fragment with all the data based on the category that the user is looking into
+ *
+ * Reference(s): Angela Liu, Briana Berger
+ */
+
 package com.example.waves_app;
 
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import org.apache.commons.io.FileUtils;
-import android.app.PendingIntent;
-import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +34,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.waves_app.model.Task;
 import com.google.android.material.snackbar.Snackbar;
+
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,9 +58,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
     private List<Task> mTasksList;
     private List<String> parsedData;
     private String catTasks; // Sets the category file name that contains all of the tasks
-    int pos;
+    private AlarmManager alarmManager;
     int completedTasks;
-    AlarmManager alarmManager;
+    int pos;
 
     // Variables to be used if user wants to undo delete/completion of task
     private Task recentlyConfiguredTask;
@@ -117,6 +126,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
         return mTasksList.size();
     }
 
+    // Dismisses task from current position when it is moved from its original position
     public void onItemDismiss(int position) {
         mTasksList.remove(position);
         parsedData.remove(position);
@@ -125,6 +135,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
         notifyItemRangeChanged(position, parsedData.size() - position);
     }
 
+    // Handles the view when a task is being moved to a new position
     public boolean onItemMove(int fromPosition, int toPosition) {
         if (fromPosition < mTasksList.size() && toPosition < mTasksList.size()) {
             if (fromPosition < toPosition) {
@@ -140,18 +151,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                 }
                 notifyItemRangeChanged(toPosition, parsedData.size() - toPosition);
             }
+
             notifyItemMoved(fromPosition, toPosition);
             writeTaskItems();
         }
 
         return true;
-    }
-
-    public void updateList(List<Task> tasksList, List<String> ParsedData) {
-        mTasksList = tasksList;
-        parsedData = ParsedData;
-        notifyDataSetChanged();
-        writeTaskItems();
     }
 
     // Creates one individual row in the recycler view
@@ -169,15 +174,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
         TextView tvDueDate = holder.itemView.findViewById(R.id.tvDueDate);
 
         recentlyConfiguredTask = mTasksList.get(pos);
-        testDeletedTask = mTasksList.get(pos);
-
         recentlyConfiguredTask.setTaskDetail(etTaskDetail.getText().toString());
         recentlyConfiguredTask.setDueDate(tvDueDate.getText().toString());
+        configuredTaskPosition = pos;
 
+        testDeletedTask = mTasksList.get(pos);
         testDeletedTask.setTaskDetail(etTaskDetail.getText().toString());
         testDeletedTask.setDueDate(tvDueDate.getText().toString());
-
-        configuredTaskPosition = pos;
 
         mTasksList.remove(pos);
         parsedData.remove(pos);
@@ -207,9 +210,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void markComplete(int pos, RecyclerView.ViewHolder holder) {
         recentlyConfiguredTask = mTasksList.get(pos);
-        testDeletedTask = mTasksList.get(pos);
-
         configuredTaskPosition = pos;
+        testDeletedTask = mTasksList.get(pos);
         EditText etTaskDetail = holder.itemView.findViewById(R.id.etTaskDescription);
 
         if (recentlyConfiguredTask.getTaskDetail().length() > 0 || etTaskDetail.getText().toString().length() > 0) {
@@ -228,6 +230,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
             }
             notifyDataSetChanged();
 
+
+            // Create popup when task is marked complete
             Dialog ad_dialog = new Dialog(context);
             ad_dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
             ad_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -262,7 +266,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
         private TextView tvDueDate;
         private TextView tvDueDateHolder;
         private DatePickerDialog.OnDateSetListener listener;
-        AlarmManager alarmManager;
+        private AlarmManager alarmManager;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -309,7 +313,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                     String dueDate = reformatDate(month, day, year);
                     tvDueDate.setText(dueDate);
 
-                    // Forces the user to have a task note before setting the due date
                     if (etTask.getText().toString().length() > 0 && task.getDueDate() != null) {
                         // The case if the user needs to edit the date
                         pos = getAdapterPosition();
@@ -379,9 +382,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                             task.setTaskDetail(newDetail);
 
                             if (testDeletedTask != null && pos > 0) {
-                                // tests if a task was deleted/completed while editing this task
-                                pos--;
+                                // tTsts if a task was deleted/completed while editing this task
                                 testDeletedTask = null;
+                                pos--;
                             }
                             parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
                             writeTaskItems(); // Update the persistence

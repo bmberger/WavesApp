@@ -1,3 +1,11 @@
+/*
+ * Project: Waves
+ *
+ * Purpose: Displays the search page and allows user to search for where a task is located/due date
+ *
+ * Reference(s): Angela Liu
+ */
+
 package com.example.waves_app.fragments;
 
 import android.os.Bundle;
@@ -35,7 +43,6 @@ public class SearchFragment extends Fragment {
     private TextView tvResultCount;
     private RecyclerView rvSearchTasks;
     private SearchAdapter searchAdapter;
-
     private List<String> searchCategories;
     private List<Task> searchTasks;
     private List<String> categoryData;
@@ -132,7 +139,7 @@ public class SearchFragment extends Fragment {
 
     private void readCategoryItems() {
         try {
-            // create the array of categories
+            // Create the array of categories
             categoryData = new ArrayList<String>(FileUtils.readLines(getCategoriesFile(), Charset.defaultCharset()));
         } catch (IOException e) {
             categoryData = new ArrayList<>();

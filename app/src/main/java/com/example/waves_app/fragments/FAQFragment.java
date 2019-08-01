@@ -1,7 +1,14 @@
+/*
+ * Project: Waves
+ *
+ * Purpose: Displays the FAQ page
+ *
+ * Reference(s): Briana Berger
+ */
+
 package com.example.waves_app.fragments;
 
 import android.os.Bundle;
-import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +22,8 @@ import androidx.fragment.app.Fragment;
 import com.example.waves_app.R;
 
 public class FAQFragment extends Fragment {
-    TextView tvPlasticOceans;
-    TextView tvOceanCleanup;
+    private TextView tvPlasticOceans;
+    private TextView tvOceanCleanup;
 
     @Nullable
     @Override
