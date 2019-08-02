@@ -1,3 +1,12 @@
+/*
+ * Project: Waves
+ *
+ * Purpose: To display all of the user's categories and
+ * listens for when a user adds/edits a category
+ *
+ * Reference(s): Briana Berger, Angela Liu, Aweys Abdullatif
+ */
+
 package com.example.waves_app.fragments;
 
 import android.os.Bundle;
@@ -5,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,7 +30,6 @@ import com.example.waves_app.OnStartDragListener;
 import com.example.waves_app.R;
 import com.example.waves_app.SwipeToDeleteCategoryCallback;
 import com.example.waves_app.model.Category;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.apache.commons.io.FileUtils;
 
@@ -35,10 +44,8 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
     private List<Category> categories;
     private CategoryAdapter categoryAdapter;
     private RecyclerView rvCategories;
-    private FloatingActionButton fabAddCategory;
     private List<String> parsedData;
-    private List<String> taskData;
-    private List<Integer> num;
+    private TextView tvSpaceHolder;
 
     // Returns the file in which the data is stored
     private File getDataFile() {
@@ -52,6 +59,7 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
             // Create the array using the content in the file
             parsedData = new ArrayList<String>(FileUtils.readLines(getDataFile(), Charset.defaultCharset()));
 
+            // Parses through and creates each category from string in parsedData
             for(String obj : parsedData) {
                 Category tempCat = new Category();
                 String name = obj;
@@ -63,6 +71,7 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
         } catch (IOException e) {
             // Print the error to the console
             e.printStackTrace();
+
             // Just load an empty list
             categories = new ArrayList<>();
             parsedData = new ArrayList<>();
@@ -79,15 +88,13 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        tvSpaceHolder = view.findViewById(R.id.tvSpaceHolder);
         rvCategories = view.findViewById(R.id.categoriesList);
-        fabAddCategory = (FloatingActionButton) view.findViewById(R.id.fabAddCategory);
 
         readCategoryItems();
 
-        num = taskCount();
-
         // Create the categoryAdapter
-        categoryAdapter = new CategoryAdapter(getContext(), categories, parsedData, num);
+        categoryAdapter = new CategoryAdapter(getContext(), categories, parsedData);
 
         // Set the layout manager on the recycler view
         rvCategories.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -103,12 +110,11 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCategoryCallback(categoryAdapter, getContext()));
         itemTouchHelper.attachToRecyclerView(rvCategories);
 
-        // set on click listener on fab
-        fabAddCategory.setOnClickListener(new View.OnClickListener() {
+        // Set on click listener to the textView
+        tvSpaceHolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Prevent user with adding multiple blank categories
-                // First need to grab the last added category to check if it has been named
                 RecyclerView.ViewHolder lastCategory = rvCategories.findViewHolderForAdapterPosition(categoryAdapter.getItemCount() - 1);
 
                 if (lastCategory != null) {
@@ -131,34 +137,14 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
         itemTouchHelper.startDrag(viewHolder);
     }
 
-    public List<Integer> taskCount() {
-        num = new ArrayList<>();
-        for(String obj : parsedData) {
-            String cat = obj + ".txt";
-            readTaskItems(cat);
-            num.add(taskData.size());
-        }
-        return num;
-    }
-
     public void addNewCategory() {
         Category category = new Category();
+        category.setCategoryName("");
+
         categories.add(category);
+        parsedData.add(category.getCategoryName());
+
         categoryAdapter.notifyDataSetChanged();
         rvCategories.scrollToPosition(categoryAdapter.getItemCount() - 1);
-    }
-
-    private File getTaskFile(String cat) {
-        return new File(getContext().getFilesDir(), cat);
-    }
-
-    public void readTaskItems(String cat) {
-        try {
-            // create the array of tasks
-            taskData = new ArrayList<String>(FileUtils.readLines(getTaskFile(cat), Charset.defaultCharset()));
-        } catch (IOException e) {
-            taskData = new ArrayList<>();
-            e.printStackTrace();
-        }
     }
 }

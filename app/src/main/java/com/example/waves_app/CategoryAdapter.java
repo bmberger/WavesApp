@@ -1,3 +1,12 @@
+/*
+ * Project: Waves
+ *
+ * Purpose: To update the data behind all the categories (adding, deleting, editing), moving items up and down,
+ * swiping, and dynamically changing colors as the item is moved.
+ *
+ * Reference(s): Briana Berger, Angela Liu, Aweys Abdullatif
+ */
+
 package com.example.waves_app;
 
 import android.content.Context;
@@ -11,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -36,35 +44,33 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     private List<Category> categories;
     private Context context;
     private List<String> parsedData;
-    private List<Integer> taskCount;
-    private int viewColor = 14; // used for coloring different items
     int pos;
 
     // Variables to be used if user wants to undo deletion of category
     private Category recentlyDeletedCategory;
+    private Category testRecentlyDeleted;
     private int deletedCategoryPosition;
     private List<String> associatedTasks;
 
     // Data is passed into the constructor
-    public CategoryAdapter(Context context, List<Category> data, List<String> parsedData, List<Integer> taskCount) {
+    public CategoryAdapter(Context context, List<Category> data, List<String> parsedData) {
         this.categories = data;
         this.context = context;
         this.parsedData = parsedData;
-        this.taskCount = taskCount;
     }
 
-    // returns the file in which the data is stored
+    // Returns the file in which the data is stored
     private File getDataFile() {
         return new File(context.getFilesDir(), "allCategories.txt");
     }
 
-    // write the items to the filesystem
+    // Write the items to the filesystem
     private void writeCatItems() {
         try {
-            // save the item list as a line-delimited text file
+            // Save the item list as a line-delimited text file
             FileUtils.writeLines(getDataFile(), parsedData);
         } catch (IOException e) {
-            // print the error to the console
+            // Print the error to the console
             e.printStackTrace();
         }
     }
@@ -93,8 +99,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     // Following four methods are used in part with swipe functionality of recyclerView
     public void deleteCategory(int pos, RecyclerView.ViewHolder holder) {
+        EditText etCategoryName = holder.itemView.findViewById(R.id.etNewCategory);
+
         recentlyDeletedCategory = categories.get(pos);
+        recentlyDeletedCategory.setCategoryName(etCategoryName.getText().toString());
         deletedCategoryPosition = pos;
+
+        testRecentlyDeleted = categories.get(pos);
+        testRecentlyDeleted.setCategoryName(etCategoryName.getText().toString());
 
         // Delete the file with all the tasks within the selected category
         File toDelete = new File(context.getFilesDir(), categories.get(pos).getCategoryName() + ".txt");
@@ -142,43 +154,36 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     public void onItemDismiss(int position) {
         categories.remove(position);
         parsedData.remove(position);
+
         writeCatItems();
         notifyItemRemoved(position);
-        notifyItemRangeChanged(position, parsedData.size() - 1 - position);
+        notifyItemRangeChanged(position, parsedData.size() - position);
     }
 
-
     public boolean onItemMove(int fromPosition, int toPosition) {
-        //Log.v("", "Log position" + fromPosition + " " + toPosition);
         if (fromPosition < categories.size() && toPosition < categories.size()) {
             if (fromPosition < toPosition) {
+                // If you are moving up list
                 for (int i = fromPosition; i < toPosition; i++) {
                     Collections.swap(categories, i, i + 1);
                     Collections.swap(parsedData, i, i + 1);
                 }
+                notifyItemRangeChanged(fromPosition, parsedData.size() - fromPosition); // Enables colors
             } else {
+                // If you are moving down list
                 for (int i = fromPosition; i > toPosition; i--) {
                     Collections.swap(categories, i, i - 1);
                     Collections.swap(parsedData, i, i - 1);
                 }
+                notifyItemRangeChanged(toPosition, parsedData.size() - toPosition);  // Enables colors
             }
-            notifyItemMoved(fromPosition, toPosition);
-            notifyItemRangeChanged(toPosition, parsedData.size() - 1 - toPosition);
+            notifyItemMoved(fromPosition, toPosition);  // Enables colors
             writeCatItems();
         }
         return true;
     }
 
-
-    public void updateList(List<Category> Categories, List<String> ParsedData) {
-        categories = Categories;
-        parsedData = ParsedData;
-        notifyDataSetChanged();
-        writeCatItems();
-    }
-
-    // Provide a direct reference to each of the views within a data item
-    // Used to cache the views within the item layout for fast access
+    // Provides a direct reference to each of the views within a data item
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, ItemTouchHelperViewHolder {
 
         // Member variable for view that will be set as row renders
@@ -195,18 +200,23 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             itemView.setOnClickListener((View.OnClickListener)this);
         }
 
-        // goes into the actual task list
+        // Goes into the actual list of to-dos under that category
         @Override
         public void onClick(View view) {
             String catName = etCategory.getText().toString();
 
-            FragmentManager manager = ((FragmentActivity)context).getSupportFragmentManager();
-            Fragment fragment = new TasksFragment();
-            Bundle information = new Bundle();
+            if (catName.length() > 0) {
+                // Ensures that the category can't be empty when clicking into it
+                FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
+                Fragment fragment = new TasksFragment();
+                Bundle information = new Bundle();
 
-            information.putString("catName", catName);
-            fragment.setArguments(information);
-            manager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack(null).commit();
+                information.putString("catName", catName);
+                fragment.setArguments(information);
+                manager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack(null).commit();
+            } else {
+                Toast.makeText(context, "Enter a category name.", Toast.LENGTH_SHORT).show();
+            }
         }
 
         @Override
@@ -220,13 +230,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         }
 
         public void bind(final Category category) {
+            // Binds values to the itemView/specific category's view
             int id = getColorId(getAdapterPosition());
             itemView.setBackgroundColor(context.getResources().getColor(id));
 
             etCategory.setText(category.getCategoryName());
 
             if (new File(context.getFilesDir(), category.getCategoryName() + ".txt").exists()) {
-                count.setText(taskCount.get(getAdapterPosition()).toString());
+                count.setText(Integer.toString(getSizeOfCatList(category.getCategoryName())));
             } else {
                 count.setText(Integer.toString(0));
             }
@@ -238,13 +249,22 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                     String ogName = category.getCategoryName();
                     String newName = etCategory.getText().toString();
 
+                    // Fixes the add on add issue that Android Studio doesn't account for
+                    for (int i = 0; i < parsedData.size(); i++) {
+                        String temp = parsedData.get(i);
+
+                        if (newName.equals(temp)) {
+                            pos = i;
+                        }
+                    }
+
                     // When focus is lost check that the text field has valid values.
-                    if (!hasFocus) {
+                    if (!hasFocus && categories.contains(category)) {
                         // If anything was typed
                         if (newName.length() > 0) {
 
                             File ogFile = new File(context.getFilesDir(), ogName + ".txt");
-                            File renameFile = new File(context.getFilesDir(), etCategory.getText().toString() + ".txt");
+                            File renameFile = new File(context.getFilesDir(), newName + ".txt");
                             try {
                                 FileUtils.moveFile(ogFile, renameFile);
                                 ogFile.delete();
@@ -252,28 +272,19 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                                 e.printStackTrace();
                             }
 
-                            if (newName.length() > 0 && ogName != null && !ogName.equals(newName) && !parsedData.contains(newName)) {
-                                // case if the user needs to edit the category
+                            if (!ogName.equals(newName) && !parsedData.contains(newName)) {
+                                // Case if the user needs to edit the category
                                 category.setCategoryName(newName);
+                                if (testRecentlyDeleted != null && pos > 0) {
+                                    // Tests if a task was deleted/completed while editing this category (which would mess up pos)
+                                    pos--;
+                                    testRecentlyDeleted = null;
+                                }
                                 parsedData.set(pos, newName);
-                                writeCatItems(); // update the persistence
-                            } else if (newName.length() > 0 && !parsedData.contains(newName)) {
-                                // the case if the user is setting category
-                                category.setCategoryName(newName);
-                                parsedData.add(newName);
-                                writeCatItems(); // update the persistence
+                                writeCatItems(); // Updates persistence
                             }
                         } else {
-                            Toast.makeText(v.getContext(), "No category name has been entered!", Toast.LENGTH_LONG).show();
-                        }
-                    } else {
-                        // fixes the add on add issue that Android Studio doesn't account for
-                        for (int i = 0; i < parsedData.size(); i++) {
-                            String temp = parsedData.get(i);
-
-                            if (etCategory.getText().toString().equals(temp)) {
-                                pos = i;
-                            }
+                            Toast.makeText(v.getContext(), "No category name has been entered!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -281,7 +292,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         }
     }
 
-    // Gets the color id of that category item
+    // Gets the color id of that category item for the intensity gradient
     public int getColorId(int viewColor) {
         int id;
         switch (viewColor) {
@@ -332,5 +343,21 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                 break;
         }
         return id;
+    }
+
+    private File getTaskFile(String cat) {
+        return new File(context.getFilesDir(), cat + ".txt");
+    }
+
+    public int getSizeOfCatList(String cat) {
+        ArrayList<String> taskData;
+        try {
+            // Create the array of tasks
+            taskData = new ArrayList<String>(FileUtils.readLines(getTaskFile(cat), Charset.defaultCharset()));
+        } catch (IOException e) {
+            taskData = new ArrayList<>();
+            e.printStackTrace();
+        }
+        return taskData.size();
     }
 }

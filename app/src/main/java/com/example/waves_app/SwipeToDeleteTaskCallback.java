@@ -1,12 +1,22 @@
+/*
+ * Project: Waves
+ *
+ * Purpose: Handles deleting a task or marking it as complete when user swipes on one
+ *
+ * Reference(s): Angela Liu
+ */
+
 package com.example.waves_app;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,6 +39,7 @@ public class SwipeToDeleteTaskCallback extends ItemTouchHelper.SimpleCallback {
     }
 
     // This method is called when an item is swiped off the screen
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder holder, int direction) {
         int position = holder.getAdapterPosition();
@@ -43,38 +54,39 @@ public class SwipeToDeleteTaskCallback extends ItemTouchHelper.SimpleCallback {
 
     @Override
     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+        super.onChildDraw(c, recyclerView, viewHolder, dX, dY,
+                    actionState, isCurrentlyActive);
+
         View itemView = viewHolder.itemView;
         int backgroundCornerOffset = 20;
-
         int iconMargin = (itemView.getHeight() - completedIcon.getIntrinsicHeight()) / 2;
         int iconTop = itemView.getTop() + (itemView.getHeight() - completedIcon.getIntrinsicHeight()) / 2;
         int iconBottom = iconTop + completedIcon.getIntrinsicHeight();
 
         // Cover left, right, and no swipe cases
         // Sets bounds for background in each case and draws onto canvas
-        if (dX > 0) { // Swiping to the right
+        if (dX > 0) { // Swiping to the right aka checking off
             int iconLeft = itemView.getLeft() + iconMargin + completedIcon.getIntrinsicWidth();
             int iconRight = itemView.getLeft() + iconMargin;
-            completedIcon.setBounds(iconRight, iconTop, iconLeft, iconBottom);
 
+            completedIcon.setBounds(iconRight, iconTop, iconLeft, iconBottom);
             background.setBounds(itemView.getLeft(), itemView.getTop(),
                     itemView.getLeft() + ((int) dX) + backgroundCornerOffset,
                     itemView.getBottom());
 
             background.draw(c);
             completedIcon.draw(c);
-        } else if (dX < 0) { // Swiping to the left
+        } else if (dX < 0) { // Swiping to the left aka deleting
             int iconLeft = itemView.getRight() - iconMargin - deleteIcon.getIntrinsicWidth();
             int iconRight = itemView.getRight() - iconMargin;
-            deleteIcon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
 
+            deleteIcon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
             background.setBounds(itemView.getRight() + ((int) dX) - backgroundCornerOffset,
                     itemView.getTop(), itemView.getRight(), itemView.getBottom());
 
             background.draw(c);
             deleteIcon.draw(c);
-        } else { // view is unSwiped
+        } else { // View is unSwiped
             background.setBounds(0, 0, 0, 0);
         }
     }

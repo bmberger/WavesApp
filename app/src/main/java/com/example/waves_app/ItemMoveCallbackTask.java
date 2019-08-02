@@ -1,9 +1,15 @@
+/*
+ * Project: Waves
+ *
+ * Purpose: Allows user to move a task up and down from its current position
+ *
+ * Reference(s): Aweys Abdullatif
+ */
+
 package com.example.waves_app;
 
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.waves_app.model.Task;
 
 public class ItemMoveCallbackTask extends ItemTouchHelper.Callback {
 
@@ -31,8 +37,7 @@ public class ItemMoveCallbackTask extends ItemTouchHelper.Callback {
     }
 
     @Override
-    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
-                          RecyclerView.ViewHolder target) {
+    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
         mAdapter.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
         return true;
     }
@@ -41,5 +46,4 @@ public class ItemMoveCallbackTask extends ItemTouchHelper.Callback {
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
         mAdapter.onItemDismiss(viewHolder.getAdapterPosition());
     }
-
 }
