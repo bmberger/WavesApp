@@ -52,7 +52,7 @@ public class OceanViewFragment extends Fragment {
 
                 information.putString("url", "https://plasticoceans.org");
                 fragment.setArguments(information);
-                fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().replace(R.id.flContainer, fragment, "WebView").addToBackStack(null).commit();
             }
         });
 
@@ -64,7 +64,7 @@ public class OceanViewFragment extends Fragment {
 
                 information.putString("url", "http://theoceancleanup.com/north-pacific-foundation/");
                 fragment.setArguments(information);
-                fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().replace(R.id.flContainer, fragment, "WebView").addToBackStack(null).commit();
             }
         });
 
