@@ -18,6 +18,8 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.waves_app.fragments.CalendarFragment;
 import com.example.waves_app.fragments.FishTankFragment;
 import com.example.waves_app.fragments.HomeFragment;
+import com.example.waves_app.fragments.OceanViewFragment;
+import com.example.waves_app.fragments.WebViewFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,5 +59,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageScrollStateChanged(int state) { }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        int currentItem = viewPager.getCurrentItem();
+        OceanViewFragment oceanView = (OceanViewFragment) getSupportFragmentManager().findFragmentByTag("OceanView");
+        WebViewFragment webView = (WebViewFragment) getSupportFragmentManager().findFragmentByTag("WebView");
+
+        if (currentItem == 0) {
+            // If the user is currently looking at the first step, allow the system to handle the
+            // Back button. This calls finish() on this activity and pops the back stack.
+            super.onBackPressed();
+        } else if ((oceanView != null && oceanView.isVisible()) || (webView != null && webView.isVisible())) {
+            super.onBackPressed();
+        } else {
+            // Otherwise, select the previous step.
+            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+        }
     }
 }

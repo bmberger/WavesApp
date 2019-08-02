@@ -103,7 +103,7 @@ public class FishTankFragment extends Fragment {
                 // Move us into ocean view fragment
                 final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 Fragment fragment = new OceanViewFragment();
-                fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().replace(R.id.flContainer, fragment, "OceanView").addToBackStack(null).commit();
             }
         });
     }
