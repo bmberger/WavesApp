@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -7,6 +8,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/cv"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardCornerRadius="0dp"
+        app:cardMaxElevation="1dp"
+        app:cardElevation="0.7dp"
+        app:contentPadding="10dp"
+        app:contentPaddingBottom="0dp"
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="true"
         >
 
         <FrameLayout
@@ -32,6 +41,14 @@
         android:layout_height="match_parent"
         android:id="@+id/cv1"
         android:visibility="gone"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardCornerRadius="0dp"
+        app:cardMaxElevation="1dp"
+        app:cardElevation="0.7dp"
+        app:contentPadding="10dp"
+        app:contentPaddingBottom="0dp"
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="true"
         >
 
         <FrameLayout
@@ -40,6 +57,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textSize="17sp"

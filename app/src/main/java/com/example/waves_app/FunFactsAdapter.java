@@ -53,9 +53,6 @@ public class FunFactsAdapter extends RecyclerView.Adapter<FunFactsAdapter.ViewHo
         holder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context,"The position is: "+position,Toast.LENGTH_SHORT).show();
-//                flipCard();
-
 
                 final View v = holder.cv;
 

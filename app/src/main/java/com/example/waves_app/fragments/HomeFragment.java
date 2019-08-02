@@ -116,8 +116,6 @@ public class HomeFragment extends Fragment {
                     fragment = new ShareFragment();
                 } else if (clickedOption.equals("Productivity")){
                     fragment = new ProductivityFragment();
-                } else if (clickedOption.equals("Settings")){
-                    fragment = new SettingsFragment();
                 } else {
                     fragment = new HomeFragment();
                 }
