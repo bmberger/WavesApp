@@ -1,8 +1,16 @@
+/*
+ * Project: Waves
+ *
+ * Purpose: To display all of the user's fish with animations and
+ * listens for when a user hits total tank
+ *
+ * Reference(s): Angela Liu, Briana Berger
+ */
+
 package com.example.waves_app.fragments;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.graphics.Paint;
 import android.graphics.Path;
 import android.os.Bundle;
 import android.view.Display;
@@ -51,7 +59,7 @@ public class FishTankFragment extends Fragment {
         removedCount = readCompletedCount();
         displayCount = ((removedCount % 15) == 0) ? 15 : removedCount % 15;
         if (removedCount == 0) {
-            displayCount = 0; // for the base case, when user first installs app
+            displayCount = 0; // For the base case, when user first installs app
         }
 
         // Set layout width and height range
@@ -68,9 +76,8 @@ public class FishTankFragment extends Fragment {
 
         // Set information for tankCount and totalCount
         tvTankCount.setText(String.format("Tank Count: %d", displayCount));
-        tvTotalCount.setText(String.format("Total Count: %d", removedCount));
-        tvTotalCount.setPaintFlags(tvTotalCount.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-      
+        tvTotalCount.setText(String.format(" Total Count: %d ", removedCount));
+
         // Generate an image per count
         for (int i = 0; i < displayCount; i++) {
             // Prepare imageView for fish display
@@ -93,7 +100,7 @@ public class FishTankFragment extends Fragment {
         tvTotalCount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // move us into ocean view fragment
+                // Move us into ocean view fragment
                 final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 Fragment fragment = new OceanViewFragment();
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack(null).commit();
@@ -103,7 +110,7 @@ public class FishTankFragment extends Fragment {
 
     private Path generatePath() {
         int left = new Random().nextInt(midWidth);
-        int top = new Random().nextInt(midHeight);
+        int top = new Random().nextInt(midHeight - 50) + 50;
         int right = new Random().nextInt(maxWidth - midWidth + 1) + midWidth;
         int bottom = new Random().nextInt(maxHeight - midHeight + 1) + midHeight;
         int startAngle = new Random().nextInt(360);
@@ -124,7 +131,6 @@ public class FishTankFragment extends Fragment {
         if (random == 0) {
             return 1;
         }
-
         return -1;
     }
 

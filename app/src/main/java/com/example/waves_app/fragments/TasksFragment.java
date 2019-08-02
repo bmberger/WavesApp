@@ -1,3 +1,12 @@
+/*
+ * Project: Waves
+ *
+ * Purpose: To display all of the user's tasks for specific category and
+ * listens for when a user adds/edits a task
+ *
+ * Reference(s): Angela Liu, Briana Berger
+ */
+
 package com.example.waves_app.fragments;
 
 import android.os.Bundle;
@@ -21,7 +30,6 @@ import com.example.waves_app.R;
 import com.example.waves_app.SwipeToDeleteTaskCallback;
 import com.example.waves_app.TaskAdapter;
 import com.example.waves_app.model.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.apache.commons.io.FileUtils;
 
@@ -33,13 +41,12 @@ import java.util.List;
 
 public class TasksFragment extends Fragment implements OnStartDragListener {
 
-    public static final String TAG = "TasksFragment";
-    private FloatingActionButton fabAddTask;
     private RecyclerView rvTasks;
     private List<Task> mTasksList;
     private List<String> parsedData;
     private TaskAdapter taskAdapter;
     private String catTasks;
+    private TextView tvSpaceHolder;
 
     // Returns the file in which the data is stored
     private File getDataFile() {
@@ -53,6 +60,7 @@ public class TasksFragment extends Fragment implements OnStartDragListener {
             // Create the array using the content in the file
             parsedData = new ArrayList<String>(FileUtils.readLines(getDataFile(), Charset.defaultCharset()));
 
+            // Parses through and creates each task from string in parsedData
             for(String obj : parsedData) {
                 Task tempTask = new Task();
 
@@ -68,6 +76,7 @@ public class TasksFragment extends Fragment implements OnStartDragListener {
         } catch (IOException e) {
             // Print the error to the console
             e.printStackTrace();
+
             // Just load an empty list
             mTasksList = new ArrayList<>();
             parsedData = new ArrayList<>();
@@ -84,8 +93,8 @@ public class TasksFragment extends Fragment implements OnStartDragListener {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        tvSpaceHolder = (TextView) view.findViewById(R.id.tvSpaceHolder);
         rvTasks = (RecyclerView) view.findViewById(R.id.rvTasks);
-        fabAddTask = (FloatingActionButton) view.findViewById(R.id.fabAddTask);
 
         // Getting the category file name that contains these tasks
         Bundle information = getArguments();
@@ -106,7 +115,7 @@ public class TasksFragment extends Fragment implements OnStartDragListener {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteTaskCallback(taskAdapter, getContext()));
         itemTouchHelper.attachToRecyclerView(rvTasks);
 
-        fabAddTask.setOnClickListener(new View.OnClickListener() {
+        tvSpaceHolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Prevent user with adding multiple blank categories
@@ -116,7 +125,7 @@ public class TasksFragment extends Fragment implements OnStartDragListener {
                     EditText etTaskDescription = (EditText) lastTask.itemView.findViewById(R.id.etTaskDescription);
                     TextView tvDueDate = (TextView) lastTask.itemView.findViewById(R.id.tvDueDate);
 
-                    if (etTaskDescription.getText().length() > 0 && !tvDueDate.getText().toString().equals("set due date")){
+                    if (etTaskDescription.getText().length() > 0){
                         addNewTask();
                     } else {
                         Toast.makeText(getContext(), "Fill out the current blank task!", Toast.LENGTH_SHORT).show();
@@ -136,7 +145,13 @@ public class TasksFragment extends Fragment implements OnStartDragListener {
 
     public void addNewTask() {
         Task task = new Task();
+
+        task.setDueDate("set due date");
+        task.setTaskDetail("");
+
         mTasksList.add(task);
+        parsedData.add(",set due date");
+
         taskAdapter.notifyDataSetChanged();
         rvTasks.scrollToPosition(taskAdapter.getItemCount() - 1);
     }

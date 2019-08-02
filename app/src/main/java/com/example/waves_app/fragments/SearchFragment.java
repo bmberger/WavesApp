@@ -1,6 +1,15 @@
+/*
+ * Project: Waves
+ *
+ * Purpose: Displays the search page and allows user to search for where a task is located/due date
+ *
+ * Reference(s): Angela Liu
+ */
+
 package com.example.waves_app.fragments;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +43,6 @@ public class SearchFragment extends Fragment {
     private TextView tvResultCount;
     private RecyclerView rvSearchTasks;
     private SearchAdapter searchAdapter;
-
     private List<String> searchCategories;
     private List<Task> searchTasks;
     private List<String> categoryData;
@@ -42,7 +50,9 @@ public class SearchFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_search, container, false);
+        View view = inflater.inflate(R.layout.fragment_search, container, false);
+        view.setBackgroundDrawable(getResources().getDrawable(R.drawable.sand_background));
+        return view;
     }
 
     @Override
@@ -58,19 +68,27 @@ public class SearchFragment extends Fragment {
                 String search = etSearch.getText().toString();
                 if (search.length() > 0) {
                     loadTasks(search);
-                    if (searchTasks.size() == 0) {
-                        tvResultCount.setText("There are no tasks for this search.");
-                    } else {
-                        tvResultCount.setText("Results: " + searchTasks.size());
-                    }
-
-                    searchAdapter = new SearchAdapter(getContext(), searchTasks, searchCategories);
-                    rvSearchTasks.setLayoutManager(new LinearLayoutManager(getContext()));
-                    rvSearchTasks.setAdapter(searchAdapter);
                 } else {
                     // Nothing was searched
                     Toast.makeText(getContext(), "Enter something into search bar!", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == 0) { // If enter was pressed
+                    String search = etSearch.getText().toString();
+                    if (search.length() > 0) {
+                        loadTasks(search);
+                    } else {
+                        // Nothing was searched
+                        Toast.makeText(getContext(), "Enter something into search bar!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                return handled;
             }
         });
     }
@@ -90,18 +108,28 @@ public class SearchFragment extends Fragment {
 
                 // Load any tasks into the taskEvent list so that we can make events later
                 for (String task : tasksRead) {
-                    if (task.contains(search)) {
-                        Task t = new Task();
-                        int delimiter = task.indexOf(",");
-                        String taskDetail = task.substring(0, delimiter);
-                        String dueDate = task.substring(delimiter + 1);
+                    int delimiter = task.indexOf(",");
+                    String taskDetail = task.substring(0, delimiter);
+                    String dueDate = task.substring(delimiter + 1);
 
+                    if (taskDetail.toLowerCase().contains(search.toLowerCase())) {
+                        Task t = new Task();
                         t.setTaskDetail(taskDetail);
                         t.setDueDate(dueDate);
 
                         searchCategories.add(categoryName);
                         searchTasks.add(t);
                     }
+
+                    if (searchTasks.size() == 0) {
+                        tvResultCount.setText("There are no tasks for this search.");
+                    } else {
+                        tvResultCount.setText("Results: " + searchTasks.size());
+                    }
+
+                    searchAdapter = new SearchAdapter(getContext(), searchTasks, searchCategories);
+                    rvSearchTasks.setLayoutManager(new LinearLayoutManager(getContext()));
+                    rvSearchTasks.setAdapter(searchAdapter);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -111,7 +139,7 @@ public class SearchFragment extends Fragment {
 
     private void readCategoryItems() {
         try {
-            // create the array of categories
+            // Create the array of categories
             categoryData = new ArrayList<String>(FileUtils.readLines(getCategoriesFile(), Charset.defaultCharset()));
         } catch (IOException e) {
             categoryData = new ArrayList<>();

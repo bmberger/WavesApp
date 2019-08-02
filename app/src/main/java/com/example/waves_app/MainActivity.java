@@ -1,75 +1,61 @@
+/*
+ * Project: Waves
+ *
+ * Purpose: To travel between different fragments via gesture-based navigation
+ *
+ * Reference(s): Briana Berger, Angela Liu
+ */
+
 package com.example.waves_app;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.view.MenuItem;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.waves_app.fragments.CalendarFragment;
 import com.example.waves_app.fragments.FishTankFragment;
 import com.example.waves_app.fragments.HomeFragment;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 // Home page
 public class MainActivity extends AppCompatActivity {
 
-    private BottomNavigationView bottomNavigationView;
+    private VerticalViewPager viewPager;
+    private PagerAdapter pagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final FragmentManager fragmentManager = getSupportFragmentManager();
+        // Enables us to have gesture-based navigation between the three main fragments
+        List<Fragment> fragmentList = new ArrayList<>();
+        fragmentList.add(new HomeFragment());
+        fragmentList.add(new CalendarFragment());
+        fragmentList.add(new FishTankFragment());
 
-        bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        viewPager = findViewById(R.id.pager);
+        pagerAdapter = new VPagerAdapter(getSupportFragmentManager(), fragmentList);
 
-        bottomNavigationView.setBackground(getResources().getDrawable(R.drawable.bnv_sandy));
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        viewPager.setAdapter(pagerAdapter);
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment fragment;
-                switch (item.getItemId()) {
-                    case R.id.miHome:
-                        fragment = new HomeFragment();
-                        break;
-                    case R.id. miCalendar:
-                        fragment = new CalendarFragment();
-                        break;
-                    case R.id.miFishTank:
-                        fragment = new FishTankFragment();
-                        break;
-                    default:
-                        return true;
-                }
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
 
-                fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
-                return true;
+            @Override
+            public void onPageSelected(int position) {
+                // Utilized when you scroll to a different fragment and need the updated data
+                viewPager.getAdapter().notifyDataSetChanged();
             }
+
+            @Override
+            public void onPageScrollStateChanged(int state) { }
         });
-
-        // Set default selection
-        bottomNavigationView.setSelectedItemId(R.id.miHome);
-    }
-
-    @Override
-    public void onBackPressed() {
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-        int selectedItemId = bottomNavigationView.getSelectedItemId();
-
-        if (R.id.miHome != selectedItemId) {
-            setHomeItem(MainActivity.this);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    public static void setHomeItem(Activity activity) {
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) activity.findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setSelectedItemId(R.id.miHome);
     }
 }

@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">Waves-App</string>
+    <string name="app_name">Waves</string>
     <string name="tankCount">Tank Count: </string>
-    <string name="totalCount">Total Count: </string>
+    <string name="totalCount"> Total Count:  </string>
     <string name="plasticOceans"><a href="https://plasticoceans.org">Plastic Oceans</a></string>
     <string name="cleanupOcean"><a href="http://theoceancleanup.com/north-pacific-foundation/">The Ocean Cleanup</a></string>
 </resources>

@@ -14,18 +14,3 @@ Waves has two goals to incentivize productivity to everyone for free and help en
 
 Practice pitch on August 12th (Monday). 
 Pitch is on August 13th and 14th.
-
-# Requirements within App
-1. You must do task detail then due date
-Reasoning:
-- It would either be this or due date then task detail as you need a way to confirm the user is done. This was easy in category as all it was is losing focus from editText. Meanwhile, here we have a date selector and an edit text/
-
-2. No deleting of empty category or empty task
-Reasoning:
-- it's a common sense
-- we delete it for them already when they leave the screen for simplicity
-
-# List of Potential Stretch Goals: 
-- Tap for adding
-- Gesture movement instead of navigation bar based
-- Sharing to some sort of messaging app (e.g. email, messages, etc)

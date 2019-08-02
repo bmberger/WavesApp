@@ -1,3 +1,11 @@
+/*
+ * Project: Waves
+ *
+ * Purpose: Handles deleting a category when user swipes on one
+ *
+ * Reference(s): Angela Liu
+ */
+
 package com.example.waves_app;
 
 import android.content.Context;
@@ -30,38 +38,37 @@ public class SwipeToDeleteCategoryCallback extends ItemTouchHelper.SimpleCallbac
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder holder, int direction) {
         int position = holder.getAdapterPosition();
-        // TODO - implement deleteCategory method in CategoryAdapter
         categoryAdapter.deleteCategory(position, holder);
     }
 
     @Override
     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+
         View itemView = viewHolder.itemView;
         int backgroundCornerOffset = 20;
-
         int iconMargin = (itemView.getHeight() - deleteIcon.getIntrinsicHeight()) / 2;
         int iconTop = itemView.getTop() + (itemView.getHeight() - deleteIcon.getIntrinsicHeight()) / 2;
         int iconBottom = iconTop + deleteIcon.getIntrinsicHeight();
 
-        // Cover left, right, and no swipe cases
+        // Covers left, right, and no swipe cases
         // Sets bounds for background in each case and draws onto canvas
         if (dX > 0) { // Swiping to the right
             int iconLeft = itemView.getLeft() + iconMargin + deleteIcon.getIntrinsicWidth();
             int iconRight = itemView.getLeft() + iconMargin;
-            deleteIcon.setBounds(iconRight, iconTop, iconLeft, iconBottom);
 
+            deleteIcon.setBounds(iconRight, iconTop, iconLeft, iconBottom);
             background.setBounds(itemView.getLeft(), itemView.getTop(),
                     itemView.getLeft() + ((int) dX) + backgroundCornerOffset,
                     itemView.getBottom());
         } else if (dX < 0) { // Swiping to the left
             int iconLeft = itemView.getRight() - iconMargin - deleteIcon.getIntrinsicWidth();
             int iconRight = itemView.getRight() - iconMargin;
-            deleteIcon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
 
+            deleteIcon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
             background.setBounds(itemView.getRight() + ((int) dX) - backgroundCornerOffset,
                     itemView.getTop(), itemView.getRight(), itemView.getBottom());
-        } else { // view is unSwiped
+        } else { // View is unSwiped
             background.setBounds(0, 0, 0, 0);
         }
 

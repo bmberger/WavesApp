@@ -1,3 +1,11 @@
+/*
+ * Project: Waves
+ *
+ * Purpose: To display any website internally via url
+ *
+ * Reference(s): Briana Berger
+ */
+
 package com.example.waves_app.fragments;
 
 import android.os.Bundle;
