@@ -53,8 +53,6 @@ public class FunFactsAdapter extends RecyclerView.Adapter<FunFactsAdapter.ViewHo
         holder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                flipCard();
-
 
                 final View v = holder.cv;
 
