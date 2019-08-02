@@ -99,10 +99,10 @@ public class ShareFragment extends Fragment implements AdapterView.OnItemSelecte
 
         readTaskItems(data.get(position));
 
-        et_message.setText(et_message.getText() + "Below are the items in my " + data.get(position) + " list: \n", TextView.BufferType.EDITABLE);
+        et_message.setText(et_message.getText() + "Below are the items in my " + data.get(position) + " list: \n \n", TextView.BufferType.EDITABLE);
 
         for (int i = 0; i < taskData.size(); i++) {
-            et_message.setText(et_message.getText() + taskData.get(i) + "\n", TextView.BufferType.EDITABLE);
+            et_message.setText("> " + et_message.getText() + taskData.get(i) + "\n", TextView.BufferType.EDITABLE);
         }
     }
 
