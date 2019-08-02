@@ -554,7 +554,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
             int halfwayId = taskDetail.hashCode() + 1;
             PendingIntent pendingIntentHalfway = PendingIntent.getBroadcast(this.context, halfwayId, earlyIntent, 0);
             alarmManager.set(AlarmManager.RTC_WAKEUP, calendarDeadline.getTimeInMillis(), pendingIntentHalfway);
-            Log.d("TaskAdapter", "Early point alarm set");
         }
 
         // For others to understand a bit better: https://medium.com/@architgupta690/creating-pending-intent-in-android-a-step-by-step-guide-74784ec60c9e
@@ -622,9 +621,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
         PendingIntent pendingIntentHalfway = PendingIntent.getBroadcast(this.context, id + 1, myIntent, 0);
 
         alarmManager.cancel(pendingIntentDeadline);
-        Log.d("TaskAdapter", "Alarm deadline canceled");
         alarmManager.cancel(pendingIntentHalfway);
-        Log.d("TaskAdapter", "Alarm early canceled");
     }
 
     // To be called in editing a task (for both due date AND task detail/desc)
@@ -633,6 +630,5 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
         // For editing an alarm
         cancelAlarm(ogTaskDetail);
         setAlarm(newDueDate, newTaskDetail);
-        Log.d("TaskAdapter", "Alarm edited/set");
     }
 }
