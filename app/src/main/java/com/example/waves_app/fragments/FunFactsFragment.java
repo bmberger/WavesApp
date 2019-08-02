@@ -35,6 +35,8 @@ public class FunFactsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_funfacts, container, false);
+        view.setBackgroundDrawable(getResources().getDrawable(R.drawable.sand_background));
+        view.bringToFront();
         return view;
     }
 

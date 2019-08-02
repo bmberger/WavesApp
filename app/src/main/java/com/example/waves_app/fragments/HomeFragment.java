@@ -58,7 +58,7 @@ public class HomeFragment extends Fragment {
 
         int categoryCount = categoryCount();
 
-        String[] homePageOptions = new String[] { "My Categories (" + categoryCount + ")", "FAQ", "Tutorial", "Fun Facts", "Search", "Share", "Productivity", "Settings" };
+        String[] homePageOptions = new String[] { "My Categories (" + categoryCount + ")", "FAQ", "Tutorial", "Fun Facts", "Search", "Share", "Productivity" };
         items.addAll(Arrays.asList(homePageOptions));
 
         itemsAdapter = new ArrayAdapter<String>(getContext(), R.layout.simple_row_layout, items) {
