@@ -35,10 +35,8 @@ public class MyAlarm extends BroadcastReceiver {
             // If task had more than two dates from current date (when set), early reminder is also set for two days before to-do is due
             id = taskDetail.hashCode() + 1;
             createNotification(context, "Remember to do " + taskDetail + "! It is due in two days.", id,"Alert");
-            Log.d("MyAlarm", "Early alarm just fired");
         } else {
             createNotification(context, "Your task " + taskDetail + " is due today!", id,"Alert");
-            Log.d("MyAlarm", "Deadline alarm just fired");
         }
     }
 
