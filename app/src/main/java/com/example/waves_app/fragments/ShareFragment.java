@@ -30,7 +30,9 @@ public class ShareFragment extends Fragment {
     private final String LOG_TAG = "test";
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_share, container, false);
+        View view = inflater.inflate(R.layout.fragment_share, container, false);
+        view.setBackgroundDrawable(getResources().getDrawable(R.drawable.sand_background));
+        return view;
     }
 
     @Override

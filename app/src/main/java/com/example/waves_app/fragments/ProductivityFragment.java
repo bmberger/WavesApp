@@ -50,7 +50,9 @@ public class ProductivityFragment extends Fragment {
     ArrayAdapter<String> adapter ;
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_productivity, container, false);
+        View view = inflater.inflate(R.layout.fragment_productivity, container, false);
+        view.setBackgroundDrawable(getResources().getDrawable(R.drawable.sand_background));
+        return view;
     }
 
     @Override
