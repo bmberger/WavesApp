@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -101,10 +102,10 @@ public class ShareFragment extends Fragment implements AdapterView.OnItemSelecte
 
         readTaskItems(data.get(position));
 
-        et_message.setText(et_message.getText() + "Below are the items in my " + data.get(position) + " list: \n", TextView.BufferType.EDITABLE);
+        et_message.setText(et_message.getText() + "Below are the items in my " + data.get(position) + " list: \n \n", TextView.BufferType.EDITABLE);
 
         for (int i = 0; i < taskData.size(); i++) {
-            et_message.setText(et_message.getText() + taskData.get(i) + "\n", TextView.BufferType.EDITABLE);
+            et_message.setText("> " + et_message.getText() + taskData.get(i) + "\n", TextView.BufferType.EDITABLE);
         }
     }
 
@@ -131,24 +132,27 @@ public class ShareFragment extends Fragment implements AdapterView.OnItemSelecte
 
     public void sendEmail()
     {
-        try
-        {
-            email = et_email.getText().toString();
-            subject = et_subject.getText().toString();
-            message = et_message.getText().toString();
-            final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
-            emailIntent.setType("plain/text");
-            emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL,new String[] { email });
-            emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,subject);
-            if (URI != null) {
-                emailIntent.putExtra(Intent.EXTRA_STREAM, URI);
-            }
-            emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, message);
-            this.startActivity(Intent.createChooser(emailIntent,"Sending email..."));
+        if (!isValidEmail(et_email.getText().toString())) {
+            Toast.makeText(getContext(), "your email is not valid", Toast.LENGTH_LONG).show();
         }
-        catch (Throwable t)
-        {
-            Toast.makeText(getContext(), "Request failed try again: " + t.toString(),Toast.LENGTH_LONG).show();
+        else {
+            try {
+                email = et_email.getText().toString();
+                subject = et_subject.getText().toString();
+                message = et_message.getText().toString();
+                final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+                emailIntent.setType("plain/text");
+                emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{email});
+                emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
+                if (URI != null) {
+                    emailIntent.putExtra(Intent.EXTRA_STREAM, URI);
+                }
+                emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, message);
+                this.startActivity(Intent.createChooser(emailIntent, "Sending email..."));
+            } catch (Throwable t) {
+                Toast.makeText(getContext(), "Request failed try again: " + t.toString(), Toast.LENGTH_LONG).show();
+            }
+
         }
     }
 
@@ -179,5 +183,9 @@ public class ShareFragment extends Fragment implements AdapterView.OnItemSelecte
             taskData = new ArrayList<>();
             e.printStackTrace();
         }
+    }
+
+    public static boolean isValidEmail(CharSequence target) {
+        return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
 }
