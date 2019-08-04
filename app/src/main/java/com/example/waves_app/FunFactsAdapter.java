@@ -77,6 +77,34 @@ public class FunFactsAdapter extends RecyclerView.Adapter<FunFactsAdapter.ViewHo
                         ).start();
             }
         });
+
+        holder.cv1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                final View v = holder.cv1;
+
+                // first quarter turn
+                v.animate().withLayer()
+                        .rotationY(90)
+                        .setDuration(300)
+                        .withEndAction(
+                                new Runnable() {
+                                    @Override public void run() {
+
+                                        // second quarter turn
+                                        v.setRotationY(-90);
+                                        v.animate().withLayer()
+                                                .rotationY(0)
+                                                .setDuration(300)
+                                                .start();
+                                        holder.cv1.setVisibility(View.GONE);
+                                        holder.cv.setVisibility(View.VISIBLE);
+                                    }
+                                }
+                        ).start();
+            }
+        });
     }
 
     @Override
