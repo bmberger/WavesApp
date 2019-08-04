@@ -2,6 +2,7 @@ package com.example.waves_app.fragments;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -75,7 +76,6 @@ public class ShareFragment extends Fragment implements AdapterView.OnItemSelecte
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, data);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spin.setAdapter(adapter);
-
         spin.setOnItemSelectedListener(this);
 
         Send = (Button) view.findViewById(R.id.bt_send);
@@ -98,11 +98,11 @@ public class ShareFragment extends Fragment implements AdapterView.OnItemSelecte
             data.add(categoryName);
         }
 
-        Toast.makeText(getContext(), "Selected category: " + data.get(position) ,Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Selected category to share: " + data.get(position), Toast.LENGTH_SHORT).show();
 
         readTaskItems(data.get(position));
 
-        et_message.setText(et_message.getText() + "Below are the items in my " + data.get(position) + " list: \n \n", TextView.BufferType.EDITABLE);
+        et_message.setText( "Below are the items in my " + data.get(position) + " list: \n \n", TextView.BufferType.EDITABLE);
 
         for (int i = 0; i < taskData.size(); i++) {
             et_message.setText("> " + et_message.getText() + taskData.get(i) + "\n", TextView.BufferType.EDITABLE);

@@ -41,21 +41,4 @@
         android:visibility="invisible"
         tools:visibility="visible"/>
 
-    <Button
-        android:text="Save Lap"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:id="@+id/button4"
-        android:layout_below="@+id/button_start_pause"
-        android:layout_centerHorizontal="true" />
-
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/button4"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="12dp"
-        android:id="@+id/listview1"/>
-
 </RelativeLayout>

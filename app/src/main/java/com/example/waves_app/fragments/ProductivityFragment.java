@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +33,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class ProductivityFragment extends Fragment {
 
     private static final long START_TIME_IN_MILLIS = 1500000;
+    private static final int Two_Seconds = 120000;
 
     private TextView mTextViewCountDown;
     private Button mButtonStartPause;
@@ -44,14 +46,8 @@ public class ProductivityFragment extends Fragment {
     private long mTimeLeftInMillis = START_TIME_IN_MILLIS;
     private long mEndTime;
 
-    Button lap;
 
     Handler handler;
-    ListView listView ;
-    String[] ListElements = new String[] {  };
-    List<String> ListElementsArrayList ;
-
-    ArrayAdapter<String> adapter ;
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_productivity, container, false);
@@ -65,19 +61,9 @@ public class ProductivityFragment extends Fragment {
         mTextViewCountDown = (TextView)view.findViewById(R.id.text_view_countdown);
         mButtonStartPause = (Button)view.findViewById(R.id.button_start_pause);
         mButtonReset = (Button)view.findViewById(R.id.button3);
-        lap = (Button)view.findViewById(R.id.button4) ;
-        listView = (ListView)view.findViewById(R.id.listview1);
 
         handler = new Handler() ;
 
-        ListElementsArrayList = new ArrayList<String>(Arrays.asList(ListElements));
-
-        adapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_list_item_1,
-                ListElementsArrayList
-        );
-
-        listView.setAdapter(adapter);
 
         mButtonStartPause.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,16 +85,6 @@ public class ProductivityFragment extends Fragment {
 
         updateCountDownText();
 
-        lap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                ListElementsArrayList.add(mTextViewCountDown.getText().toString());
-
-                adapter.notifyDataSetChanged();
-
-            }
-        });
     }
 
     private void startTimer() {
@@ -117,6 +93,9 @@ public class ProductivityFragment extends Fragment {
         mCountDownTimer = new CountDownTimer(mTimeLeftInMillis, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
+                if(millisUntilFinished == Two_Seconds){
+                    Toast.makeText(getContext(), "Pomodora has two minutes left", Toast.LENGTH_SHORT).show();
+                }
                 mTimeLeftInMillis = millisUntilFinished;
                 updateCountDownText();
             }
@@ -127,6 +106,7 @@ public class ProductivityFragment extends Fragment {
                 mButtonStartPause.setText("Start");
                 mButtonStartPause.setVisibility(View.INVISIBLE);
                 mButtonReset.setVisibility(View.VISIBLE);
+                Toast.makeText(getContext(), "Pomodora finished", Toast.LENGTH_SHORT).show();
             }
         }.start();
 
