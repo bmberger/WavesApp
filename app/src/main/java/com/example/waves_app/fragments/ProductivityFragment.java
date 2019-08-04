@@ -32,18 +32,20 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class ProductivityFragment extends Fragment {
 
-    private static final long START_TIME_IN_MILLIS = 1500000;
     private static final int Two_Seconds = 120000;
 
     private TextView mTextViewCountDown;
     private Button mButtonStartPause;
     private Button mButtonReset;
+    private Button fiveMins;
+    private Button twentyFiveMins;
 
     private CountDownTimer mCountDownTimer;
 
     private boolean mTimerRunning;
 
-    private long mTimeLeftInMillis = START_TIME_IN_MILLIS;
+    private long START_TIME_IN_MILLIS;
+    private long mTimeLeftInMillis;
     private long mEndTime;
 
 
@@ -61,8 +63,30 @@ public class ProductivityFragment extends Fragment {
         mTextViewCountDown = (TextView)view.findViewById(R.id.text_view_countdown);
         mButtonStartPause = (Button)view.findViewById(R.id.button_start_pause);
         mButtonReset = (Button)view.findViewById(R.id.button3);
+        fiveMins = (Button)view.findViewById(R.id.fiveMins);
+        twentyFiveMins = (Button)view.findViewById(R.id.twentyFiveMins);
 
         handler = new Handler() ;
+
+        twentyFiveMins.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // START_TIME_IN_MILLIS = 1500000;
+                setTime(1500000);
+                twentyFiveMins.setVisibility(View.INVISIBLE);
+                fiveMins.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        fiveMins.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // START_TIME_IN_MILLIS = 300000;
+                setTime(300000);
+                twentyFiveMins.setVisibility(View.INVISIBLE);
+                fiveMins.setVisibility(View.INVISIBLE);
+            }
+        });
 
 
         mButtonStartPause.setOnClickListener(new View.OnClickListener() {
@@ -115,17 +139,26 @@ public class ProductivityFragment extends Fragment {
         mButtonReset.setVisibility(View.INVISIBLE);
     }
 
+    private void setTime(long milliseconds) {
+        START_TIME_IN_MILLIS = milliseconds;
+        resetTimer();
+    }
+
     private void pauseTimer() {
         mCountDownTimer.cancel();
         mTimerRunning = false;
         mButtonStartPause.setText("Start");
         mButtonReset.setVisibility(View.VISIBLE);
+        twentyFiveMins.setVisibility(View.VISIBLE);
+        fiveMins.setVisibility(View.VISIBLE);
     }
 
     private void resetTimer() {
         mTimeLeftInMillis = START_TIME_IN_MILLIS;
         updateCountDownText();
         mButtonReset.setVisibility(View.INVISIBLE);
+        twentyFiveMins.setVisibility(View.INVISIBLE);
+        fiveMins.setVisibility(View.INVISIBLE);
         mButtonStartPause.setVisibility(View.VISIBLE);
     }
 
@@ -166,6 +199,7 @@ public class ProductivityFragment extends Fragment {
         SharedPreferences prefs = getContext().getSharedPreferences("prefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
 
+        editor.putLong("startTimeInMillis", START_TIME_IN_MILLIS);
         editor.putLong("millisLeft", mTimeLeftInMillis);
         editor.putBoolean("timerRunning", mTimerRunning);
         editor.putLong("endTime", mEndTime);
@@ -183,6 +217,7 @@ public class ProductivityFragment extends Fragment {
 
         SharedPreferences prefs = getContext().getSharedPreferences("prefs", MODE_PRIVATE);
 
+        START_TIME_IN_MILLIS = prefs.getLong("startTimeInMillis", 600000);
         mTimeLeftInMillis = prefs.getLong("millisLeft", START_TIME_IN_MILLIS);
         mTimerRunning = prefs.getBoolean("timerRunning", false);
 

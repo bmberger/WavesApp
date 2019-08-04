@@ -8,16 +8,16 @@
     android:background="#ECEFF1">
 
     <TextView
-        android:text="00:00"
+        android:id="@+id/text_view_countdown"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/text_view_countdown"
-        android:textStyle="bold"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="139dp"
+        android:text="00:00"
         android:textColor="@android:color/black"
-        android:textSize="60sp" />
+        android:textSize="120sp"
+        android:textStyle="bold" />
 
     <Button
         android:text="Start"
@@ -40,5 +40,29 @@
         android:id="@+id/button3"
         android:visibility="invisible"
         tools:visibility="visible"/>
+
+    <Button
+        android:id="@+id/twentyFiveMins"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/button_start_pause"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="211dp"
+        android:layout_marginRight="211dp"
+        android:text="25min" />
+
+    <Button
+        android:id="@+id/fiveMins"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/button_start_pause"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="116dp"
+        android:layout_marginRight="116dp"
+        android:text="5min" />
 
 </RelativeLayout>
