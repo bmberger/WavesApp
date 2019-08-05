@@ -1,17 +1,21 @@
+/*
+ * Project: Waves
+ *
+ * Purpose: Displays timer that runs in background to keep user on app or working on tasks for set time.
+ *
+ * Reference(s): Aweys Abdullatif
+ */
+
 package com.example.waves_app.fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.os.SystemClock;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,16 +23,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.waves_app.MainActivity;
 import com.example.waves_app.R;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Locale;
 
 import static android.content.Context.MODE_PRIVATE;
-
 
 public class ProductivityFragment extends Fragment {
 
@@ -47,7 +46,6 @@ public class ProductivityFragment extends Fragment {
     private long START_TIME_IN_MILLIS;
     private long mTimeLeftInMillis;
     private long mEndTime;
-
 
     Handler handler;
 
@@ -108,7 +106,6 @@ public class ProductivityFragment extends Fragment {
         });
 
         updateCountDownText();
-
     }
 
     private void startTimer() {
@@ -209,7 +206,6 @@ public class ProductivityFragment extends Fragment {
         editor.putLong("millisLeft", mTimeLeftInMillis);
         editor.putBoolean("timerRunning", mTimerRunning);
         editor.putLong("endTime", mEndTime);
-
         editor.apply();
 
         if (mCountDownTimer != null) {
@@ -245,5 +241,3 @@ public class ProductivityFragment extends Fragment {
         }
     }
 }
-
-
