@@ -1,3 +1,12 @@
+/*
+ * Project: Waves
+ *
+ * Purpose: Creates and sends an email to given recipient with a list of all the tasks
+ * in a selected category.
+ *
+ * Reference(s): Aweys Abdullatif
+ */
+
 package com.example.waves_app.fragments;
 
 import android.content.Intent;
@@ -101,11 +110,20 @@ public class ShareFragment extends Fragment implements AdapterView.OnItemSelecte
 
         readTaskItems(data.get(position));
 
-        et_message.setText( "Below are the items in my " + data.get(position) + " list: \n \n", TextView.BufferType.EDITABLE);
+        // Create and format the message
+        String message = "Below are the items in my " + data.get(position) + " list: \n \n";
+        for (String task : taskData) {
+            int delimiter = task.indexOf(",");
+            String taskDetail = task.substring(0, delimiter);
+            String dueDate = task.substring(delimiter + 1);
 
-        for (int i = 0; i < taskData.size(); i++) {
-            et_message.setText("> " + et_message.getText() + taskData.get(i) + "\n", TextView.BufferType.EDITABLE);
+            message += "> " + taskDetail + "\n";
+            if (!dueDate.equals("set due date")) {
+                message += "   " + dueDate + "\n";
+            }
         }
+
+        et_message.setText(message);
     }
 
     @Override
@@ -134,7 +152,7 @@ public class ShareFragment extends Fragment implements AdapterView.OnItemSelecte
     public void sendEmail()
     {
         if (!isValidEmail(et_email.getText().toString())) {
-            Toast.makeText(getContext(), "your email is not valid", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Your email is not valid.", Toast.LENGTH_LONG).show();
         }
         else {
             try {
@@ -152,11 +170,10 @@ public class ShareFragment extends Fragment implements AdapterView.OnItemSelecte
                 }
 
                 emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, message);
-                this.startActivity(Intent.createChooser(emailIntent, "Sending email..."));
+                this.startActivity(Intent.createChooser(emailIntent, "Send email with..."));
             } catch (Throwable t) {
                 Toast.makeText(getContext(), "Request failed try again: " + t.toString(), Toast.LENGTH_LONG).show();
             }
-
         }
     }
 
@@ -173,7 +190,6 @@ public class ShareFragment extends Fragment implements AdapterView.OnItemSelecte
     private File getCategoriesFile() {
         return new File(getContext().getFilesDir(), "allCategories.txt");
     }
-
 
     private File getTaskFile(String cat) {
         return new File(getContext().getFilesDir(), cat + ".txt");
