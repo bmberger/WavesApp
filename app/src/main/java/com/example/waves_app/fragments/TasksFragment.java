@@ -25,10 +25,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.waves_app.ItemMoveCallbackTask;
-import com.example.waves_app.OnStartDragListener;
+import com.example.waves_app.interfaces.OnStartDragListener;
 import com.example.waves_app.R;
 import com.example.waves_app.SwipeToDeleteTaskCallback;
-import com.example.waves_app.TaskAdapter;
+import com.example.waves_app.adapters.TaskAdapter;
 import com.example.waves_app.model.Task;
 
 import org.apache.commons.io.FileUtils;

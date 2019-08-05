@@ -6,7 +6,7 @@
  * Reference(s): Aweys Abdullatif
  */
 
-package com.example.waves_app;
+package com.example.waves_app.interfaces;
 
 import androidx.recyclerview.widget.RecyclerView;
 

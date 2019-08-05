@@ -6,9 +6,8 @@
  * Reference(s): Aweys Abdullatif
  */
 
-package com.example.waves_app;
+package com.example.waves_app.adapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,39 +16,38 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.waves_app.R;
 import com.example.waves_app.model.FunFacts;
 
 import java.util.List;
 
 public class FunFactsAdapter extends RecyclerView.Adapter<FunFactsAdapter.ViewHolder> {
 
-    private List<FunFacts> TvShowList;
-    private Context context;
+    private List<FunFacts> questionsList;
 
-    public FunFactsAdapter(List<FunFacts>TvShowList)
+    public FunFactsAdapter(List<FunFacts> questionsList)
     {
-        this.TvShowList = TvShowList;
+        this.questionsList = questionsList;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.facts_list,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_facts, parent,false);
         ViewHolder viewHolder = new ViewHolder(view);
-        context = parent.getContext();
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        final FunFacts tvShow = TvShowList.get(position);
+        final FunFacts fact = questionsList.get(position);
 
-        holder.textTvShow.setText(TvShowList.get(position).getTvshow());
-        holder.textTvShow1.setText(TvShowList.get(position).getTvshowAnswer());
+        holder.tvQuestion.setText(fact.getTvshow());
+        holder.tvAnswer.setText(fact.getTvshowAnswer());
 
-        holder.cv.setOnClickListener(new View.OnClickListener() {
+        holder.cvQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final View v = holder.cv;
+                final View v = holder.cvQuestion;
 
                 // First quarter turn
                 v.animate().withLayer()
@@ -64,18 +62,18 @@ public class FunFactsAdapter extends RecyclerView.Adapter<FunFactsAdapter.ViewHo
                                                 .rotationY(0)
                                                 .setDuration(300)
                                                 .start();
-                                        holder.cv.setVisibility(View.GONE);
-                                        holder.cv1.setVisibility(View.VISIBLE);
+                                        holder.cvQuestion.setVisibility(View.GONE);
+                                        holder.cvAnswer.setVisibility(View.VISIBLE);
                                     }
                                 }
                         ).start();
             }
         });
 
-        holder.cv1.setOnClickListener(new View.OnClickListener() {
+        holder.cvAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final View v = holder.cv1;
+                final View v = holder.cvAnswer;
 
                 // First quarter turn
                 v.animate().withLayer()
@@ -90,8 +88,8 @@ public class FunFactsAdapter extends RecyclerView.Adapter<FunFactsAdapter.ViewHo
                                                 .rotationY(0)
                                                 .setDuration(300)
                                                 .start();
-                                        holder.cv1.setVisibility(View.GONE);
-                                        holder.cv.setVisibility(View.VISIBLE);
+                                        holder.cvAnswer.setVisibility(View.GONE);
+                                        holder.cvQuestion.setVisibility(View.VISIBLE);
                                     }
                                 }
                         ).start();
@@ -101,23 +99,22 @@ public class FunFactsAdapter extends RecyclerView.Adapter<FunFactsAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return TvShowList.size();
+        return questionsList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder
-    {
-        TextView textTvShow;
-        CardView cv;
-        TextView textTvShow1;
-        CardView cv1;
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public ViewHolder(View itemView)
-        {
+        public CardView cvQuestion;
+        public TextView tvQuestion;
+        public CardView cvAnswer;
+        public TextView tvAnswer;
+
+        public ViewHolder(View itemView) {
             super(itemView);
-            textTvShow = (TextView)itemView.findViewById(R.id.textTvshow);
-            cv = (CardView)itemView.findViewById(R.id.cv);
-            textTvShow1 = (TextView)itemView.findViewById(R.id.textTvshow1);
-            cv1 = (CardView)itemView.findViewById(R.id.cv1);
+            this.cvQuestion = (CardView)itemView.findViewById(R.id.cvQuestion);
+            this.tvQuestion = (TextView)itemView.findViewById(R.id.tvQuestion);
+            this.cvAnswer = (CardView)itemView.findViewById(R.id.cvAnswer);
+            this.tvAnswer = (TextView)itemView.findViewById(R.id.tvAnswer);
         }
     }
 }

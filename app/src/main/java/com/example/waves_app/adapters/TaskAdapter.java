@@ -6,7 +6,7 @@
  * Reference(s): Angela Liu, Briana Berger
  */
 
-package com.example.waves_app;
+package com.example.waves_app.adapters;
 
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
@@ -32,6 +32,9 @@ import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.waves_app.interfaces.ItemTouchHelperAdapter;
+import com.example.waves_app.MyAlarm;
+import com.example.waves_app.R;
 import com.example.waves_app.model.Task;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -230,7 +233,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
             }
             notifyDataSetChanged();
 
-
             // Create popup when task is marked complete
             Dialog ad_dialog = new Dialog(context);
             ad_dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
@@ -247,6 +249,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
             int fishID = getRandomFishId();
             fishImage.setImageResource(fishID);
 
+            // Displays the popup to the screen
             ad_dialog.show();
         } else {
             // If you had an empty task with deadline, we don't want it to count towards fish tank
@@ -367,6 +370,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                                 cancelAlarm(ogDetail);
                                 cancelAlarm(newDetail);
                             }
+
                             task.setTaskDetail(newDetail);
                             parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
                             writeTaskItems(); // Update the persistence
@@ -386,6 +390,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                                 testDeletedTask = null;
                                 pos--;
                             }
+
                             parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
                             writeTaskItems(); // Update the persistence
                         }

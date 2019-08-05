@@ -15,7 +15,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,14 +42,13 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
-public class ShareFragment extends Fragment implements AdapterView.OnItemSelectedListener{
+public class ShareFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
-
-    private EditText et_email;
-    private EditText et_subject;
-    private EditText et_message;
-    private TextView tv_attachment;
-    private Button Send;
+    private EditText etEmail;
+    private EditText etSubject;
+    private EditText etMessage;
+    private TextView tvAttachment;
+    private Button send;
     private String email;
     private String subject;
     private String message;
@@ -69,10 +67,11 @@ public class ShareFragment extends Fragment implements AdapterView.OnItemSelecte
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        et_email = (EditText) view.findViewById(R.id.et_to);
-        et_subject = (EditText) view.findViewById(R.id.et_subject);
-        et_message = (EditText) view.findViewById(R.id.et_message);
-        tv_attachment = (TextView) view.findViewById(R.id.tv_attachment);
+        etEmail = (EditText) view.findViewById(R.id.et_to);
+        etSubject = (EditText) view.findViewById(R.id.et_subject);
+        etMessage = (EditText) view.findViewById(R.id.et_message);
+        tvAttachment = (TextView) view.findViewById(R.id.tv_attachment);
+        tvAttachment.setText("Attached file");
 
         readCategoryItems();
 
@@ -87,10 +86,9 @@ public class ShareFragment extends Fragment implements AdapterView.OnItemSelecte
         spin.setAdapter(adapter);
         spin.setOnItemSelectedListener(this);
 
-        Send = (Button) view.findViewById(R.id.bt_send);
-
-        //Send button listener
-        Send.setOnClickListener(new View.OnClickListener() {
+        // Set send button listener
+        send = (Button) view.findViewById(R.id.bt_send);
+        send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sendEmail();
@@ -100,7 +98,7 @@ public class ShareFragment extends Fragment implements AdapterView.OnItemSelecte
 
     @Override
     public void onItemSelected(AdapterView<?> arg0, View arg1, int position,long id) {
-        et_message.getText().clear();
+        etMessage.getText().clear();
         readCategoryItems();
 
         List<String> data = new ArrayList<>();
@@ -123,7 +121,7 @@ public class ShareFragment extends Fragment implements AdapterView.OnItemSelecte
             }
         }
 
-        et_message.setText(message);
+        etMessage.setText(message);
     }
 
     @Override
@@ -143,22 +141,20 @@ public class ShareFragment extends Fragment implements AdapterView.OnItemSelecte
             columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             attachmentFile = cursor.getString(columnIndex);
 
-            Log.e("Attachment Path:", attachmentFile);
             URI = Uri.parse("file://" + attachmentFile);
             cursor.close();
         }
     }
 
-    public void sendEmail()
-    {
-        if (!isValidEmail(et_email.getText().toString())) {
+    public void sendEmail() {
+        if (!isValidEmail(etEmail.getText().toString())) {
             Toast.makeText(getContext(), "Your email is not valid.", Toast.LENGTH_LONG).show();
         }
         else {
             try {
-                email = et_email.getText().toString();
-                subject = et_subject.getText().toString();
-                message = et_message.getText().toString();
+                email = etEmail.getText().toString();
+                subject = etSubject.getText().toString();
+                message = etMessage.getText().toString();
 
                 final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
                 emailIntent.setType("plain/text");

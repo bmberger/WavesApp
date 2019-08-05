@@ -7,9 +7,9 @@
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cvQuestion"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/cv"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="10dp"
         app:cardPreventCornerOverlap="false"
@@ -25,21 +25,21 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/tvQuestion"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textSize="17sp"
                 android:layout_margin="20dp"
-                android:id="@+id/textTvshow"
-                android:text="Place_holder" />
+                android:text="Question" />
 
         </FrameLayout>
 
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cvAnswer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/cv1"
         android:visibility="gone"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="10dp"
@@ -55,14 +55,14 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/tvAnswer"
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textSize="17sp"
                 android:layout_margin="20dp"
                 android:layout_gravity="center"
-                android:id="@+id/textTvshow1"
-                android:text="Place_holder" />
+                android:text="Answer" />
 
         </FrameLayout>
 
