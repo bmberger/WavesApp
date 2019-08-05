@@ -60,17 +60,25 @@ public class FunFactsFragment extends Fragment {
     }
 
     public static final String[] TvShows= {
+            "Over __% of the Earth's surface is covered by salt water.",
+            "The Earth's Oceans are hme to __,__ known species. And that's with only 5% of the Earth's oceans explored!",
+            "Back in 2014, it was estimated that there were __ trillion pieces of plastic debris in the ocean.",
+            "The International Union for Conservation of Nature (IUCN) currently lists more than __ marine species as endangered already or vulnerable of becoming so. Some of the best-known of endangered marine life includes the angel shark, and the blue whale.",
             "The ocean constitutes over __ of the habitable space on the planet.",
             "By the year ___, without significant changes, more than half of the world’s marine species may stand on the brink of extinction.",
             "Today, fisheries provide over __ percent of the dietary intake of animal protein.",
             "Approximately 12% of the land area is protected, compared to roughly __ of the world ocean and adjacent seas.",
             "Tiny phytoplancton provide __ of the oxygen on earth and form the basis of the ocean food chain up to fish and marine mammals, and ultimately human consumption.",
-            "Today __ of the world’s major marine ecosystems that underpin livelihoods have been degraded or are being used unsustainably.",
+            "Today, __ of the world’s major marine ecosystems that underpin livelihoods have been degraded or are being used unsustainably.",
             "Commercial overexploitation of the world’s fish stocks is so severe that it has been estimated that up to __ percent of global fisheries have ‘collapsed.",
             "Coastal systems such as such as mangroves, salt marshes and seagrass meadows have the ability to absorb, or sequester, carbon at rates up to __ times those of the same area of tropical forest.",
             "Total carbon deposits in these coastal systems may be up to __ times the carbon stored in tropical forests."};
 
     public static final String[] TvShowsAnswers= {
+            "72",
+            "230,000",
+            "5.25",
+            "360",
             "90%",
             "2100",
             "15",
