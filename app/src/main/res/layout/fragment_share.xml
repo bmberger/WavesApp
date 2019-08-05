@@ -60,10 +60,10 @@
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/drop_down"
-            android:layout_width="match_parent"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:spinnerMode="dialog"
-            style="@style/Widget.AppCompat.Spinner.Underlined" />
+            android:spinnerMode="dialog" />
 
         <!-- Compose Email -->
         <com.google.android.material.textfield.TextInputLayout
