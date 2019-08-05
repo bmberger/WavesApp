@@ -27,20 +27,22 @@
         android:roundIcon="@mipmap/waves_logo_lined_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".SplashActivity" android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".HomeActivity"/>
         <activity
             android:name=".SignUpActivity" />
         <activity
             android:name=".MainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
                 <!-- This marks the Activity as a Cardboard Activity and allows it
              to be launched from the Cardboard app. -->
                 <category android:name="com.google.intent.category.CARDBOARD" />
                 <category android:name="com.google.intent.category.DAYDREAM" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
