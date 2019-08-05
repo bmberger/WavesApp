@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rlLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,15 +10,18 @@
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/vpTutorialCards"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
+        android:layout_alignParentEnd="true"
         android:clipToPadding="false"
         android:foregroundGravity="center"
-        android:overScrollMode="never">
+        android:overScrollMode="never"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
     </androidx.viewpager.widget.ViewPager>
 
@@ -27,31 +31,34 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="150dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/round"
         android:paddingLeft="30dp"
         android:paddingRight="30dp"
         android:text="Finish Tutorial"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/ivBubbles"
-        android:layout_width="131dp"
-        android:layout_height="214dp"
+        android:layout_width="121dp"
+        android:layout_height="194dp"
         android:layout_alignParentStart="false"
         android:layout_alignParentTop="false"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/bubbles" />
 
     <ImageView
         android:id="@+id/ivBubbles2"
-        android:layout_width="143dp"
-        android:layout_height="304dp"
+        android:layout_width="147dp"
+        android:layout_height="213dp"
         android:layout_alignEnd="@+id/vpTutorialCards"
         android:layout_alignBottom="@+id/vpTutorialCards"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/bubbles2" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
