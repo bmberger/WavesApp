@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.waves_app.R;
-import com.example.waves_app.SearchAdapter;
+import com.example.waves_app.adapters.SearchAdapter;
 import com.example.waves_app.model.Task;
 
 import org.apache.commons.io.FileUtils;

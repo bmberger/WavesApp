@@ -7,7 +7,7 @@
  * Reference(s): Briana Berger, Angela Liu, Aweys Abdullatif
  */
 
-package com.example.waves_app;
+package com.example.waves_app.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -26,6 +26,9 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.waves_app.interfaces.ItemTouchHelperAdapter;
+import com.example.waves_app.interfaces.ItemTouchHelperViewHolder;
+import com.example.waves_app.R;
 import com.example.waves_app.fragments.TasksFragment;
 import com.example.waves_app.model.Category;
 import com.google.android.material.snackbar.Snackbar;

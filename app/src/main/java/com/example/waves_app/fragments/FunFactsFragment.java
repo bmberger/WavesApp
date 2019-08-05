@@ -20,15 +20,18 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.waves_app.FunFactsAdapter;
+import com.example.waves_app.adapters.FunFactsAdapter;
 import com.example.waves_app.R;
 import com.example.waves_app.model.FunFacts;
+
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 
 import java.util.ArrayList;
 
 public class FunFactsFragment extends Fragment {
 
-    private RecyclerView recyclerView;
+    private RecyclerView rvQuestions;
     private FunFactsAdapter tvShowAdapter;
     private ArrayList<FunFacts> tvShows = new ArrayList<FunFacts>();
 
@@ -41,24 +44,23 @@ public class FunFactsFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
-        for(int i = 0; i < TvShows.length; i++)
+        for(int i = 0; i < questions.length; i++)
         {
             FunFacts tvShow = new FunFacts();
 
-            tvShow.setTvshow(TvShows[i]);
-            tvShow.setTvshowAnswer(TvShowsAnswers[i]);
+            tvShow.setTvshow(questions[i]);
+            tvShow.setTvshowAnswer(answers[i]);
             tvShows.add(tvShow);
         }
 
         tvShowAdapter = new FunFactsAdapter(tvShows);
-        recyclerView = (RecyclerView)view.findViewById(R.id.TvShows);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(tvShowAdapter);
+        rvQuestions = (RecyclerView) view.findViewById(R.id.rvQuestions);
+        rvQuestions.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvQuestions.setItemAnimator(new DefaultItemAnimator());
+        rvQuestions.setAdapter(tvShowAdapter);
     }
 
-    public static final String[] TvShows = {
+    public static final String[] questions = {
             "Over __% of the Earth's surface is covered by salt water.",
             "The Earth's Oceans are home to ___,___ known species. And that's with only 5% of the Earth's oceans explored!",
             "Back in 2014, it was estimated that there were ___ trillion pieces of plastic debris in the ocean.",
@@ -73,7 +75,7 @@ public class FunFactsFragment extends Fragment {
             "Coastal systems such as such as mangroves, salt marshes and seagrass meadows have the ability to absorb, or sequester, carbon at rates up to __ times those of the same area of tropical forests.",
             "Total carbon deposits in these coastal systems may be up to _ times the carbon stored in tropical forests."};
 
-    public static final String[] TvShowsAnswers= {
+    public static final String[] answers = {
             "72",
             "230,000",
             "5.25",

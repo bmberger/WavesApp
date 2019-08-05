@@ -110,6 +110,9 @@ public class CalendarFragment extends Fragment {
             public void onMonthScroll(Date firstDayOfNewMonth) {
                 // For month and year at top of calendar
                 tvMonthYear.setText(dateFormatMonth.format(firstDayOfNewMonth));
+
+                // Displays the tasks for the day selected when user scrolls to another month
+                loadTasksForDay(compactCalendar.getFirstDayOfCurrentMonth());
             }
         });
     }
@@ -165,7 +168,7 @@ public class CalendarFragment extends Fragment {
                     String dueDate = task.substring(delimiter + 1);
 
                     if (!dueDate.equals("set due date")) {
-                        // ensures that no event that has a no due date is added
+                        // Ensures that no event that has a no due date is added
                         tEvent.setTaskDetail(taskDetail);
                         tEvent.setDueDate(dueDate);
                         taskEvents.add(tEvent);

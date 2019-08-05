@@ -22,6 +22,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.waves_app.R;
 
@@ -38,6 +40,7 @@ public class ProductivityFragment extends Fragment {
     private Button mButtonReset;
     private Button fiveMins;
     private Button twentyFiveMins;
+    private Button viewCategories;
 
     private CountDownTimer mCountDownTimer;
 
@@ -52,6 +55,7 @@ public class ProductivityFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_productivity, container, false);
         view.setBackgroundDrawable(getResources().getDrawable(R.drawable.sand_background));
+        view.setBackgroundColor(getResources().getColor(R.color.blue_0));
         return view;
     }
 
@@ -106,6 +110,21 @@ public class ProductivityFragment extends Fragment {
         });
 
         updateCountDownText();
+
+        // Set onClickListener for the button
+        viewCategories = (Button) view.findViewById(R.id.btnCategories);
+        viewCategories.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                Fragment fragment = new CategoryFragment();
+                fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
+            }
+        });
+
+//        // Sets background color of the RecyclerView
+//        RecyclerView viewPager = view.findViewById(R.id.productivity);
+//        viewPager.setBackgroundColor(getResources().getColor(R.color.blue_5_10_transparent));
     }
 
     private void startTimer() {

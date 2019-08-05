@@ -8,11 +8,12 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/TvShows"
+        android:id="@+id/rvQuestions"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#87ceeb"
         android:scrollbars="vertical"
+        android:layoutAnimation="@anim/layout_animation_fall_down"
         app:layout_constraintEnd_toEndOf="parent"></androidx.recyclerview.widget.RecyclerView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

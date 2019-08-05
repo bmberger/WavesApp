@@ -24,9 +24,9 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.waves_app.CategoryAdapter;
+import com.example.waves_app.adapters.CategoryAdapter;
 import com.example.waves_app.ItemMoveCallbackCategory;
-import com.example.waves_app.OnStartDragListener;
+import com.example.waves_app.interfaces.OnStartDragListener;
 import com.example.waves_app.R;
 import com.example.waves_app.SwipeToDeleteCategoryCallback;
 import com.example.waves_app.model.Category;

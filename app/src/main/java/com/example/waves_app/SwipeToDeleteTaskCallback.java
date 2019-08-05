@@ -21,6 +21,8 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.waves_app.adapters.TaskAdapter;
+
 public class SwipeToDeleteTaskCallback extends ItemTouchHelper.SimpleCallback {
 
     private TaskAdapter taskAdapter;
