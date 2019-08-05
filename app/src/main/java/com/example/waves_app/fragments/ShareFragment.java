@@ -2,7 +2,6 @@ package com.example.waves_app.fragments;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -24,7 +23,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.waves_app.R;
-import com.webianks.library.scroll_choice.ScrollChoice;
 
 import org.apache.commons.io.FileUtils;
 
@@ -39,19 +37,20 @@ import static android.app.Activity.RESULT_OK;
 public class ShareFragment extends Fragment implements AdapterView.OnItemSelectedListener{
 
 
-    EditText et_email;
-    EditText et_subject;
-    EditText et_message;
-    Button Send;
-    String email;
-    String subject;
-    String message;
-    String attachmentFile;
-    Uri URI = null;
+    private EditText et_email;
+    private EditText et_subject;
+    private EditText et_message;
+    private TextView tv_attachment;
+    private Button Send;
+    private String email;
+    private String subject;
+    private String message;
+    private String attachmentFile;
+    private Uri URI = null;
     private static final int PICK_FROM_GALLERY = 101;
     private List<String> categoryData;
     private List<String> taskData;
-    int columnIndex;
+    private int columnIndex;
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_share, container, false);
@@ -64,6 +63,7 @@ public class ShareFragment extends Fragment implements AdapterView.OnItemSelecte
         et_email = (EditText) view.findViewById(R.id.et_to);
         et_subject = (EditText) view.findViewById(R.id.et_subject);
         et_message = (EditText) view.findViewById(R.id.et_message);
+        tv_attachment = (TextView) view.findViewById(R.id.tv_attachment);
 
         readCategoryItems();
 
@@ -79,7 +79,8 @@ public class ShareFragment extends Fragment implements AdapterView.OnItemSelecte
         spin.setOnItemSelectedListener(this);
 
         Send = (Button) view.findViewById(R.id.bt_send);
-        //send button listener
+
+        //Send button listener
         Send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,8 +98,6 @@ public class ShareFragment extends Fragment implements AdapterView.OnItemSelecte
         for (String categoryName : categoryData) {
             data.add(categoryName);
         }
-
-        Toast.makeText(getContext(), "Selected category to share: " + data.get(position), Toast.LENGTH_SHORT).show();
 
         readTaskItems(data.get(position));
 
@@ -122,8 +121,10 @@ public class ShareFragment extends Fragment implements AdapterView.OnItemSelecte
             String[] filePathColumn = { MediaStore.Images.Media.DATA };
             Cursor cursor = getContext().getContentResolver().query(selectedImage,filePathColumn, null, null, null);
             cursor.moveToFirst();
+
             columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             attachmentFile = cursor.getString(columnIndex);
+
             Log.e("Attachment Path:", attachmentFile);
             URI = Uri.parse("file://" + attachmentFile);
             cursor.close();
@@ -140,13 +141,16 @@ public class ShareFragment extends Fragment implements AdapterView.OnItemSelecte
                 email = et_email.getText().toString();
                 subject = et_subject.getText().toString();
                 message = et_message.getText().toString();
+
                 final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
                 emailIntent.setType("plain/text");
                 emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{email});
                 emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
+
                 if (URI != null) {
                     emailIntent.putExtra(Intent.EXTRA_STREAM, URI);
                 }
+
                 emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, message);
                 this.startActivity(Intent.createChooser(emailIntent, "Sending email..."));
             } catch (Throwable t) {
@@ -158,7 +162,7 @@ public class ShareFragment extends Fragment implements AdapterView.OnItemSelecte
 
     private void readCategoryItems() {
         try {
-            // create the array of categories
+            // Create the array of categories
             categoryData = new ArrayList<String>(FileUtils.readLines(getCategoriesFile(), Charset.defaultCharset()));
         } catch (IOException e) {
             categoryData = new ArrayList<>();
