@@ -1,7 +1,7 @@
 /*
  * Project: Waves
  *
- * Purpose: Displays the view for the calendar page
+ * Purpose: Displays the view for the fun facts page
  *
  * Reference(s): Aweys Abdullatif
  */
