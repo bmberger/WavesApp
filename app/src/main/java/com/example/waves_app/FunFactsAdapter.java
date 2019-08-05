@@ -1,34 +1,30 @@
+/*
+ * Project: Waves
+ *
+ * Purpose: To update the data for fun facts and turns a card when one is clicked to display answer.
+ *
+ * Reference(s): Aweys Abdullatif
+ */
+
 package com.example.waves_app;
 
-
-import android.animation.Animator;
-import android.animation.AnimatorInflater;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-//import com.example.funfactsfragment.model.FunFacts;
 import com.example.waves_app.model.FunFacts;
 
 import java.util.List;
 
-
 public class FunFactsAdapter extends RecyclerView.Adapter<FunFactsAdapter.ViewHolder> {
 
-
-    List<FunFacts> TvShowList;
-    Context context;
+    private List<FunFacts> TvShowList;
+    private Context context;
 
     public FunFactsAdapter(List<FunFacts>TvShowList)
     {
@@ -53,18 +49,16 @@ public class FunFactsAdapter extends RecyclerView.Adapter<FunFactsAdapter.ViewHo
         holder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 final View v = holder.cv;
 
-                // first quarter turn
+                // First quarter turn
                 v.animate().withLayer()
                         .rotationY(90)
                         .setDuration(300)
                         .withEndAction(
                                 new Runnable() {
                                     @Override public void run() {
-
-                                        // second quarter turn
+                                        // Second quarter turn
                                         v.setRotationY(-90);
                                         v.animate().withLayer()
                                                 .rotationY(0)
@@ -81,18 +75,16 @@ public class FunFactsAdapter extends RecyclerView.Adapter<FunFactsAdapter.ViewHo
         holder.cv1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 final View v = holder.cv1;
 
-                // first quarter turn
+                // First quarter turn
                 v.animate().withLayer()
                         .rotationY(90)
                         .setDuration(300)
                         .withEndAction(
                                 new Runnable() {
                                     @Override public void run() {
-
-                                        // second quarter turn
+                                        // Second quarter turn
                                         v.setRotationY(-90);
                                         v.animate().withLayer()
                                                 .rotationY(0)

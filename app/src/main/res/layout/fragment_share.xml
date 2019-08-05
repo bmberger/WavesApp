@@ -1,52 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:fitsSystemWindows="true"
-    android:background="@color/white">
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="56dp"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp"
-        android:background="@color/white">
+        android:paddingTop="15dp"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
+        android:background="@android:color/transparent">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="24dp"
-            android:src="@drawable/ocean_bg2" />
+            android:layout_marginBottom="0dp"
+            android:src="@mipmap/waves_logo_lined_round" />
 
         <!-- Email Label -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/et_to"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp">
+
+            <EditText
+                android:id="@+id/et_to"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
                 android:hint="Recipient's Email Address" />
+
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Subject Label -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="0dp"
             android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/et_subject"
+
+            <EditText
+                android:id="@+id/et_subject"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Subject" />
+
         </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/tv_attachment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Attached tasks"/>
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/drop_down"
@@ -55,34 +65,32 @@
             android:spinnerMode="dialog"
             style="@style/Widget.AppCompat.Spinner.Underlined" />
 
-        <!-- Subject Label -->
+        <!-- Compose Email -->
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="356dp"
-            android:layout_height="179dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" >
 
             <EditText
                 android:id="@+id/et_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Compose Email" />
-        </com.google.android.material.textfield.TextInputLayout>
 
+        </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/bt_send"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="10dp"
             android:padding="12dp"
-            android:text="Send" />
+            android:text="Send"
+            android:layout_gravity="right"
+            android:background="@drawable/round"
+            android:textColor="@color/white" />
 
     </LinearLayout>
 
 </ScrollView>
-
-
-
-
