@@ -24,6 +24,9 @@ import com.example.waves_app.adapters.FunFactsAdapter;
 import com.example.waves_app.R;
 import com.example.waves_app.model.FunFacts;
 
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
+
 import java.util.ArrayList;
 
 public class FunFactsFragment extends Fragment {

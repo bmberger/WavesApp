@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
+    android:id="@+id/productivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
-    android:background="#ECEFF1">
+    android:background="#ECEFF1"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
         android:id="@+id/text_view_countdown"
@@ -19,27 +20,38 @@
         android:textSize="120sp"
         android:textStyle="bold" />
 
-    <Button style="@style/Widget.AppCompat.Button.Colored"
-        android:text="Start"
+    <Button
+        android:id="@+id/button_start_pause"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/text_view_countdown"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="3dp"
+        android:layout_marginLeft="3dp"
         android:layout_marginTop="41dp"
-        android:id="@+id/button_start_pause" />
+        android:background="@drawable/round"
+        android:text="Start"
+        android:textColor="@color/white" />
 
-    <Button style="@style/Widget.AppCompat.Button.Colored"
-        android:text="Reset"
+    <Button
+        android:id="@+id/button3"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/button_start_pause"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:id="@+id/button3"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginRight="3dp"
+        android:background="@drawable/round"
+        android:text="Reset"
+        android:textColor="@color/white"
         android:visibility="invisible"
-        tools:visibility="visible"/>
+        tools:visibility="visible" />
 
     <Button
         android:id="@+id/twentyFiveMins"
@@ -52,7 +64,9 @@
         android:layout_marginTop="0dp"
         android:layout_marginEnd="205dp"
         android:layout_marginRight="205dp"
-        android:text="25min" />
+        android:background="@drawable/round"
+        android:text="25min"
+        android:textColor="@color/white" />
 
     <Button
         android:id="@+id/fiveMins"
@@ -64,7 +78,45 @@
         android:layout_alignParentRight="true"
         android:layout_marginTop="1dp"
         android:layout_marginEnd="115dp"
-        android:layout_marginRight="115dp"
-        android:text="5min" />
+        android:layout_marginRight="205dp"
+        android:background="@drawable/round"
+        android:text="5min"
+        android:textColor="@color/white" />
+
+
+    <Button
+        android:id="@+id/btnCategories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/round"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:text="View to-do list"
+        android:textColor="@color/white" />
+
+    <ImageView
+        android:id="@+id/ivBubbles"
+        android:layout_width="wrap_content"
+        android:layout_height="215dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="252dp"
+        android:layout_marginTop="408dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/bubbles" />
+
+    <ImageView
+        android:id="@+id/ivBubbles2"
+        android:layout_width="109dp"
+        android:layout_height="115dp"
+        android:layout_alignEnd="@+id/vpTutorialCards"
+        android:layout_alignBottom="@+id/vpTutorialCards"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/bubbles2" />
 
 </RelativeLayout>
