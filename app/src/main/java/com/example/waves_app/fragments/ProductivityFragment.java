@@ -23,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.waves_app.R;
 
@@ -54,6 +55,7 @@ public class ProductivityFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_productivity, container, false);
         view.setBackgroundDrawable(getResources().getDrawable(R.drawable.sand_background));
+        view.setBackgroundColor(getResources().getColor(R.color.blue_0));
         return view;
     }
 
@@ -119,6 +121,10 @@ public class ProductivityFragment extends Fragment {
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
             }
         });
+
+//        // Sets background color of the RecyclerView
+//        RecyclerView viewPager = view.findViewById(R.id.productivity);
+//        viewPager.setBackgroundColor(getResources().getColor(R.color.blue_5_10_transparent));
     }
 
     private void startTimer() {

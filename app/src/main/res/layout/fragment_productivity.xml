@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
+    android:id="@+id/productivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
-    android:background="#ECEFF1">
+    android:background="#ECEFF1"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
         android:id="@+id/text_view_countdown"
@@ -28,8 +29,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginLeft="1dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginLeft="3dp"
         android:layout_marginTop="41dp"
         android:background="@drawable/round"
         android:text="Start"
@@ -44,8 +45,8 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_marginTop="0dp"
-        android:layout_marginEnd="-1dp"
-        android:layout_marginRight="1dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginRight="3dp"
         android:background="@drawable/round"
         android:text="Reset"
         android:textColor="@color/white"
@@ -95,5 +96,27 @@
         android:paddingRight="30dp"
         android:text="View to-do list"
         android:textColor="@color/white" />
+
+    <ImageView
+        android:id="@+id/ivBubbles"
+        android:layout_width="wrap_content"
+        android:layout_height="215dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="252dp"
+        android:layout_marginTop="408dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/bubbles" />
+
+    <ImageView
+        android:id="@+id/ivBubbles2"
+        android:layout_width="109dp"
+        android:layout_height="115dp"
+        android:layout_alignEnd="@+id/vpTutorialCards"
+        android:layout_alignBottom="@+id/vpTutorialCards"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/bubbles2" />
 
 </RelativeLayout>
