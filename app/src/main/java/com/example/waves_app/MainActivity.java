@@ -15,6 +15,8 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.waves_app.adapters.VPagerAdapter;
+import com.example.waves_app.adapters.VerticalViewPager;
 import com.example.waves_app.fragments.CalendarFragment;
 import com.example.waves_app.fragments.FishTankFragment;
 import com.example.waves_app.fragments.HomeFragment;

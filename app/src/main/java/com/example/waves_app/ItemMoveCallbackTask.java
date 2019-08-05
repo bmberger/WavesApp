@@ -11,6 +11,8 @@ package com.example.waves_app;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.waves_app.adapters.TaskAdapter;
+
 public class ItemMoveCallbackTask extends ItemTouchHelper.Callback {
 
     private final TaskAdapter mAdapter;

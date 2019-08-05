@@ -6,7 +6,7 @@
  * Reference(s): Briana Berger, Angela Liu
  */
 
-package com.example.waves_app;
+package com.example.waves_app.adapters;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
