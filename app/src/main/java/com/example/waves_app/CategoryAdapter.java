@@ -205,7 +205,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         public void onClick(View view) {
             String catName = etCategory.getText().toString();
 
-            if (catName.length() > 0) {
+            if (wasAnythingTyped(catName)) {
                 // Ensures that the category can't be empty when clicking into it
                 FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
                 Fragment fragment = new TasksFragment();
@@ -236,7 +236,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
             etCategory.setText(category.getCategoryName());
 
-            if (new File(context.getFilesDir(), category.getCategoryName() + ".txt").exists()) {
+            if (ifFileExists(category) ) {
                 count.setText(Integer.toString(getSizeOfCatList(category.getCategoryName())));
             } else {
                 count.setText(Integer.toString(0));
@@ -258,11 +258,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                         }
                     }
 
-                    // When focus is lost check that the text field has valid values.
-                    if (!hasFocus && categories.contains(category)) {
-                        // If anything was typed
-                        if (newName.length() > 0) {
-
+                    if (isValidInputAndFocusLost(category, hasFocus)) {
+                        if (wasAnythingTyped(newName)) {
                             File ogFile = new File(context.getFilesDir(), ogName + ".txt");
                             File renameFile = new File(context.getFilesDir(), newName + ".txt");
                             try {
@@ -272,11 +269,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                                 e.printStackTrace();
                             }
 
-                            if (!ogName.equals(newName) && !parsedData.contains(newName)) {
-                                // Case if the user needs to edit the category
+                            if (toEdit(ogName, newName)) {
                                 category.setCategoryName(newName);
-                                if (testRecentlyDeleted != null && pos > 0) {
-                                    // Tests if a task was deleted/completed while editing this category (which would mess up pos)
+                                if (deletedOtherWhileEditing(testRecentlyDeleted, pos)) {
                                     pos--;
                                     testRecentlyDeleted = null;
                                 }
@@ -359,5 +354,30 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             e.printStackTrace();
         }
         return taskData.size();
+    }
+
+    // Conditionals
+    public boolean toEdit(String ogName, String newName) {
+        // Tests if user is attempting to edit category
+        return (!ogName.equals(newName) && !parsedData.contains(newName));
+    }
+
+    public boolean deletedOtherWhileEditing(Category testRecentlyDeleted, int pos) {
+        // Tests if a task was deleted/completed while editing this category (which would mess up pos)
+        return (testRecentlyDeleted != null && pos > 0);
+    }
+
+    public boolean isValidInputAndFocusLost(Category category, boolean hasFocus) {
+        // Tests when focus is lost and checks that the text field has valid values.
+        return (!hasFocus && categories.contains(category));
+    }
+
+    public boolean wasAnythingTyped(String input) {
+        // Tests if anything was typed
+        return (input.length() > 0);
+    }
+
+    public boolean ifFileExists(Category category) {
+        return (new File(context.getFilesDir(), category.getCategoryName() + ".txt").exists());
     }
 }
