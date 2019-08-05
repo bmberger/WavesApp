@@ -174,6 +174,8 @@ public class ProductivityFragment extends Fragment {
     private void updateButtons() {
         if (mTimerRunning) {
             mButtonReset.setVisibility(View.INVISIBLE);
+            twentyFiveMins.setVisibility(View.INVISIBLE);
+            fiveMins.setVisibility(View.INVISIBLE);
             mButtonStartPause.setText("Pause");
         } else {
             mButtonStartPause.setText("Start");
@@ -186,8 +188,12 @@ public class ProductivityFragment extends Fragment {
 
             if (mTimeLeftInMillis < START_TIME_IN_MILLIS) {
                 mButtonReset.setVisibility(View.VISIBLE);
+                twentyFiveMins.setVisibility(View.VISIBLE);
+                fiveMins.setVisibility(View.VISIBLE);
             } else {
                 mButtonReset.setVisibility(View.INVISIBLE);
+                twentyFiveMins.setVisibility(View.INVISIBLE);
+                fiveMins.setVisibility(View.INVISIBLE);
             }
         }
     }

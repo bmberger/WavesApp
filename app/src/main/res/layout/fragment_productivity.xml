@@ -19,7 +19,7 @@
         android:textSize="120sp"
         android:textStyle="bold" />
 
-    <Button
+    <Button style="@style/Widget.AppCompat.Button.Colored"
         android:text="Start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
         android:layout_marginTop="41dp"
         android:id="@+id/button_start_pause" />
 
-    <Button
+    <Button style="@style/Widget.AppCompat.Button.Colored"
         android:text="Reset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -43,26 +43,28 @@
 
     <Button
         android:id="@+id/twentyFiveMins"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/button_start_pause"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="211dp"
-        android:layout_marginRight="211dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="205dp"
+        android:layout_marginRight="205dp"
         android:text="25min" />
 
     <Button
         android:id="@+id/fiveMins"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/button_start_pause"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="116dp"
-        android:layout_marginRight="116dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="115dp"
+        android:layout_marginRight="115dp"
         android:text="5min" />
 
 </RelativeLayout>
