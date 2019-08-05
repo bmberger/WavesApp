@@ -21,7 +21,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.waves_app.R;
-import com.example.waves_app.TutorialAdapter;
+import com.example.waves_app.adapters.TutorialAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

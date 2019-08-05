@@ -6,7 +6,7 @@
  * Reference(s): Angela Liu
  */
 
-package com.example.waves_app;
+package com.example.waves_app.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -17,6 +17,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.waves_app.R;
 import com.example.waves_app.model.Task;
 
 import java.util.List;

@@ -6,16 +6,13 @@
  * Reference(s): Briana Berger, Angela Liu
  */
 
-package com.example.waves_app;
+package com.example.waves_app.adapters;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.TimeUtils;
 import android.view.MotionEvent;
 import android.view.View;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
 import java.util.concurrent.TimeUnit;

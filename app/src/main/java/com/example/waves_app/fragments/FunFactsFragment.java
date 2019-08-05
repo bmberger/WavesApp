@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.waves_app.FunFactsAdapter;
+import com.example.waves_app.adapters.FunFactsAdapter;
 import com.example.waves_app.R;
 import com.example.waves_app.model.FunFacts;
 

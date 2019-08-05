@@ -6,7 +6,7 @@
  * Reference(s): Angela Liu
  */
 
-package com.example.waves_app;
+package com.example.waves_app.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
+
+import com.example.waves_app.R;
 
 import java.util.List;
 

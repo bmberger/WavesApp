@@ -6,7 +6,7 @@
  * Reference(s): Aweys Abdullatif
  */
 
-package com.example.waves_app;
+package com.example.waves_app.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +16,7 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.waves_app.R;
 import com.example.waves_app.model.FunFacts;
 
 import java.util.List;
