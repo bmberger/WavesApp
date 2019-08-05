@@ -229,18 +229,33 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             itemView.setBackgroundColor(0);
         }
 
+        public void setCount(Category category) {
+            // Sets the count of how many tasks in each category
+            if (ifFileExists(category) ) {
+                count.setText(Integer.toString(getSizeOfCatList(category.getCategoryName())));
+            } else {
+                count.setText(Integer.toString(0));
+            }
+        }
+
+        public void getPos(String input) {
+            // Fixes the add on add issue that Android Studio doesn't account for
+            for (int i = 0; i < parsedData.size(); i++) {
+                String temp = parsedData.get(i);
+
+                if (input.equals(temp)) {
+                    pos = i;
+                }
+            }
+        }
+
         public void bind(final Category category) {
             // Binds values to the itemView/specific category's view
             int id = getColorId(getAdapterPosition());
             itemView.setBackgroundColor(context.getResources().getColor(id));
 
             etCategory.setText(category.getCategoryName());
-
-            if (ifFileExists(category) ) {
-                count.setText(Integer.toString(getSizeOfCatList(category.getCategoryName())));
-            } else {
-                count.setText(Integer.toString(0));
-            }
+            setCount(category);
 
             // Get data from editText and set name for new category
             etCategory.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -249,25 +264,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                     String ogName = category.getCategoryName();
                     String newName = etCategory.getText().toString();
 
-                    // Fixes the add on add issue that Android Studio doesn't account for
-                    for (int i = 0; i < parsedData.size(); i++) {
-                        String temp = parsedData.get(i);
-
-                        if (newName.equals(temp)) {
-                            pos = i;
-                        }
-                    }
+                    getPos(newName);
 
                     if (isValidInputAndFocusLost(category, hasFocus)) {
                         if (wasAnythingTyped(newName)) {
-                            File ogFile = new File(context.getFilesDir(), ogName + ".txt");
-                            File renameFile = new File(context.getFilesDir(), newName + ".txt");
-                            try {
-                                FileUtils.moveFile(ogFile, renameFile);
-                                ogFile.delete();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                            renameFile(ogName, newName);
 
                             if (toEdit(ogName, newName)) {
                                 category.setCategoryName(newName);
@@ -354,6 +355,17 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             e.printStackTrace();
         }
         return taskData.size();
+    }
+
+    public void renameFile(String ogName, String newName) {
+        File ogFile = new File(context.getFilesDir(), ogName + ".txt");
+        File renameFile = new File(context.getFilesDir(), newName + ".txt");
+        try {
+            FileUtils.moveFile(ogFile, renameFile);
+            ogFile.delete();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // Conditionals
