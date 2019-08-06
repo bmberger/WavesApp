@@ -445,43 +445,22 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                 id = R.color.blue_14;
                 break;
             case 1:
-                id = R.color.blue_13;
-                break;
-            case 2:
                 id = R.color.blue_12;
                 break;
-            case 3:
-                id = R.color.blue_11;
-                break;
-            case 4:
+            case 2:
                 id = R.color.blue_10;
                 break;
-            case 5:
-                id = R.color.blue_9;
-                break;
-            case 6:
+            case 3:
                 id = R.color.blue_8;
                 break;
-            case 7:
-                id = R.color.blue_7;
-                break;
-            case 8:
+            case 4:
                 id = R.color.blue_6;
                 break;
-            case 9:
-                id = R.color.blue_5;
-                break;
-            case 10:
+            case 5:
                 id = R.color.blue_4;
                 break;
-            case 11:
-                id = R.color.blue_3;
-                break;
-            case 12:
+            case 6:
                 id = R.color.blue_2;
-                break;
-            case 13:
-                id = R.color.blue_1;
                 break;
             default:
                 id = R.color.blue_0; // white

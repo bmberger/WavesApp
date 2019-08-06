@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:clickable="true" >
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvQuestions"
         android:layout_width="match_parent"
@@ -19,5 +18,3 @@
     </androidx.recyclerview.widget.RecyclerView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <!--android:background="#87ceeb"-->

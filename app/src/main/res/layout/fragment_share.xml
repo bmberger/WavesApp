@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="15dp"
-        android:paddingLeft="25dp"
-        android:paddingRight="25dp"
         android:background="@android:color/transparent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/blue_16"
+            android:minHeight="?attr/actionBarSize"></androidx.appcompat.widget.Toolbar>
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="60dp"
+            android:paddingTop="10dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="0dp"
             android:src="@mipmap/waves_logo_lined_round" />
@@ -25,6 +30,8 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             android:layout_marginTop="0dp"
             android:layout_marginBottom="0dp">
 
@@ -32,6 +39,8 @@
                 android:id="@+id/et_to"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 android:inputType="textEmailAddress"
                 android:hint="Recipient's Email Address: " />
 
@@ -42,13 +51,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="0dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             android:layout_marginBottom="8dp">
 
             <EditText
                 android:id="@+id/et_subject"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Subject: " />
+                android:hint="Subject: "
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -56,10 +69,12 @@
             android:id="@+id/tv_attachment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Category to share:"/>
+            android:text="Category to share:"
+            android:paddingStart="15dp"/>
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/drop_down"
+            android:layout_marginStart="10dp"
             style="@style/Widget.AppCompat.Spinner.Underlined"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -69,12 +84,16 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             android:layout_marginTop="8dp" >
 
             <EditText
                 android:id="@+id/et_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 android:hint="Compose Email" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -85,7 +104,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"
             android:padding="12dp"
+            android:paddingEnd="10dp"
             android:text="Send"
             android:layout_gravity="right"
             android:background="@drawable/round"
