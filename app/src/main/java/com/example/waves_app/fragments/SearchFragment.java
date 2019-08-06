@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -135,6 +136,7 @@ public class SearchFragment extends Fragment {
 
         searchAdapter = new SearchAdapter(getContext(), searchTasks, searchCategories);
         rvSearchTasks.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvSearchTasks.addItemDecoration(new DividerItemDecoration(rvSearchTasks.getContext(), DividerItemDecoration.VERTICAL));
         rvSearchTasks.setAdapter(searchAdapter);
     }
 
