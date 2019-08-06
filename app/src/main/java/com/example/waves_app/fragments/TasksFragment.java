@@ -104,6 +104,7 @@ public class TasksFragment extends Fragment implements OnStartDragListener {
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setTitle(information.getString("catName"));
+        toolbar.setTitleTextAppearance(getContext(), R.style.MyTitleTextApperance);
 
         readTaskItems();
 

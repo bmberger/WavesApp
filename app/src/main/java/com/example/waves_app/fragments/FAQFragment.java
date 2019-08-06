@@ -45,6 +45,7 @@ public class FAQFragment extends Fragment {
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setTitle("FAQ");
+        toolbar.setTitleTextAppearance(getContext(), R.style.MyTitleTextApperance);
 
         final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 

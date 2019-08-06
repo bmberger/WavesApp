@@ -67,6 +67,7 @@ public class SearchFragment extends Fragment {
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setTitle("Search");
+        toolbar.setTitleTextAppearance(getContext(), R.style.MyTitleTextApperance);
 
         // Keeps track of all the inputs in the editText and populates recyclerView with relevant tasks
         etSearch.addTextChangedListener(new TextWatcher() {

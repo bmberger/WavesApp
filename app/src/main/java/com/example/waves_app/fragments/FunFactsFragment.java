@@ -57,6 +57,7 @@ public class FunFactsFragment extends Fragment {
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setTitle("Fun Facts");
+        toolbar.setTitleTextAppearance(getContext(), R.style.MyTitleTextApperance);
 
         tvShowAdapter = new FunFactsAdapter(tvShows);
         rvQuestions = (RecyclerView) view.findViewById(R.id.rvQuestions);
