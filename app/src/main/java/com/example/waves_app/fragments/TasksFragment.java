@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -88,6 +89,7 @@ public class TasksFragment extends Fragment implements OnStartDragListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tasks, container, false);
         view.setBackgroundDrawable(getResources().getDrawable(R.drawable.sand_background));
+        getActivity().setTitle(""); // Required for setting action bar title
         return view;
     }
 
@@ -99,6 +101,9 @@ public class TasksFragment extends Fragment implements OnStartDragListener {
         // Getting the category file name that contains these tasks
         Bundle information = getArguments();
         catTasks = information.getString("catName") + ".txt";
+
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar.setTitle(information.getString("catName"));
 
         readTaskItems();
 
