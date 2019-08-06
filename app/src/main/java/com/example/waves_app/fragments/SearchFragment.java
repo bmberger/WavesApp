@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,6 +40,7 @@ public class SearchFragment extends Fragment {
 
     private EditText etSearch;
     private TextView tvResultCount;
+    private ImageButton ibClear;
     private RecyclerView rvSearchTasks;
     private SearchAdapter searchAdapter;
     private List<String> searchCategories;
@@ -58,6 +60,7 @@ public class SearchFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         this.etSearch = (EditText) view.findViewById(R.id.etSearch);
         this.tvResultCount = (TextView) view.findViewById(R.id.tvResultCount);
+        this.ibClear = (ImageButton) view.findViewById(R.id.ibClear);
         this.rvSearchTasks = (RecyclerView) view.findViewById(R.id.rvSearchTasks);
 
         // Keeps track of all the inputs in the editText and populates recyclerView with relevant tasks
@@ -75,6 +78,14 @@ public class SearchFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 loadTasks(editable.toString());
+            }
+        });
+
+        // Clear the search editText if ibClear is pressed
+        ibClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                etSearch.setText("");
             }
         });
     }
