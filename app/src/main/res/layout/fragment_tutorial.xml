@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rlLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,7 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/blue_16"
-        android:minHeight="?attr/actionBarSize"></androidx.appcompat.widget.Toolbar>
+        android:minHeight="?attr/actionBarSize"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </androidx.appcompat.widget.Toolbar>
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/vpTutorialCards"
@@ -25,23 +27,24 @@
         android:clipToPadding="false"
         android:foregroundGravity="center"
         android:overScrollMode="never"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
     </androidx.viewpager.widget.ViewPager>
 
     <ImageView
         android:id="@+id/ivBubbles"
-        android:layout_width="77dp"
-        android:layout_height="146dp"
+        android:layout_width="119dp"
+        android:layout_height="191dp"
         android:layout_alignParentStart="false"
         android:layout_alignParentTop="false"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:srcCompat="@drawable/bubbles" />
 
     <ImageView
