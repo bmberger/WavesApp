@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -38,6 +39,7 @@ public class FunFactsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_funfacts, container, false);
         view.setBackgroundDrawable(getResources().getDrawable(R.drawable.sand_background));
+        getActivity().setTitle(""); // Required for setting action bar title
         view.bringToFront();
         return view;
     }
@@ -52,6 +54,9 @@ public class FunFactsFragment extends Fragment {
             tvShow.setTvshowAnswer(answers[i]);
             tvShows.add(tvShow);
         }
+
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar.setTitle("Fun Facts");
 
         tvShowAdapter = new FunFactsAdapter(tvShows);
         rvQuestions = (RecyclerView) view.findViewById(R.id.rvQuestions);
