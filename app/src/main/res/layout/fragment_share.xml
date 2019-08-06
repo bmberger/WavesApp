@@ -42,7 +42,7 @@
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:inputType="textEmailAddress"
-                android:hint="Recipient's Email Address" />
+                android:hint="Recipient's Email Address: " />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -59,9 +59,9 @@
                 android:id="@+id/et_subject"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="Subject: "
                 android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:hint="Subject" />
+                android:paddingEnd="10dp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -69,8 +69,8 @@
             android:id="@+id/tv_attachment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="15dp"
-            android:text="Attached file"/>
+            android:text="Category to share:"
+            android:paddingStart="15dp"/>
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/drop_down"
