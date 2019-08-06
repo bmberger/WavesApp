@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -52,6 +53,7 @@ public class SearchFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         view.setBackgroundDrawable(getResources().getDrawable(R.drawable.sand_background));
+        getActivity().setTitle(""); // Required for setting action bar title
         view.bringToFront();
         return view;
     }
@@ -62,6 +64,9 @@ public class SearchFragment extends Fragment {
         this.ibSearch = (ImageButton) view.findViewById(R.id.ibSearch);
         this.tvResultCount = (TextView) view.findViewById(R.id.tvResultCount);
         this.rvSearchTasks = (RecyclerView) view.findViewById(R.id.rvSearchTasks);
+
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar.setTitle("Search");
 
         ibSearch.setOnClickListener(new View.OnClickListener() {
             @Override
