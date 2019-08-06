@@ -8,8 +8,12 @@
 
 package com.example.waves_app.fragments;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -18,6 +22,8 @@ import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -31,6 +37,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class HomeFragment extends Fragment {
 
@@ -45,6 +52,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         view.setBackgroundDrawable(getResources().getDrawable(R.drawable.sand_background));
+        getActivity().setTitle(""); // Required for setting action bar title
         return view;
     }
 
@@ -52,13 +60,16 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar.setTitle("Waves");
+
         // Set up architecture of list and list adapter
         itemsList = (ListView) view.findViewById(R.id.listItems);
         items = new ArrayList<String>();
 
         int categoryCount = categoryCount();
 
-        String[] homePageOptions = new String[] { "My Categories (" + categoryCount + ")", "Search", "Share", "Productivity", "Marine Biodiversity Facts", "Tutorial", "FAQ"};
+        String[] homePageOptions = new String[] { "My Categories (" + categoryCount + ")", "Search", "Share", "Productivity", "Fun Facts", "Tutorial", "FAQ"};
         items.addAll(Arrays.asList(homePageOptions));
 
         itemsAdapter = new ArrayAdapter<String>(getContext(), R.layout.simple_row_layout, items) {
@@ -108,7 +119,7 @@ public class HomeFragment extends Fragment {
                     fragment = new FAQFragment();
                 } else if (clickedOption.equals("Tutorial")) {
                     fragment = new TutorialFragment();
-                } else if (clickedOption.equals("Marine Biodiversity Facts")) {
+                } else if (clickedOption.equals("Fun Facts")) {
                         fragment = new FunFactsFragment();
                 } else if (clickedOption.equals("Search")) {
                     fragment = new SearchFragment();

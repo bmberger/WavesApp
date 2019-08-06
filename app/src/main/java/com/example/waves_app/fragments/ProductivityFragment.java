@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -56,6 +57,7 @@ public class ProductivityFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_productivity, container, false);
         view.setBackgroundDrawable(getResources().getDrawable(R.drawable.sand_background));
         view.setBackgroundColor(getResources().getColor(R.color.blue_0));
+        getActivity().setTitle(""); // Required for setting action bar title
         return view;
     }
 
@@ -68,7 +70,10 @@ public class ProductivityFragment extends Fragment {
         fiveMins = (Button)view.findViewById(R.id.fiveMins);
         twentyFiveMins = (Button)view.findViewById(R.id.twentyFiveMins);
 
-        handler = new Handler() ;
+        handler = new Handler();
+
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar.setTitle("Productivity");
 
         twentyFiveMins.setOnClickListener(new View.OnClickListener() {
             @Override
