@@ -10,59 +10,66 @@
         android:id="@+id/cvQuestion"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="32dp"
         app:cardBackgroundColor="@android:color/white"
-        app:cardCornerRadius="10dp"
+        app:cardCornerRadius="32dp"
         app:cardPreventCornerOverlap="false"
         app:cardUseCompatPadding="true"
-        app:cardMaxElevation="1dp"
-        app:cardElevation="1dp"
-        app:contentPaddingBottom="0dp" >
+        app:cardElevation="4dp"
+        android:background="@drawable/card_edge">
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:elevation="16dp">
 
             <TextView
                 android:id="@+id/tvQuestion"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textSize="17sp"
                 android:layout_margin="20dp"
-                android:text="Question" />
-
+                android:text="Question"
+                android:textSize="17sp" />
         </FrameLayout>
 
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cvAnswer"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
+        android:layout_marginBottom="32dp"
         app:cardBackgroundColor="@android:color/white"
-        app:cardCornerRadius="10dp"
+        app:cardCornerRadius="32dp"
         app:cardPreventCornerOverlap="false"
         app:cardUseCompatPadding="true"
-        app:cardMaxElevation="1dp"
-        app:cardElevation="1dp"
-        app:contentPaddingBottom="0dp" >
+        app:cardElevation="4dp"
+        android:background="@drawable/card_edge">
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:orientation="horizontal"
+            android:elevation="16dp">
 
             <TextView
                 android:id="@+id/tvAnswer"
-                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textSize="17sp"
-                android:layout_margin="20dp"
                 android:layout_gravity="center"
-                android:text="Answer" />
+                android:layout_margin="20dp"
+                android:gravity="center"
+                android:text="Answer"
+                android:textSize="17sp" />
 
         </FrameLayout>
 
