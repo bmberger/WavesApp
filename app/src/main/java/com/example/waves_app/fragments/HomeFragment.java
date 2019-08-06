@@ -69,7 +69,7 @@ public class HomeFragment extends Fragment {
 
         int categoryCount = categoryCount();
 
-        String[] homePageOptions = new String[] { "My Categories (" + categoryCount + ")", "Search", "Share", "Productivity", "Marine Biodiversity Facts", "Tutorial", "FAQ"};
+        String[] homePageOptions = new String[] { "My Categories (" + categoryCount + ")", "Search", "Share", "Productivity", "Fun Facts", "Tutorial", "FAQ"};
         items.addAll(Arrays.asList(homePageOptions));
 
         itemsAdapter = new ArrayAdapter<String>(getContext(), R.layout.simple_row_layout, items) {
@@ -119,7 +119,7 @@ public class HomeFragment extends Fragment {
                     fragment = new FAQFragment();
                 } else if (clickedOption.equals("Tutorial")) {
                     fragment = new TutorialFragment();
-                } else if (clickedOption.equals("Marine Biodiversity Facts")) {
+                } else if (clickedOption.equals("Fun Facts")) {
                         fragment = new FunFactsFragment();
                 } else if (clickedOption.equals("Search")) {
                     fragment = new SearchFragment();

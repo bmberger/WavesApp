@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.waves_app.R;
 
@@ -45,10 +46,37 @@ public class FAQFragment extends Fragment {
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setTitle("FAQ");
 
+        final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
         // Sets up blue HTML link for Plastic Oceans and Ocean Cleanup
         if (tvPlasticOceans != null && tvOceanCleanup != null) {
             tvPlasticOceans.setMovementMethod(LinkMovementMethod.getInstance());
             tvOceanCleanup.setMovementMethod(LinkMovementMethod.getInstance());
         }
+
+        // Redirects to specific organizations and their websites
+        tvPlasticOceans.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment = new WebViewFragment();
+                Bundle information = new Bundle();
+
+                information.putString("url", "https://plasticoceans.org");
+                fragment.setArguments(information);
+                fragmentManager.beginTransaction().replace(R.id.flContainer, fragment, "WebView").addToBackStack(null).commit();
+            }
+        });
+
+        tvOceanCleanup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment = new WebViewFragment();
+                Bundle information = new Bundle();
+
+                information.putString("url", "http://theoceancleanup.com/north-pacific-foundation/");
+                fragment.setArguments(information);
+                fragmentManager.beginTransaction().replace(R.id.flContainer, fragment, "WebView").addToBackStack(null).commit();
+            }
+        });
     }
 }
