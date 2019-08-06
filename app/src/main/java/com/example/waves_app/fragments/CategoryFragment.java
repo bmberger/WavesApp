@@ -94,6 +94,7 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
         rvCategories = view.findViewById(R.id.categoriesList);
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar.setTitleTextAppearance(getContext(), R.style.MyTitleTextApperance);
         toolbar.setTitle("Categories");
 
         readCategoryItems();

@@ -57,6 +57,7 @@ public class FunFactsFragment extends Fragment {
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setTitle("Fun Facts");
+        toolbar.setTitleTextAppearance(getContext(), R.style.MyTitleTextApperance);
 
         tvShowAdapter = new FunFactsAdapter(tvShows);
         rvQuestions = (RecyclerView) view.findViewById(R.id.rvQuestions);
@@ -69,7 +70,7 @@ public class FunFactsFragment extends Fragment {
             "Over __% of the Earth's surface is covered by salt water.",
             "The Earth's Oceans are home to ___,___ known species. And that's with only 5% of the Earth's oceans explored!",
             "Back in 2014, it was estimated that there were ___ trillion pieces of plastic debris in the ocean.",
-            "The International Union for Conservation of Nature (IUCN) currently lists more than ___ marine species as already endangered or vulnerable of becoming so. Some of the best-known of endangered marine life includes the angel shark, and the blue whale.",
+            "The International Union for Conservation of Nature (IUCN) currently lists more than ___ marine species as already endangered or vulnerable of becoming so.",
             "The ocean constitutes over __ of the habitable space on the planet.",
             "By the year ____, without significant changes, more than half of the world’s marine species may stand on the brink of extinction.",
             "Today, fisheries provide over __ percent of the dietary intake of animal protein.",

@@ -74,6 +74,7 @@ public class ProductivityFragment extends Fragment {
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setTitle("Productivity");
+        toolbar.setTitleTextAppearance(getContext(), R.style.MyTitleTextApperance);
 
         twentyFiveMins.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,7 +124,7 @@ public class ProductivityFragment extends Fragment {
             public void onClick(View view) {
                 final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 Fragment fragment = new CategoryFragment();
-                fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
+                fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack(null).commit();
             }
         });
 

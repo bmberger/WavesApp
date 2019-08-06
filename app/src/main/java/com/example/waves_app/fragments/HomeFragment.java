@@ -62,6 +62,7 @@ public class HomeFragment extends Fragment {
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setTitle("Waves");
+        toolbar.setTitleTextAppearance(getContext(), R.style.MyTitleTextApperance);
 
         // Set up architecture of list and list adapter
         itemsList = (ListView) view.findViewById(R.id.listItems);

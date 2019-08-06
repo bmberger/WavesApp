@@ -77,6 +77,7 @@ public class ShareFragment extends Fragment implements AdapterView.OnItemSelecte
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setTitle("Share");
+        toolbar.setTitleTextAppearance(getContext(), R.style.MyTitleTextApperance);
 
         readCategoryItems();
 
