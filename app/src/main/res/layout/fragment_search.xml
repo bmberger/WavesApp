@@ -23,20 +23,9 @@
         android:ems="10"
         android:hint="Search tasks"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toStartOf="@+id/ibSearch"
+        app:layout_constraintEnd_toStartOf="@+id/ibClear"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
-
-    <ImageButton
-        android:id="@+id/ibSearch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@android:color/transparent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:srcCompat="@drawable/search" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvSearchTasks"
@@ -55,15 +44,24 @@
 
     <TextView
         android:id="@+id/tvResultCount"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
-        android:layout_marginEnd="8dp"
         android:textColor="@color/black"
         android:textSize="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etSearch" />
+
+    <ImageButton
+        android:id="@+id/ibClear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/clear_icon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

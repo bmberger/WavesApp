@@ -124,8 +124,9 @@ public class CalendarFragment extends Fragment {
     private void loadTasksForDay(Date dateClicked) {
         String month = tvMonthYear.getText().toString().substring(0, tvMonthYear.getText().toString().indexOf(" "));
         int date = dateClicked.getDate();
+        int day = dateClicked.getDay();
         
-        tvDaySelected.setText(month + " " + date + ":");
+        tvDaySelected.setText(getDayOfWeek(day) + month + " " + date + ":");
         tvTasksForDay.scrollTo(0, 0);
 
         List<Event> events = compactCalendar.getEvents(dateClicked);
@@ -177,6 +178,25 @@ public class CalendarFragment extends Fragment {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private String getDayOfWeek(int day) {
+        switch (day) {
+            case 0:
+                return "Sunday, ";
+            case 1:
+                return "Monday, ";
+            case 2:
+                return "Tuesday, ";
+            case 3:
+                return "Wednesday, ";
+            case 4:
+                return "Thursday, ";
+            case 5:
+                return "Friday, ";
+            default:
+                return "Saturday, ";
         }
     }
 

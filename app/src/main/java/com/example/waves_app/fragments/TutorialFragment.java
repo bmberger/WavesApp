@@ -12,13 +12,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.waves_app.R;
@@ -32,7 +30,6 @@ public class TutorialFragment extends Fragment {
     private ViewPager viewPager;
     private TutorialAdapter tutorialAdapter;
     private List<String> tutorials;
-    private Button btnFinish;
 
     @Nullable
     @Override
@@ -74,16 +71,5 @@ public class TutorialFragment extends Fragment {
 
         // Sets background color of the viewPager
         viewPager.setBackgroundColor(getResources().getColor(R.color.blue_5_10_transparent));
-
-        // Set onClickListener for the button
-        btnFinish = (Button) view.findViewById(R.id.btnFinish);
-        btnFinish.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                Fragment fragment = new HomeFragment();
-                fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
-            }
-        });
     }
 }

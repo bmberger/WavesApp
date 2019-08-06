@@ -32,22 +32,6 @@
 
     </androidx.viewpager.widget.ViewPager>
 
-    <Button
-        android:id="@+id/btnFinish"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/round"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
-        android:text="Finish Tutorial"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <ImageView
         android:id="@+id/ivBubbles"
         android:layout_width="77dp"

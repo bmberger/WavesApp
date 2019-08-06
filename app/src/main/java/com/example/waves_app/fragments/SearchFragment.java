@@ -9,14 +9,14 @@
 package com.example.waves_app.fragments;
 
 import android.os.Bundle;
-import android.view.KeyEvent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,8 +40,8 @@ import java.util.List;
 public class SearchFragment extends Fragment {
 
     private EditText etSearch;
-    private ImageButton ibSearch;
     private TextView tvResultCount;
+    private ImageButton ibClear;
     private RecyclerView rvSearchTasks;
     private SearchAdapter searchAdapter;
     private List<String> searchCategories;
@@ -61,40 +61,32 @@ public class SearchFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         this.etSearch = (EditText) view.findViewById(R.id.etSearch);
-        this.ibSearch = (ImageButton) view.findViewById(R.id.ibSearch);
         this.tvResultCount = (TextView) view.findViewById(R.id.tvResultCount);
+        this.ibClear = (ImageButton) view.findViewById(R.id.ibClear);
         this.rvSearchTasks = (RecyclerView) view.findViewById(R.id.rvSearchTasks);
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setTitle("Search");
 
-        ibSearch.setOnClickListener(new View.OnClickListener() {
+        // Keeps track of all the inputs in the editText and populates recyclerView with relevant tasks
+        etSearch.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View view) {
-                String search = etSearch.getText().toString();
-                if (search.length() > 0) {
-                    loadTasks(search);
-                } else {
-                    // Nothing was searched
-                    Toast.makeText(getContext(), "Enter something into search bar!", Toast.LENGTH_SHORT).show();
-                }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                loadTasks(editable.toString());
             }
         });
 
-        etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        // Clear the search editText if ibClear is pressed
+        ibClear.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                boolean handled = false;
-                if (actionId == 0) { // If enter was pressed
-                    String search = etSearch.getText().toString();
-                    if (search.length() > 0) {
-                        loadTasks(search);
-                    } else {
-                        // Nothing was searched
-                        Toast.makeText(getContext(), "Enter something into search bar!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-                return handled;
+            public void onClick(View view) {
+                etSearch.setText("");
             }
         });
     }
@@ -110,9 +102,10 @@ public class SearchFragment extends Fragment {
             String categoryFile = categoryName + ".txt";
 
             try {
+                // Read all the tasks in a category
                 List<String> tasksRead = new ArrayList<>(FileUtils.readLines(getTasksFile(categoryFile), Charset.defaultCharset()));
 
-                // Load any tasks into the taskEvent list so that we can make events later
+                // Load any tasks into the searchTasks list to populate recyclerView
                 for (String task : tasksRead) {
                     int delimiter = task.indexOf(",");
                     String taskDetail = task.substring(0, delimiter);
@@ -127,20 +120,21 @@ public class SearchFragment extends Fragment {
                         searchTasks.add(t);
                     }
 
+                    // Update result view with necessary output
                     if (searchTasks.size() == 0) {
                         tvResultCount.setText("There are no tasks for this search.");
                     } else {
                         tvResultCount.setText("Results: " + searchTasks.size());
                     }
-
-                    searchAdapter = new SearchAdapter(getContext(), searchTasks, searchCategories);
-                    rvSearchTasks.setLayoutManager(new LinearLayoutManager(getContext()));
-                    rvSearchTasks.setAdapter(searchAdapter);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+
+        searchAdapter = new SearchAdapter(getContext(), searchTasks, searchCategories);
+        rvSearchTasks.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvSearchTasks.setAdapter(searchAdapter);
     }
 
     private void readCategoryItems() {
