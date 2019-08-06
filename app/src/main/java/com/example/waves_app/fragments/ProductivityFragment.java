@@ -74,6 +74,7 @@ public class ProductivityFragment extends Fragment {
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setTitle("Productivity");
+        toolbar.setTitleTextAppearance(getContext(), R.style.MyTitleTextApperance);
 
         twentyFiveMins.setOnClickListener(new View.OnClickListener() {
             @Override

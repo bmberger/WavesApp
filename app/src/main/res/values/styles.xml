@@ -4,10 +4,9 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/blue_16</item>
+        <item name="colorPrimaryDark">@color/blue_15</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:fontFamily">@font/josefin_sans</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/nunito</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -16,12 +15,17 @@
     <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/launch_screen</item>
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/blue_16</item>
+        <item name="colorPrimaryDark">@color/blue_15</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:fontFamily">@font/josefin_sans</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/nunito_bold</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="MyTitleTextApperance" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/nunito_sans_bold</item>
     </style>
 </resources>

@@ -61,6 +61,7 @@ public class TutorialFragment extends Fragment {
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setTitle("Tutorial");
+        toolbar.setTitleTextAppearance(getContext(), R.style.MyTitleTextApperance);
 
         // Locate the view and set the adapter
         viewPager = view.findViewById(R.id.vpTutorialCards);
