@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.example.waves_app.R;
@@ -62,6 +63,7 @@ public class ShareFragment extends Fragment implements AdapterView.OnItemSelecte
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_share, container, false);
         view.setBackgroundDrawable(getResources().getDrawable(R.drawable.sand_background));
+        getActivity().setTitle(""); // Required for setting action bar title
         return view;
     }
 
@@ -72,6 +74,9 @@ public class ShareFragment extends Fragment implements AdapterView.OnItemSelecte
         etMessage = (EditText) view.findViewById(R.id.et_message);
         tvAttachment = (TextView) view.findViewById(R.id.tv_attachment);
         tvAttachment.setText("Attached file");
+
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar.setTitle("Share");
 
         readCategoryItems();
 
