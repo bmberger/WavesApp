@@ -121,13 +121,13 @@ public class ShareFragment extends Fragment implements AdapterView.OnItemSelecte
             String taskDetail = task.substring(0, delimiter);
             String dueDate = task.substring(delimiter + 1);
 
-            message += "> " + taskDetail + "\n";
+            message += "> " + taskDetail + ",";
             if (!dueDate.equals("set due date")) {
                 message += "   " + dueDate + "\n";
             }
         }
 
-        etMessage.setText(message);
+        etMessage.setText(message +"\n");
     }
 
     @Override
