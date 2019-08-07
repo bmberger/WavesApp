@@ -38,25 +38,26 @@ dependencies {
 
     implementation 'com.google.android.material:material:1.0.0-rc01'
 
-    //no inspection GradleCompatible
+    // No inspection GradleCompatible
     implementation 'androidx.appcompat:appcompat:1.0.0'
 
-    // scroll choice
+    // Scroll choice
     implementation 'com.webianks.library:scroll-choice:1.0.1'
-
 
     implementation 'com.google.protobuf.nano:protobuf-javanano:3.0.0-alpha-7'
 
-    // implementation for Google VR
+    // Implementation for Google VR
     implementation 'com.google.vr:sdk-audio:1.160.0'
     implementation 'com.google.vr:sdk-base:1.160.0'
     implementation 'com.google.vr:sdk-common:1.160.0'
     implementation 'com.google.vr:sdk-commonwidget:1.160.0'
     implementation 'com.google.vr:sdk-panowidget:1.160.0'
     implementation 'com.google.vr:sdk-videowidget:1.160.0'
-
     implementation 'com.google.android.exoplayer:exoplayer:r1.5.10'
 
     // Floating action button
     implementation 'com.google.android.material:material:1.0.0-rc01'
+
+    // Material search
+    implementation 'com.miguelcatalan:materialsearchview:1.4.0'
 }

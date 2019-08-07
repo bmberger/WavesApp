@@ -12,6 +12,9 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -20,6 +23,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -29,6 +33,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.waves_app.R;
 import com.example.waves_app.adapters.SearchAdapter;
 import com.example.waves_app.model.Task;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import org.apache.commons.io.FileUtils;
 
@@ -40,6 +45,7 @@ import java.util.List;
 
 public class SearchFragment extends Fragment {
 
+    private MaterialSearchView svSearch;
     private EditText etSearch;
     private TextView tvResultCount;
     private ImageButton ibClear;
@@ -56,17 +62,23 @@ public class SearchFragment extends Fragment {
         view.setBackgroundDrawable(getResources().getDrawable(R.drawable.sand_background));
         getActivity().setTitle(""); // Required for setting action bar title
         view.bringToFront();
+
+        // Notifies host activity that fragment has menu items
+        setHasOptionsMenu(true);
+
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        this.svSearch = (MaterialSearchView) view.findViewById(R.id.svSearch);
         this.etSearch = (EditText) view.findViewById(R.id.etSearch);
         this.tvResultCount = (TextView) view.findViewById(R.id.tvResultCount);
         this.ibClear = (ImageButton) view.findViewById(R.id.ibClear);
         this.rvSearchTasks = (RecyclerView) view.findViewById(R.id.rvSearchTasks);
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         toolbar.setTitle("Search");
         toolbar.setTitleTextAppearance(getContext(), R.style.MyTitleTextApperance);
 
@@ -156,5 +168,12 @@ public class SearchFragment extends Fragment {
 
     private File getTasksFile(String category) {
         return new File(getContext().getFilesDir(), category);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_search, menu);
+        MenuItem item = menu.findItem(R.id.miSearch);
+        svSearch.setMenuItem(item);
     }
 }
