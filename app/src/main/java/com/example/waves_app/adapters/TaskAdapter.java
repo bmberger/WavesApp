@@ -188,7 +188,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
         mTasksList.remove(pos);
         parsedData.remove(pos);
 
-        if (!recentlyConfiguredTask.getDueDate().equals("set due date") && dueDateComparedToCurrent(recentlyConfiguredTask.getDueDate()) > 0) {
+        if (needToDeleteAlarm(recentlyConfiguredTask)) {
             cancelAlarm(recentlyConfiguredTask.getTaskDetail());
         }
 
@@ -217,7 +217,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
         testDeletedTask = mTasksList.get(pos);
         EditText etTaskDetail = holder.itemView.findViewById(R.id.etTaskDescription);
 
-        if (recentlyConfiguredTask.getTaskDetail().length() > 0 || etTaskDetail.getText().toString().length() > 0) {
+        if (isValidTask(recentlyConfiguredTask, etTaskDetail)) {
             mTasksList.remove(pos);
             parsedData.remove(pos);
 
@@ -228,7 +228,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
             writeTaskItems();
             writeCompletedCount();
 
-            if (!recentlyConfiguredTask.getDueDate().equals("set due date") && dueDateComparedToCurrent(recentlyConfiguredTask.getDueDate()) > 0) {
+            if (needToDeleteAlarm(recentlyConfiguredTask)) {
                 cancelAlarm(recentlyConfiguredTask.getTaskDetail());
             }
             notifyDataSetChanged();
@@ -614,5 +614,22 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
         // For editing an alarm
         cancelAlarm(ogTaskDetail);
         setAlarm(newDueDate, newTaskDetail);
+    }
+
+    // Conditionals
+    public boolean isValidTask(Task recentlyConfiguredTask, EditText etTaskDetail) {
+        // Tests if the task is an actual task
+        return (recentlyConfiguredTask.getTaskDetail().length() > 0 || etTaskDetail.getText().toString().length() > 0);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public boolean needToDeleteAlarm(Task recentlyConfiguredTask) {
+        // Tests if this task has an alarm set that needs deleting
+        return (!recentlyConfiguredTask.getDueDate().equals("set due date") && dueDateComparedToCurrent(recentlyConfiguredTask.getDueDate()) > 0);
+    }
+
+    public boolean isEditingDate(Task task, EditText etTask) {
+        // Tests if user is editing a date
+        return (etTask.getText().toString().length() > 0 && task.getDueDate() != null);
     }
 }

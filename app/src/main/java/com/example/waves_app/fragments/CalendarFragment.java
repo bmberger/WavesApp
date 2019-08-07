@@ -164,7 +164,7 @@ public class CalendarFragment extends Fragment {
                 for (String task : tasks) {
                     Task tEvent = new Task();
 
-                    int delimiter = task.indexOf(",");
+                    int delimiter = task.lastIndexOf(",");
                     String taskDetail = task.substring(0, delimiter);
                     String dueDate = task.substring(delimiter + 1);
 
