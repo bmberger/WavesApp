@@ -552,7 +552,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
         Calendar currentCal = Calendar.getInstance();
         Calendar dueDateCal = Calendar.getInstance();
 
-        LocalDate localDate = getLocalDate(dueDate)
+        LocalDate localDate = getLocalDate(dueDate);
         int yearDeadline = localDate.getYear();
         int monthDeadline = localDate.getMonthValue();
         int dayOfMonthDeadline = localDate.getDayOfMonth();
