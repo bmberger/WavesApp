@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:background="@color/blue_15"
         android:minHeight="?attr/actionBarSize"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" >
 
     </androidx.appcompat.widget.Toolbar>
 
@@ -20,9 +20,14 @@
         android:id="@+id/svSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textColorHint="@color/blue_8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:searchBackground="@color/blue_15"
+        app:searchBackIcon="@drawable/back_icon"
+        app:searchCloseIcon="@drawable/close_icon" >
 
     </com.miguelcatalan.materialsearchview.MaterialSearchView>
 
