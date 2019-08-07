@@ -8,7 +8,6 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cvQuestion"
-        android:background="@drawable/dialog_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="8dp"
