@@ -117,6 +117,10 @@ public class SearchFragment extends Fragment {
                         t.setTaskDetail(taskDetail);
                         t.setDueDate(dueDate);
 
+                        if (t.getDueDate().equals("set due date")) {
+                            t.setDueDate("N/A");
+                        }
+
                         searchCategories.add(categoryName);
                         searchTasks.add(t);
                     }
