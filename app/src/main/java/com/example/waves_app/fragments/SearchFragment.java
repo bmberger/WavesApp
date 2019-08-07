@@ -74,6 +74,11 @@ public class SearchFragment extends Fragment {
         toolbar.setTitleTextAppearance(getContext(), R.style.MyTitleTextApperance);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
 
+        readCategoryItems();
+
+        // Adds a line between each search result
+        rvSearchTasks.addItemDecoration(new DividerItemDecoration(rvSearchTasks.getContext(), DividerItemDecoration.VERTICAL));
+
         // Listener that updates the results for each character typed
         svSearch.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
@@ -90,8 +95,6 @@ public class SearchFragment extends Fragment {
     }
 
     private void loadTasks(String search) {
-        readCategoryItems();
-
         searchTasks = new ArrayList<>();
         searchCategories = new ArrayList<>();
 
@@ -117,22 +120,21 @@ public class SearchFragment extends Fragment {
                         searchCategories.add(categoryName);
                         searchTasks.add(t);
                     }
-
-                    // Update result view with necessary output
-                    if (searchTasks.size() == 0) {
-                        tvResultCount.setText("There are no tasks for this search.");
-                    } else {
-                        tvResultCount.setText("Results: " + searchTasks.size());
-                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
+        // Update result view with necessary output
+        if (searchTasks.size() == 0) {
+            tvResultCount.setText("There are no tasks for this search.");
+        } else {
+            tvResultCount.setText("Results: " + searchTasks.size());
+        }
+
         searchAdapter = new SearchAdapter(getContext(), searchTasks, searchCategories);
         rvSearchTasks.setLayoutManager(new LinearLayoutManager(getContext()));
-        rvSearchTasks.addItemDecoration(new DividerItemDecoration(rvSearchTasks.getContext(), DividerItemDecoration.VERTICAL));
         rvSearchTasks.setAdapter(searchAdapter);
     }
 
