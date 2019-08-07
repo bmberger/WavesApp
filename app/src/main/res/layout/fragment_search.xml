@@ -20,6 +20,7 @@
         android:id="@+id/svSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:hint="Search tasks"
         android:textColor="@color/white"
         android:textColorHint="@color/blue_8"
         app:layout_constraintEnd_toEndOf="parent"
@@ -30,18 +31,6 @@
         app:searchCloseIcon="@drawable/close_icon" >
 
     </com.miguelcatalan.materialsearchview.MaterialSearchView>
-
-    <EditText
-        android:id="@+id/etSearch"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:ems="10"
-        android:hint="Search tasks"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toStartOf="@+id/ibClear"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvSearchTasks"
@@ -67,17 +56,6 @@
         android:textColor="@color/black"
         android:textSize="15dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etSearch" />
-
-    <ImageButton
-        android:id="@+id/ibClear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="8dp"
-        android:background="@android:color/transparent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:srcCompat="@drawable/clear_icon" />
+        app:layout_constraintTop_toBottomOf="@+id/svSearch" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
