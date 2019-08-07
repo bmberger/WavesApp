@@ -73,7 +73,7 @@ public class ShareFragment extends Fragment implements AdapterView.OnItemSelecte
         etSubject = (EditText) view.findViewById(R.id.et_subject);
         etMessage = (EditText) view.findViewById(R.id.et_message);
         tvAttachment = (TextView) view.findViewById(R.id.tv_attachment);
-        tvAttachment.setText("Attached file");
+        tvAttachment.setText("Selected category:");
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setTitle("Share");
