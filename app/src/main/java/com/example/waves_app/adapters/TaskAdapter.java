@@ -316,26 +316,18 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                     String dueDate = reformatDate(month, day, year);
                     tvDueDate.setText(dueDate);
 
-                    if (etTask.getText().toString().length() > 0 && task.getDueDate() != null) {
-                        // The case if the user needs to edit the date
+                    if (isEditingDate(task, etTask)) {
                         pos = getAdapterPosition();
                         task.setDueDate(dueDate);
-                        if (!task.getDueDate().equals("set due date") && dueDateComparedToCurrent(task.getDueDate()) > 0) {
-                            editAlarm(dueDate, task.getTaskDetail(), task.getTaskDetail());
-                        } else if (!task.getDueDate().equals("set due date") && dueDateComparedToCurrent(task.getDueDate()) <= 0) {
-                            cancelAlarm(task.getTaskDetail());
-                        }
+                        changeAlarmDate(task, dueDate);
                         parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
                         writeTaskItems(); // Update the persistence
-                    } else { // Due date is being set first
+                    } else {
+                        // Due date is being set first
                         pos = getAdapterPosition();
                         task.setDueDate(dueDate);
                         task.setTaskDetail(etTask.getText().toString());
-                        if (!task.getDueDate().equals("set due date") && dueDateComparedToCurrent(task.getDueDate()) > 0) {
-                            editAlarm(dueDate, task.getTaskDetail(), task.getTaskDetail());
-                        } else if (!task.getDueDate().equals("set due date") && dueDateComparedToCurrent(task.getDueDate()) <= 0) {
-                            cancelAlarm(task.getTaskDetail());
-                        }
+                        changeAlarmDate(task, dueDate);
                         parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
                         writeTaskItems(); // Update the persistence
                     }
@@ -364,29 +356,17 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                     if (!hasFocus && mTasksList.contains(task)) {
                         if (ogDetail.equals("") && !task.getDueDate().equals("set due date")) {
                             // When you set due date first then task
-                            if (!task.getDueDate().equals("set due date") && dueDateComparedToCurrent(task.getDueDate()) > 0) {
-                                editAlarm(task.getDueDate(), newDetail, ogDetail);
-                            } else if (!task.getDueDate().equals("set due date") && dueDateComparedToCurrent(task.getDueDate()) <= 0) {
-                                cancelAlarm(ogDetail);
-                                cancelAlarm(newDetail);
-                            }
-
+                            changeAlarmText(task, newDetail, ogDetail);
                             task.setTaskDetail(newDetail);
                             parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
                             writeTaskItems(); // Update the persistence
                         } else if (newDetail.length() > 0 && !ogDetail.equals(newDetail)) {
                             // The case if the user needs to edit the name of task
-                            if (!task.getDueDate().equals("set due date") && dueDateComparedToCurrent(task.getDueDate()) > 0) {
-                                editAlarm(task.getDueDate(), newDetail, ogDetail);
-                            } else if (!task.getDueDate().equals("set due date") && dueDateComparedToCurrent(task.getDueDate()) <= 0) {
-                                cancelAlarm(ogDetail);
-                                cancelAlarm(newDetail);
-                            }
-
+                            changeAlarmText(task, newDetail, ogDetail);
                             task.setTaskDetail(newDetail);
 
                             if (testDeletedTask != null && pos > 0) {
-                                // tTsts if a task was deleted/completed while editing this task
+                                // Tests if a task was deleted/completed while editing this task
                                 testDeletedTask = null;
                                 pos--;
                             }
@@ -616,6 +596,27 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
         setAlarm(newDueDate, newTaskDetail);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void changeAlarmDate(Task task, String dueDate) {
+        // Utilized when a user edits the date (needs to edit the alarm)
+        if (isChangingDateToFuture(task)) {
+            editAlarm(dueDate, task.getTaskDetail(), task.getTaskDetail());
+        } else if (isChangingDateToPast(task)) {
+            cancelAlarm(task.getTaskDetail());
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void changeAlarmText(Task task, String newDetail, String ogDetail) {
+        // Utilized when a user edits the date (needs to edit the alarm)
+        if (isChangingDateToFuture(task)) {
+            editAlarm(task.getDueDate(), newDetail, ogDetail);
+        } else if (isChangingDateToPast(task)) {
+            cancelAlarm(ogDetail);
+            cancelAlarm(newDetail);
+        }
+    }
+
     // Conditionals
     public boolean isValidTask(Task recentlyConfiguredTask, EditText etTaskDetail) {
         // Tests if the task is an actual task
@@ -631,5 +632,17 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
     public boolean isEditingDate(Task task, EditText etTask) {
         // Tests if user is editing a date
         return (etTask.getText().toString().length() > 0 && task.getDueDate() != null);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public boolean isChangingDateToFuture(Task task) {
+        // Tests if user is editing a date to the future
+        return (!task.getDueDate().equals("set due date") && dueDateComparedToCurrent(task.getDueDate()) > 0);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public boolean isChangingDateToPast(Task task) {
+        // Tests if user is editing a date to the past
+        return (!task.getDueDate().equals("set due date") && dueDateComparedToCurrent(task.getDueDate()) <= 0);
     }
 }
