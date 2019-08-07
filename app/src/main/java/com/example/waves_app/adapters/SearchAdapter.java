@@ -73,7 +73,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
         public void bind(final Task task, String category) {
             tvTaskDescription.setText(task.getTaskDetail());
-            tvDateHolder.setText("Due Date: ");
+            tvDateHolder.setText("Due date: ");
             tvDueDate.setText(task.getDueDate());
             tvLocationHolder.setText("Located in: ");
             tvLocation.setText(category);
