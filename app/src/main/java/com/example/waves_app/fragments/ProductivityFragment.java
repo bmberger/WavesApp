@@ -56,7 +56,6 @@ public class ProductivityFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_productivity, container, false);
         view.setBackgroundDrawable(getResources().getDrawable(R.drawable.sand_background));
-        view.setBackgroundColor(getResources().getColor(R.color.blue_0));
         getActivity().setTitle(""); // Required for setting action bar title
         return view;
     }
