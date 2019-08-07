@@ -318,6 +318,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                     tvDueDate.setText(dueDate);
 
                     if (isEditingDate(task, etTask)) {
+                        if (task.getTaskDetail().equals("")) {
+                            // Setting a deadline while adding/editing a task detail
+                            task.setTaskDetail(etTask.getText().toString());
+                        }
                         pos = getAdapterPosition();
                         setTaskDate(task, dueDate);
                     } else {
