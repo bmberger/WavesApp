@@ -110,7 +110,7 @@
             android:text="Send"
             android:layout_gravity="right"
             android:background="@drawable/round"
-            android:textColor="@color/white" />
+            android:textColor="@color/black" />
 
     </LinearLayout>
 
