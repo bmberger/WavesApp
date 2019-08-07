@@ -283,7 +283,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
             int id = getColorId(getAdapterPosition());
             itemView.setBackgroundColor(context.getResources().getColor(id));
             etTask.setText(task.getTaskDetail());
-            tvDueDateHolder.setText("Due Date:");
+            tvDueDateHolder.setText("Due date:");
 
             if (task.getDueDate() == null) {
                 tvDueDate.setText("set due date");
