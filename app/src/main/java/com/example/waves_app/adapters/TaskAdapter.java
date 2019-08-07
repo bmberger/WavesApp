@@ -349,11 +349,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
 
                     // When focus is lost check that the text field has valid values.
                     if (!hasFocus && mTasksList.contains(task)) {
-                        if (ogDetail.equals("") && !task.getDueDate().equals("set due date")) {
-                            // When you set due date first then task
+                        if (isSettingTextWithDateSet(ogDetail, task)) {
                             setTaskText(pos, task, newDetail, ogDetail);
-                        } else if (newDetail.length() > 0 && !ogDetail.equals(newDetail)) {
-                            // The case if the user needs to edit the name of task
+                        } else if (isEditingTaskDetail(newDetail, ogDetail)) {
                             if (deletedOtherWhileEditing(testDeletedTask, pos)) {
                                 testDeletedTask = null;
                                 pos--;
@@ -644,6 +642,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
         return (etTask.getText().toString().length() > 0 && task.getDueDate() != null);
     }
 
+    public boolean isEditingTaskDetail(String newDetail, String ogDetail){
+        // Tests if editing task detail
+        return (newDetail.length() > 0 && !ogDetail.equals(newDetail));
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     public boolean isChangingDateToFuture(Task task) {
         // Tests if user is editing a date to the future
@@ -659,5 +662,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
     public boolean deletedOtherWhileEditing(Task testRecentlyDeleted, int pos) {
         // Tests if a task was deleted/completed while editing this task (which would mess up pos)
         return (testDeletedTask != null && pos > 0);
+    }
+
+    public boolean isSettingTextWithDateSet(String ogDetail, Task task) {
+        // Tests if date is set first while setting text
+        return (ogDetail.equals("") && !task.getDueDate().equals("set due date"));
     }
 }
