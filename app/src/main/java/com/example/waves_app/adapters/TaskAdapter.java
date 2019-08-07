@@ -318,18 +318,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
 
                     if (isEditingDate(task, etTask)) {
                         pos = getAdapterPosition();
-                        task.setDueDate(dueDate);
-                        changeAlarmDate(task, dueDate);
-                        parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
-                        writeTaskItems(); // Update the persistence
+                        setTaskDate(task, dueDate);
                     } else {
                         // Due date is being set first
                         pos = getAdapterPosition();
-                        task.setDueDate(dueDate);
                         task.setTaskDetail(etTask.getText().toString());
-                        changeAlarmDate(task, dueDate);
-                        parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
-                        writeTaskItems(); // Update the persistence
+                        setTaskDate(task, dueDate);
                     }
                 }
             };
@@ -356,27 +350,37 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                     if (!hasFocus && mTasksList.contains(task)) {
                         if (ogDetail.equals("") && !task.getDueDate().equals("set due date")) {
                             // When you set due date first then task
-                            changeAlarmText(task, newDetail, ogDetail);
-                            task.setTaskDetail(newDetail);
-                            parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
-                            writeTaskItems(); // Update the persistence
+                            setTaskText(pos, task, newDetail, ogDetail);
                         } else if (newDetail.length() > 0 && !ogDetail.equals(newDetail)) {
                             // The case if the user needs to edit the name of task
-                            changeAlarmText(task, newDetail, ogDetail);
-                            task.setTaskDetail(newDetail);
-
                             if (testDeletedTask != null && pos > 0) {
                                 // Tests if a task was deleted/completed while editing this task
                                 testDeletedTask = null;
                                 pos--;
                             }
-
-                            parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
-                            writeTaskItems(); // Update the persistence
+                            setTaskText(pos, task, newDetail, ogDetail);
                         }
                     }
                 }
             });
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public void setTaskText(int pos, Task task, String newDetail, String ogDetail) {
+            // Sets the text of a task
+            changeAlarmText(task, newDetail, ogDetail);
+            task.setTaskDetail(newDetail);
+            parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
+            writeTaskItems(); // Update the persistence
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public void setTaskDate(Task task, String dueDate) {
+            // Sets the date of a task
+            task.setDueDate(dueDate);
+            changeAlarmDate(task, dueDate);
+            parsedData.set(pos, task.getTaskDetail() + "," + task.getDueDate());
+            writeTaskItems();
         }
 
         public void getDateInfo(View view) {
