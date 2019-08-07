@@ -21,7 +21,7 @@
         android:id="@+id/rvQuestions"
         android:layout_width="413dp"
         android:layout_height="675dp"
-        android:background="@color/blue_5_10_transparent"
+        android:background="@color/white"
         android:layoutAnimation="@anim/layout_animation_fall_down"
         android:scrollbars="vertical"
         app:layout_constraintEnd_toEndOf="parent"
