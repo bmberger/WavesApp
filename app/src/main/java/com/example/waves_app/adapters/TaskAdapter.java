@@ -32,10 +32,9 @@ import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.waves_app.interfaces.ItemTouchHelperAdapter;
 import com.example.waves_app.MyAlarm;
 import com.example.waves_app.R;
-import com.example.waves_app.model.Category;
+import com.example.waves_app.interfaces.ItemTouchHelperAdapter;
 import com.example.waves_app.model.Task;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -66,7 +65,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
     int completedTasks;
     int pos;
 
-    // Variables to be used if user wants to undo delete/completion of task
+    // Variables to be used if user wants to undo deletion of task
     private Task recentlyConfiguredTask;
     private Task testDeletedTask;
     private int configuredTaskPosition;
@@ -171,7 +170,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
         return new ViewHolder(view);
     }
 
-    // Following four methods are used in part with swipe functionality of recyclerView
+    // Following three methods are used in part with swipe functionality of recyclerView
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void deleteTask(int pos, RecyclerView.ViewHolder holder) {
         EditText etTaskDetail = holder.itemView.findViewById(R.id.etTaskDescription);
@@ -214,8 +213,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void markComplete(int pos, RecyclerView.ViewHolder holder) {
         recentlyConfiguredTask = mTasksList.get(pos);
-        configuredTaskPosition = pos;
         testDeletedTask = mTasksList.get(pos);
+        configuredTaskPosition = pos;
         EditText etTaskDetail = holder.itemView.findViewById(R.id.etTaskDescription);
 
         if (isValidTask(recentlyConfiguredTask, etTaskDetail)) {
@@ -253,7 +252,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
             // Displays the popup to the screen
             ad_dialog.show();
         } else {
-            // If you had an empty task with deadline, we don't want it to count towards fish tank
+            // If you had an empty task with deadline, don't count towards fish tank
             deleteTask(pos, holder);
         }
     }
@@ -270,7 +269,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
         private TextView tvDueDate;
         private TextView tvDueDateHolder;
         private DatePickerDialog.OnDateSetListener listener;
-        private AlarmManager alarmManager;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -284,7 +282,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
         public void bind(final Task task) {
             int id = getColorId(getAdapterPosition());
             itemView.setBackgroundColor(context.getResources().getColor(id));
-
             etTask.setText(task.getTaskDetail());
             tvDueDateHolder.setText("Due Date:");
 
@@ -322,6 +319,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                             // Setting a deadline while adding/editing a task detail
                             task.setTaskDetail(etTask.getText().toString());
                         }
+
                         pos = getAdapterPosition();
                         setTaskDate(task, dueDate);
                     } else {
@@ -550,8 +548,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
         Log.d("TaskAdapter", "The deadline alarm set");
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     // Utilized to know when to set, edit, cancel alarm
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public int dueDateComparedToCurrent(String dueDate) {
         Calendar currentCal = Calendar.getInstance();
         Calendar dueDateCal = Calendar.getInstance();
@@ -571,7 +569,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
         dueDateCal.clear();
         currentCal.clear();
 
-        dueDateCal.set(yearDeadline,monthDeadline - 1, dayOfMonthDeadline,19,00); //19:00 is for 7pm
+        dueDateCal.set(yearDeadline,monthDeadline - 1, dayOfMonthDeadline,19,00); // 19:00 is for 7 pm
         currentCal.set(yearCurrent, monthCurrent, dayOfMonthCurrent, 19, 00);
 
         // Early point alarm math - has alarm go off at 7pm two days before its due
@@ -584,13 +582,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
 
     // To be called in removing a task and in checking off a task
     public void cancelAlarm(String taskDetail) {
-        // For canceling an alarm
-
         // Allows us to utilize broadcasting and alarms
+        int id = taskDetail.hashCode();
         Intent myIntent = new Intent(this.context, MyAlarm.class);
         myIntent.putExtra("taskDetail", taskDetail);
 
-        int id = taskDetail.hashCode();
 
         // For others to understand a bit better: https://medium.com/@architgupta690/creating-pending-intent-in-android-a-step-by-step-guide-74784ec60c9e
         PendingIntent pendingIntentDeadline = PendingIntent.getBroadcast(this.context, id, myIntent, 0);
@@ -603,7 +599,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
     // To be called in editing a task (for both due date AND task detail/desc)
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void editAlarm(String newDueDate, String newTaskDetail, String ogTaskDetail) {
-        // For editing an alarm
         cancelAlarm(ogTaskDetail);
         setAlarm(newDueDate, newTaskDetail);
     }
