@@ -109,7 +109,7 @@ public class SearchFragment extends Fragment {
 
                 // Load any tasks into the searchTasks list to populate recyclerView
                 for (String task : tasksRead) {
-                    int delimiter = task.indexOf(",");
+                    int delimiter = task.lastIndexOf(",");
                     String taskDetail = task.substring(0, delimiter);
                     String dueDate = task.substring(delimiter + 1);
 

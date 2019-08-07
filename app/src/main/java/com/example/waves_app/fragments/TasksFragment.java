@@ -65,7 +65,7 @@ public class TasksFragment extends Fragment implements OnStartDragListener {
             for(String obj : parsedData) {
                 Task tempTask = new Task();
 
-                int delimiter = obj.indexOf(",");
+                int delimiter = obj.lastIndexOf(",");
                 String note = obj.substring(0, delimiter);
                 String date = obj.substring(delimiter + 1);
 
