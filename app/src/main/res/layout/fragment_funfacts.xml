@@ -17,19 +17,19 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvQuestions"
-        android:layout_width="413dp"
-        android:layout_height="675dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@color/blue_5_10_transparent"
         android:layoutAnimation="@anim/layout_animation_fall_down"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
         android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
     </androidx.recyclerview.widget.RecyclerView>
 
