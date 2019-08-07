@@ -243,7 +243,7 @@ public class ProductivityFragment extends Fragment {
 
         SharedPreferences prefs = getContext().getSharedPreferences("prefs", MODE_PRIVATE);
 
-        START_TIME_IN_MILLIS = prefs.getLong("startTimeInMillis", 600000);
+        START_TIME_IN_MILLIS = prefs.getLong("startTimeInMillis", 1500000);
         mTimeLeftInMillis = prefs.getLong("millisLeft", START_TIME_IN_MILLIS);
         mTimerRunning = prefs.getBoolean("timerRunning", false);
 
