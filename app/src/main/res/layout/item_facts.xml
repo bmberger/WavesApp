@@ -8,13 +8,12 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cvQuestion"
+        android:background="@drawable/dialog_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:background="@drawable/card_edge"
         android:paddingLeft="64dp"
-        app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="32dp"
         app:cardElevation="4dp"
         app:cardPreventCornerOverlap="false"
