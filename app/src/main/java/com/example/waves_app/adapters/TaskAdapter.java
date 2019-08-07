@@ -353,7 +353,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
                     // Fixes the add on add issue that Android Studio doesn't account for
                     for (int i = 0; i < parsedData.size(); i++) {
                         String temp = parsedData.get(i);
-                        int delimiter = temp.indexOf(",");
+                        int delimiter = temp.lastIndexOf(",");
 
                         if (newDetail.equals(temp.substring(0, delimiter))) {
                             pos = i;
