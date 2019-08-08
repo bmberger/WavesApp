@@ -80,19 +80,19 @@ public class HomeFragment extends Fragment {
                 View view = super.getView(position, convertView, parent);
 
                 if (position == 0) {
-                    view.setBackgroundColor(getResources().getColor(R.color.blue_14));
-                } else if (position == 1) {
                     view.setBackgroundColor(getResources().getColor(R.color.blue_12));
-                } else if (position == 2) {
+                } else if (position == 1) {
                     view.setBackgroundColor(getResources().getColor(R.color.blue_10));
-                } else if (position == 3) {
+                } else if (position == 2) {
                     view.setBackgroundColor(getResources().getColor(R.color.blue_8));
-                } else if (position == 4) {
+                } else if (position == 3) {
                     view.setBackgroundColor(getResources().getColor(R.color.blue_6));
-                } else if (position == 5) {
+                } else if (position == 4) {
                     view.setBackgroundColor(getResources().getColor(R.color.blue_4));
-                } else if (position == 6) {
+                } else if (position == 5) {
                     view.setBackgroundColor(getResources().getColor(R.color.blue_2));
+                } else if (position == 6) {
+                    view.setBackgroundColor(getResources().getColor(R.color.blue_1));
                 }
                 return view;
             }

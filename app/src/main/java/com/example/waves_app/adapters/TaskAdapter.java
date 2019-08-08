@@ -426,24 +426,21 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
         int id;
         switch (viewColor) {
             case 0:
-                id = R.color.blue_14;
-                break;
-            case 1:
                 id = R.color.blue_12;
                 break;
-            case 2:
+            case 1:
                 id = R.color.blue_10;
                 break;
-            case 3:
+            case 2:
                 id = R.color.blue_8;
                 break;
-            case 4:
+            case 3:
                 id = R.color.blue_6;
                 break;
-            case 5:
+            case 4:
                 id = R.color.blue_4;
                 break;
-            case 6:
+            case 5:
                 id = R.color.blue_2;
                 break;
             default:
