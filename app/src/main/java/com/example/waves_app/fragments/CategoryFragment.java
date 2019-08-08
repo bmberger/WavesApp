@@ -36,6 +36,7 @@ import com.example.waves_app.interfaces.OnStartDragListener;
 import com.example.waves_app.R;
 import com.example.waves_app.SwipeToDeleteCategoryCallback;
 import com.example.waves_app.model.Category;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.apache.commons.io.FileUtils;
 
@@ -99,7 +100,6 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        tvSpaceHolder = view.findViewById(R.id.tvSpaceHolder);
         rvCategories = view.findViewById(R.id.categoriesList);
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
@@ -107,6 +107,8 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
         toolbar.setTitle("Categories");
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
 
+
+        FloatingActionButton factionButton = (FloatingActionButton) view.findViewById(R.id.floating_action_button);
 
         readCategoryItems();
 
@@ -128,7 +130,7 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
         itemTouchHelper.attachToRecyclerView(rvCategories);
 
         // Set on click listener to the textView
-        tvSpaceHolder.setOnClickListener(new View.OnClickListener() {
+        factionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Prevent user with adding multiple blank categories
