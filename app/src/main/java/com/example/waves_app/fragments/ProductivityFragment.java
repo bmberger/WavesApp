@@ -160,6 +160,8 @@ public class ProductivityFragment extends Fragment {
                 mButtonStartPause.setText("Start");
                 mButtonStartPause.setVisibility(View.INVISIBLE);
                 mButtonReset.setVisibility(View.VISIBLE);
+                twentyFiveMins.setVisibility(View.VISIBLE);
+                fiveMins.setVisibility(View.VISIBLE);
                 Toast.makeText(getContext(), "Pomodora finished", Toast.LENGTH_SHORT).show();
                 try {
                     Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -174,6 +176,8 @@ public class ProductivityFragment extends Fragment {
         mTimerRunning = true;
         mButtonStartPause.setText("pause");
         mButtonReset.setVisibility(View.INVISIBLE);
+        twentyFiveMins.setVisibility(View.INVISIBLE);
+        fiveMins.setVisibility(View.INVISIBLE);
     }
 
     private void setTime(long milliseconds) {
