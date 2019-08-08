@@ -53,7 +53,7 @@ public class TutorialFragment extends Fragment {
         tutorials.add("Open the productivity tab to time yourself using the pomodoro technique.");
         tutorials.add("Open the share tab to send a particular list of tasks to others by email!");
         tutorials.add("Open the facts tab to learn more about marine biodiversity.");
-        tutorials.add("Check your calendar to see when your tasks are due");
+        tutorials.add("Check your calendar to see when your tasks are due.");
         tutorials.add("Check your fish tank to see how much fish you've saved!");
         tutorials.add("Look into our FAQ to find out how you can make an impact and our story.");
 
