@@ -9,15 +9,20 @@
 package com.example.waves_app.adapters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.waves_app.R;
+import com.example.waves_app.fragments.TasksFragment;
 import com.example.waves_app.model.Task;
 
 import java.util.List;
@@ -53,7 +58,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         return searchTasks.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView tvTaskDescription;
         private TextView tvDateHolder;
@@ -69,6 +74,9 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             tvDueDate = (TextView) view.findViewById(R.id.tvDueDate);
             tvLocationHolder = (TextView) view.findViewById(R.id.tvLocationHolder);
             tvLocation = (TextView) view.findViewById(R.id.tvLocation);
+
+            // Attach a click listener to the entire row view
+            view.setOnClickListener((View.OnClickListener)this);
         }
 
         public void bind(final Task task, String category) {
@@ -77,6 +85,17 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             tvDueDate.setText(task.getDueDate());
             tvLocationHolder.setText("Located in: ");
             tvLocation.setText(category);
+        }
+
+        @Override
+        public void onClick(View view) {
+            FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
+            Fragment fragment = new TasksFragment();
+            Bundle information = new Bundle();
+
+            information.putString("catName", tvLocation.getText().toString());
+            fragment.setArguments(information);
+            manager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack(null).commit();
         }
     }
 }
