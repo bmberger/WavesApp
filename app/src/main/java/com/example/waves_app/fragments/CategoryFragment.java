@@ -11,6 +11,9 @@ package com.example.waves_app.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -19,8 +22,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -85,6 +90,10 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
         View view = inflater.inflate(R.layout.fragment_categories, container, false);
         view.setBackgroundDrawable(getResources().getDrawable(R.drawable.sand_background));
         getActivity().setTitle(""); // Required for setting action bar title
+
+        // Notifies host activity that fragment has menu items
+        setHasOptionsMenu(true);
+
         return view;
     }
 
@@ -96,6 +105,8 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setTitleTextAppearance(getContext(), R.style.MyTitleTextApperance);
         toolbar.setTitle("Categories");
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+
 
         readCategoryItems();
 
@@ -152,5 +163,28 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
 
         categoryAdapter.notifyDataSetChanged();
         rvCategories.scrollToPosition(categoryAdapter.getItemCount() - 1);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_clock, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.miClock) {
+            final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            Fragment fragment = new ProductivityFragment();
+            fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack(null).commit();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

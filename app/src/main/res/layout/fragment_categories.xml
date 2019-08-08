@@ -14,7 +14,9 @@
         android:layout_height="wrap_content"
         android:background="@color/blue_13"
         android:minHeight="?attr/actionBarSize"
-        app:layout_constraintTop_toTopOf="parent"></androidx.appcompat.widget.Toolbar>
+        app:layout_constraintTop_toTopOf="parent">
+    </androidx.appcompat.widget.Toolbar>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/categoriesList"

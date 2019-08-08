@@ -13,9 +13,9 @@
     </style>
     
     <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">@drawable/waves_launch_screen</item>
+        <item name="android:windowBackground">@drawable/launch_screen</item>
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/blue_13</item>
+        <item name="colorPrimaryDark">@color/blue_15</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:fontFamily">@font/nunito_bold</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>

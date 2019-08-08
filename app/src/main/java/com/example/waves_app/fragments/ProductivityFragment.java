@@ -12,6 +12,9 @@ import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -136,10 +139,6 @@ public class ProductivityFragment extends Fragment {
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack(null).commit();
             }
         });
-
-//        // Sets background color of the RecyclerView
-//        RecyclerView viewPager = view.findViewById(R.id.productivity);
-//        viewPager.setBackgroundColor(getResources().getColor(R.color.blue_5_10_transparent));
     }
 
     private void startTimer() {
@@ -162,6 +161,13 @@ public class ProductivityFragment extends Fragment {
                 mButtonStartPause.setVisibility(View.INVISIBLE);
                 mButtonReset.setVisibility(View.VISIBLE);
                 Toast.makeText(getContext(), "Pomodora finished", Toast.LENGTH_SHORT).show();
+                try {
+                    Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                    Ringtone r = RingtoneManager.getRingtone(getContext(), notification);
+                    r.play();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }.start();
 
@@ -196,7 +202,6 @@ public class ProductivityFragment extends Fragment {
     private void updateCountDownText() {
         int minutes = (int) (mTimeLeftInMillis / 1000) / 60;
         int seconds = (int) (mTimeLeftInMillis / 1000) % 60;
-
         String timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
 
         mTextViewCountDown.setText(timeLeftFormatted);
@@ -252,7 +257,6 @@ public class ProductivityFragment extends Fragment {
         super.onStart();
 
         SharedPreferences prefs = getContext().getSharedPreferences("prefs", MODE_PRIVATE);
-
         START_TIME_IN_MILLIS = prefs.getLong("startTimeInMillis", 1500000);
         mTimeLeftInMillis = prefs.getLong("millisLeft", START_TIME_IN_MILLIS);
         mTimerRunning = prefs.getBoolean("timerRunning", false);
