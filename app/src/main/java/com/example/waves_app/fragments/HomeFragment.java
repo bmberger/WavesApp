@@ -62,9 +62,7 @@ public class HomeFragment extends Fragment {
         itemsList = (ListView) view.findViewById(R.id.listItems);
         items = new ArrayList<String>();
 
-        int categoryCount = categoryCount();
-
-        String[] homePageOptions = new String[] { "My Categories (" + categoryCount + ")", "Search", "Share", "Productivity", "Fun Facts", "Tutorial", "FAQ"};
+        String[] homePageOptions = new String[] { "My Categories (" + getCategoryCount() + ")", "Search", "Share", "Productivity", "Fun Facts", "Tutorial", "FAQ"};
         items.addAll(Arrays.asList(homePageOptions));
 
         itemsAdapter = new ArrayAdapter<String>(getContext(), R.layout.simple_row_layout, items) {
@@ -108,7 +106,7 @@ public class HomeFragment extends Fragment {
                 Fragment fragment;
 
                 // Switches to a different category dependent on user choice
-                if (clickedOption.equals("My Categories (" + categoryCount() + ")")) {
+                if (clickedOption.equals("My Categories (" + getCategoryCount() + ")")) {
                     fragment = new CategoryFragment();
                 } else if (clickedOption.equals("FAQ")) {
                     fragment = new FAQFragment();
@@ -130,7 +128,7 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    public int categoryCount() {
+    public int getCategoryCount() {
         readCategoryItems();
         return categoryData.size();
     }
