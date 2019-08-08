@@ -11,6 +11,7 @@
     <color name="not_checked">#B98C5F</color>
 
     <color name="white">#ffffff</color>
+    <color name="transparent">#00000000</color>
     <color name="black">#000000</color>
     <color name="blue_0">#ffffff</color>
     <color name="blue_1">#ecf4fb</color>
@@ -29,6 +30,9 @@
     <color name="blue_14">#0068CC</color>
     <color name="blue_15">#005aad</color>
     <color name="blue_16">#0054A3</color>
+
+    <color name="red_transparent">#1ac41603</color>
+    <color name="green_transparent">#1a1f9355</color>
   
     <color name="dark_blue_7">#ff0053a4</color>
     <color name="dark_blue_8">#ff003569</color>
