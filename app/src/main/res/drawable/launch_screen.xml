@@ -3,7 +3,7 @@
     <item android:drawable="@drawable/waves_launch_screen" />
 
     <item>
-        <bitmap android:src="@drawable/waves_logo_lined_round"
+        <bitmap android:src="@drawable/waves_logo_splash"
             android:gravity="center" />
     </item>
 </layer-list>
