@@ -30,6 +30,7 @@ import com.example.waves_app.R;
 import com.example.waves_app.adapters.SearchAdapter;
 import com.example.waves_app.model.Task;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+import com.miguelcatalan.materialsearchview.SearchAdapter;
 
 import org.apache.commons.io.FileUtils;
 
