@@ -33,7 +33,7 @@ public class SwipeToDeleteCategoryCallback extends ItemTouchHelper.SimpleCallbac
         super(0, ItemTouchHelper.LEFT);
         categoryAdapter = adapter;
         deleteIcon = ContextCompat.getDrawable(context, R.drawable.ic_delete_item);
-        background = new ColorDrawable(context.getResources().getColor(R.color.blue_5_10_transparent));
+        background = new ColorDrawable(context.getResources().getColor(R.color.red_transparent));
     }
 
     // This method is called when an item is swiped off the screen
