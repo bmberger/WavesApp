@@ -96,7 +96,6 @@ public class TasksFragment extends Fragment implements OnStartDragListener {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        tvSpaceHolder = (TextView) view.findViewById(R.id.tvSpaceHolder);
         rvTasks = (RecyclerView) view.findViewById(R.id.rvTasks);
 
         // Getting the category file name that contains these tasks
@@ -125,7 +124,7 @@ public class TasksFragment extends Fragment implements OnStartDragListener {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteTaskCallback(taskAdapter, getContext()));
         itemTouchHelper.attachToRecyclerView(rvTasks);
 
-        tvSpaceHolder.setOnClickListener(new View.OnClickListener() {
+        factionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Prevent user with adding multiple blank categories

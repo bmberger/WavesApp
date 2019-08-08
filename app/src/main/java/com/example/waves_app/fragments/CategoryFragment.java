@@ -91,7 +91,6 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        tvSpaceHolder = view.findViewById(R.id.tvSpaceHolder);
         rvCategories = view.findViewById(R.id.categoriesList);
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
@@ -99,7 +98,6 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
         toolbar.setTitle("Categories");
 
         FloatingActionButton factionButton = (FloatingActionButton) view.findViewById(R.id.floating_action_button);
-        factionButton.setBackgroundColor(getResources().getColor(R.color.blue_13));
 
         readCategoryItems();
 
@@ -119,9 +117,9 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
         // Attaching swipe capabilities to the recyclerView
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCategoryCallback(categoryAdapter, getContext()));
         itemTouchHelper.attachToRecyclerView(rvCategories);
-        
+
         // Set on click listener to the textView
-        tvSpaceHolder.setOnClickListener(new View.OnClickListener() {
+        factionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Prevent user with adding multiple blank categories
