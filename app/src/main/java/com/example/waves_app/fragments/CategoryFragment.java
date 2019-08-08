@@ -31,6 +31,7 @@ import com.example.waves_app.interfaces.OnStartDragListener;
 import com.example.waves_app.R;
 import com.example.waves_app.SwipeToDeleteCategoryCallback;
 import com.example.waves_app.model.Category;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.apache.commons.io.FileUtils;
 
@@ -97,6 +98,9 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
         toolbar.setTitleTextAppearance(getContext(), R.style.MyTitleTextApperance);
         toolbar.setTitle("Categories");
 
+        FloatingActionButton factionButton = (FloatingActionButton) view.findViewById(R.id.floating_action_button);
+        factionButton.setBackgroundColor(getResources().getColor(R.color.blue_13));
+
         readCategoryItems();
 
         // Create the categoryAdapter
@@ -115,7 +119,7 @@ public class CategoryFragment extends Fragment implements OnStartDragListener {
         // Attaching swipe capabilities to the recyclerView
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCategoryCallback(categoryAdapter, getContext()));
         itemTouchHelper.attachToRecyclerView(rvCategories);
-
+        
         // Set on click listener to the textView
         tvSpaceHolder.setOnClickListener(new View.OnClickListener() {
             @Override

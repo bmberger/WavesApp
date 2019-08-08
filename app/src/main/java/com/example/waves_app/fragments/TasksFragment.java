@@ -31,6 +31,7 @@ import com.example.waves_app.R;
 import com.example.waves_app.SwipeToDeleteTaskCallback;
 import com.example.waves_app.adapters.TaskAdapter;
 import com.example.waves_app.model.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.apache.commons.io.FileUtils;
 
@@ -105,6 +106,9 @@ public class TasksFragment extends Fragment implements OnStartDragListener {
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setTitle(information.getString("catName"));
         toolbar.setTitleTextAppearance(getContext(), R.style.MyTitleTextApperance);
+
+        FloatingActionButton factionButton = (FloatingActionButton) view.findViewById(R.id.floating_action_button);
+        factionButton.setBackgroundColor(getResources().getColor(R.color.blue_13));
 
         readTaskItems();
 
