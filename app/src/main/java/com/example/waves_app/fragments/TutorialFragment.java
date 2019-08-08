@@ -46,16 +46,11 @@ public class TutorialFragment extends Fragment {
         tutorials = new ArrayList<>();
         tutorials.add("Welcome to Waves, an app that promotes productivity and environmental cleanliness!");
         tutorials.add("Swipe up and down on the screen to navigate between the home page, calendar, and fish tank.");
-        tutorials.add("Tap below the existing list to add a new category or task.");
+        tutorials.add("Tap the add button to create a new category or task.");
         tutorials.add("Swipe to the left on a category or task to delete the selected item.");
         tutorials.add("Swipe to the right on a task to mark it as complete and save a fish.");
-        tutorials.add("Open the search tab to find tasks quickly.");
-        tutorials.add("Open the productivity tab to time yourself using the pomodoro technique.");
-        tutorials.add("Open the share tab to send a particular list of tasks to others by email!");
-        tutorials.add("Open the facts tab to learn more about marine biodiversity.");
         tutorials.add("Check your calendar to see when your tasks are due.");
         tutorials.add("Check your fish tank to see how much fish you've saved!");
-        tutorials.add("Look into our FAQ to find out how you can make an impact and our story.");
 
         // Create new adapter for tutorial steps
         tutorialAdapter = new TutorialAdapter(tutorials, getContext());

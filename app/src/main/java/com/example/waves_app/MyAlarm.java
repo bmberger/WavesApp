@@ -15,7 +15,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
@@ -43,7 +42,7 @@ public class MyAlarm extends BroadcastReceiver {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void createNotification (Context context, String msg, int id, String msgAlert) {
         PendingIntent goToWhenOpenNotif = PendingIntent.getActivity(context,id,
-                new Intent(context, HomeActivity.class),0);
+                new Intent(context, MainActivity.class),0);
 
         // Displays the notification
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, "1")

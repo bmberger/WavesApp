@@ -9,11 +9,8 @@
 package com.example.waves_app;
 
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
