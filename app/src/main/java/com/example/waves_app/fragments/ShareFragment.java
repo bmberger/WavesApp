@@ -115,15 +115,17 @@ public class ShareFragment extends Fragment implements AdapterView.OnItemSelecte
         readTaskItems(data.get(position));
 
         // Create and format the message
-        String message = "Below are the items in my " + data.get(position) + " list: \n \n";
+        String message = "Below are the items in my " + data.get(position) + " list: \n\n";
         for (String task : taskData) {
             int delimiter = task.lastIndexOf(",");
             String taskDetail = task.substring(0, delimiter);
             String dueDate = task.substring(delimiter + 1);
 
-            message += "> " + taskDetail + ",";
+            message += "> " + taskDetail;
             if (!dueDate.equals("set due date")) {
-                message += "   " + dueDate + "\n";
+                message += ", " + dueDate + "\n";
+            } else {
+                message += "\n";
             }
         }
 

@@ -26,7 +26,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:searchBackground="@color/blue_15"
+        app:searchBackground="@color/blue_13"
         app:searchBackIcon="@drawable/back_icon"
         app:searchCloseIcon="@drawable/close_icon" >
 
