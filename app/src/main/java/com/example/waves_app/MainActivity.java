@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         if (currentItem == 0) {
             // If the user is currently looking at the first step, allow the system to handle the
             // Back button. This calls finish() on this activity and pops the back stack.
+            viewPager.getAdapter().notifyDataSetChanged();
             super.onBackPressed();
         } else if ((oceanView != null && oceanView.isVisible()) || (webView != null && webView.isVisible())) {
             super.onBackPressed();
