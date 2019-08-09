@@ -207,6 +207,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> im
             parsedData.add(configuredTaskPosition, recentlyConfiguredTask.getTaskDetail() + "," + recentlyConfiguredTask.getDueDate());
             writeTaskItems();
             notifyItemInserted(configuredTaskPosition);
+            notifyDataSetChanged();
         }
     };
 
