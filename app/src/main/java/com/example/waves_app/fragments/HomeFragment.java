@@ -40,6 +40,7 @@ public class HomeFragment extends Fragment {
     private ArrayAdapter<String> itemsAdapter; // Items that moves the model to the view (controller)
     private ListView itemsList;
     private List<String> categoryData;
+    private int count;
 
     @Nullable
     @Override
@@ -48,6 +49,16 @@ public class HomeFragment extends Fragment {
         view.setBackgroundDrawable(getResources().getDrawable(R.drawable.sand_background));
         getActivity().setTitle(""); // Required for setting action bar title
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        items.clear();
+        count = getCategoryCount();
+        String[] homePageOptions = new String[] { "My Categories (" + count + ")", "Search", "Share", "Productivity", "Fun Facts", "Tutorial", "FAQ"};
+        items.addAll(Arrays.asList(homePageOptions));
+        itemsAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -61,8 +72,9 @@ public class HomeFragment extends Fragment {
         // Set up architecture of list and list adapter
         itemsList = (ListView) view.findViewById(R.id.listItems);
         items = new ArrayList<String>();
+        count = getCategoryCount();
 
-        String[] homePageOptions = new String[] { "My Categories (" + getCategoryCount() + ")", "Search", "Share", "Productivity", "Fun Facts", "Tutorial", "FAQ"};
+        String[] homePageOptions = new String[] { "My Categories (" + count + ")", "Search", "Share", "Productivity", "Fun Facts", "Tutorial", "FAQ"};
         items.addAll(Arrays.asList(homePageOptions));
 
         itemsAdapter = new ArrayAdapter<String>(getContext(), R.layout.simple_row_layout, items) {
