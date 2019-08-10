@@ -67,6 +67,7 @@ public class FunFactsFragment extends Fragment {
     }
 
     public static final String[] questions = {
+            "Over ___ tons of plastic is produced every year",
             "Over __% of the Earth's surface is covered by salt water.",
             "The Earth's Oceans are home to ___,___ known species. And that's with only 5% of the Earth's oceans explored!",
             "Back in 2014, it was estimated that there were ___ trillion pieces of plastic debris in the ocean.",
@@ -82,6 +83,7 @@ public class FunFactsFragment extends Fragment {
             "Total carbon deposits in these coastal systems may be up to _ times the carbon stored in tropical forests."};
 
     public static final String[] answers = {
+            "300 million",
             "72",
             "230,000",
             "5.25",
